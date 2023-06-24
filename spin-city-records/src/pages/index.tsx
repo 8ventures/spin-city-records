@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import ManageUser from "~/components/userButton";
 import { api } from "~/utils/api";
 
 export default function Home() {
@@ -9,9 +10,7 @@ export default function Home() {
   return (
     <>
       <Link href="/">
-        <nav>
-          
-        </nav>
+        <ManageUser/>
       </Link>
     </>
   );
