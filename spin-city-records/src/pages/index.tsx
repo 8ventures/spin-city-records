@@ -1,17 +1,56 @@
+import { SignInButton } from "@clerk/nextjs";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useUser } from "@clerk/clerk-react";
 import Head from "next/head";
 import Link from "next/link";
 import ManageUser from "~/components/userButton";
-import { api } from "~/utils/api";
+import { RouterOutputs, api } from "~/utils/api";
+
+const CreateListing = () => {
+  const { user } = useUser();
+  if (!user) return null;
+  return (
+    <div>
+      <button className="border border-slate-800">
+        <Link href="/create-listing">Create Listing</Link>
+      </button>
+    </div>
+  );
+};
+
+//we gonna need this later - for now we just want to see if we can get the data
+type ListingWithUser = RouterOutputs["listings"]["getAll"][number];
+
+const ListingView = (props: ListingWithUser) => {
+  const { listing, user } = props;
+  return (
+    <div key={listing.id}>
+      @{user.username}---
+      {listing.description} {listing.price} {listing.currency}
+    </div>
+  );
+};
 
 export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
+  const user = useUser();
+  const { data } = api.listings.getAll.useQuery();
+  if (!data) return <div>something went wrong..</div>;
+  console.log({ data });
+  console.log({ user });
   return (
     <>
-      <Link href="/">
-        <ManageUser/>
-      </Link>
+      {!user.isSignedIn && <SignInButton />}
+      {user.isSignedIn && (
+        <div>
+          <ManageUser />
+          <CreateListing />
+        </div>
+      )}
+      <div>
+        {[...data]?.map((fullListing) => (
+          <ListingView {...fullListing} key={fullListing.listing.id} />
+        ))}
+      </div>
     </>
   );
 }

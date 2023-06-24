@@ -10,9 +10,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <ClerkProvider>
+    <ClerkProvider {...pageProps}>
       <SessionProvider session={session}>
-        <h1>App</h1>
         <Component {...pageProps} />
       </SessionProvider>
     </ClerkProvider>
