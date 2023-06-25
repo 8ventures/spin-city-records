@@ -27,7 +27,7 @@ export const listingsRouter = createTRPCRouter({
         userId: listings.map((listing) => listing.userId),
       })
     ).map(filterUserForClient);
-
+      //console.log(ctx.session?.user.id)
     console.log({ listings });
     console.log({ users });
 
@@ -48,7 +48,68 @@ export const listingsRouter = createTRPCRouter({
     });
   }),
 
-  // create: privateProcedure.mutation(async ({ ctx, input }) => {
-  //   const user = ctx.currentUser.id;
-  // })
+  create: protectedProcedure
+    .input(
+      z.object({
+        price: z.number(),
+        currency: z.string(),
+        weight: z.string(),
+        format: z.string(),
+        description: z.string(),
+        condition: z.string(),
+        albumName: z.string(),
+        albumLabel: z.string(),
+        albumArtwork: z.string(),
+        albumYear: z.number(),
+        albumDuration: z.number(),
+        artistName: z.string(),
+        artistBio: z.string(),
+        artistPicture: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+  console.log({userId})
+
+      // First, find or create the artist
+      const artist = await ctx.prisma.artist.create({
+        data: {
+          name: input.artistName,
+          bio: input.artistBio,
+          artistPicture: input.artistPicture,
+        },
+      });
+
+      // Then, find or create the album linked to the artist
+      const album = await ctx.prisma.album.create({
+        data: {
+          name: input.albumName,
+          label: input.albumLabel,
+          artwork: input.albumArtwork,
+          year: input.albumYear,
+          duration: input.albumDuration,
+          artist: {
+            connect: { id: artist.id },
+          },
+        },
+      });
+
+      // Finally, create the listing linked to the album
+      const listing = await ctx.prisma.listing.create({
+        data: {
+          userId,
+          price: input.price,
+          currency: input.currency,
+          weight: input.weight,
+          format: input.format,
+          description: input.description,
+          condition: input.condition,
+          album: {
+            connect: { id: album.id },
+          },
+        },
+      });
+
+      return listing;
+    }),
 });

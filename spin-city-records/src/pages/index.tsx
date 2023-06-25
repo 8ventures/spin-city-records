@@ -43,7 +43,7 @@ export default function Home() {
       {user.isSignedIn && (
         <div>
           <ManageUser />
-          <CreateListing />
+          <CreateListing/>
         </div>
       )}
       <div>

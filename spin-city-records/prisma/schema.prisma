@@ -60,7 +60,7 @@ model Listing {
   condition String
   User      User     @relation(fields: [userId], references: [id])
   userId    String
-  Album     Album    @relation(fields: [albumId], references: [id])
+  album     Album    @relation(fields: [albumId], references: [id])
   albumId   String
   @@index([userId])
   @@index([albumId])
