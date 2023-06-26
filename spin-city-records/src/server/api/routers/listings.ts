@@ -5,7 +5,7 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   publicProcedure,
-  protectedProcedure,
+  privateProcedure,
 } from "~/server/api/trpc";
 
 //basically what we need to save in our database - the other stuff is just for clerk (security reasons)
@@ -37,7 +37,6 @@ export const listingsRouter = createTRPCRouter({
       if (!user) {
         throw new Error("User not found");
       }
-
       return {
         listing,
         user: {
@@ -48,7 +47,7 @@ export const listingsRouter = createTRPCRouter({
     });
   }),
 
-  create: protectedProcedure
+  create: privateProcedure
     .input(
       z.object({
         price: z.number(),
@@ -68,9 +67,11 @@ export const listingsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
-  console.log({userId})
-
+const userId = ctx.prisma.user.findUnique({
+        where: { clerkId: ctx.userId },
+})
+      //const userId = ctx.userId;
+      console.log({ userId })
       // First, find or create the artist
       const artist = await ctx.prisma.artist.create({
         data: {
