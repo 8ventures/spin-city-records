@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import ManageUser from "~/components/userButton";
 import { RouterOutputs, api } from "~/utils/api";
-import SignUpStep from "~/components/checkSignUp";
+import SignUpStep from "~/components/addUser";
 
 const CreateListing = () => {
   const { user } = useUser();

@@ -2,44 +2,32 @@ import { PrismaClient, Prisma } from '@prisma/client'
 import { mockAlbums } from './mockData/mockAlbums';
 import { mockListings } from './mockData/mockListings';
 import { mockArtists } from './mockData/mockArtists';
-import { mockReviews } from './mockData/mockReviews';
 
 const prisma = new PrismaClient();
 
-const albums = Prisma.AlbumCreateInput[] {
-
-}
 
 async function main() {
-  console.log('Start seeding ...');
-  for (const l of mockListings) {
-    const listing = await prisma.listing.create({
-      data: l
+  try {
+    console.log('Removing existing data');
+    await prisma.album.deleteMany();
+    await prisma.artist.deleteMany();
+    await prisma.listing.deleteMany();
+    console.log('Start seeding ...');
+    await prisma.album.createMany({
+      data: mockAlbums
     })
-  }
-  console.log('Albums added')
-  for (const r of mockReviews) {
-    const review = await prisma.categoryName.create({
-      data: r
+    console.log('Albums seeded');
+    await prisma.listing.createMany({
+      data: mockListings
     })
-  }
-  console.log('Reviews added')
-  for (const a of mockArtists) {
-    const review = await prisma.artist.create({
-      data: a
+    console.log('Listings seeded')
+    await prisma.artist.createMany({
+      data: mockArtists
     })
-  }
-  console.log('Artists added')
-  for (const a of mockAlbums) {
-    const review = await prisma.artist.create({
-      data: a
-    })
-  }
-  console.log('Artists added')
-  console.log('Seeding finished.')
-  // const allUsers = await prisma.user.findMany()
-  // console.log(allUsers)
-
+    console.log('Artists seeded')
+  } catch (e) {
+    console.log(e);;
+  };
 }
 
 main()
