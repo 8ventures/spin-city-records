@@ -1,6 +1,5 @@
 import { User, clerkClient } from "@clerk/nextjs/server";
 import { userAgent } from "next/server";
-import { use } from "react";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -69,19 +68,18 @@ export const listingsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
-  console.log({userId})
-
+      console.log({userId})
       // First, find or create the artist
       const artist = await ctx.prisma.artist.create({
         data: {
           name: input.artistName,
           bio: input.artistBio,
           artistPicture: input.artistPicture,
-        },
+        }
       });
 
       // Then, find or create the album linked to the artist
-      const album = await ctx.prisma.album.create({
+      const album: Album = await ctx.prisma.album.create({
         data: {
           name: input.albumName,
           label: input.albumLabel,
@@ -106,10 +104,11 @@ export const listingsRouter = createTRPCRouter({
           condition: input.condition,
           album: {
             connect: { id: album.id },
-          },
+          }
         },
-      });
+    });
 
-      return listing;
+    return listing;
+
     }),
 });
