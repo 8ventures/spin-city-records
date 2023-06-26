@@ -11,11 +11,15 @@ import {
 
 export const usersRouter = createTRPCRouter({
   addUser: privateProcedure.query(async ({ ctx }) => {
-    const user = await ctx.prisma.user.create({
-      data: { clerkId: ctx.userId },
-    })
-    return user;
+    try {
+      const user = await ctx.prisma.user.create({
+        data: { id: ctx.userId },
+      })
+      return user
+    } catch (e) {
+      console.log(e)
+    }
   }),
-    });
+});
 
 

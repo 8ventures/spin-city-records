@@ -5,6 +5,7 @@ import {
   publicProcedure,
   privateProcedure,
 } from "~/server/api/trpc";
+import { Listing } from "~/utils/types";
 
 export const listingsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -30,7 +31,7 @@ export const listingsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
       try {
-        const listing = await ctx.prisma.listing.create({
+        const listing: Listing = await ctx.prisma.listing.create({
           data: {
             ...input,
             user: {
