@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   publicProcedure,
-  protectedProcedure,
+  privateProcedure,
 } from "~/server/api/trpc";
 
 export const listingsRouter = createTRPCRouter({
@@ -16,7 +16,7 @@ export const listingsRouter = createTRPCRouter({
     }
   }),
 
-  create: protectedProcedure
+  create: privateProcedure
     .input(
       z.object({
         price: z.number(),
@@ -30,6 +30,5 @@ export const listingsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
       console.log({userId})
-      });
-    }),
+
 });
