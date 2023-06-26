@@ -29,6 +29,20 @@ export const listingsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
-      console.log({userId})
-
+      try {
+        const listing = await ctx.prisma.listing.create({
+          data: {
+            ...input,
+            user: {
+              connect: {
+                id: userId
+              }
+            }
+          }
+        });
+        return listing;
+      } catch (e) {
+        console.log(e)
+      }
+    })
 });
