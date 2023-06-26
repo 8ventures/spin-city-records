@@ -8,12 +8,12 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import vinyl from "./images/vinyl.png";
 import records from "./images/records.png";
 import record from "./images/record.png";
+import logo from "./images/logo.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import mockListings from "./mock-listings.json";
 import mockAlbums from "./mock-albums.json";
-import { list } from "postcss";
 
 function Arrow(props: { type: string; onClick?: () => void }) {
   const { type, onClick } = props;
@@ -52,7 +52,8 @@ combineData.sort(
   (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 );
 
-const newReleases = combineData.slice(0, 5);
+const newReleases = combineData.slice(0, 10);
+const displayData = combineData.slice(0, 10);
 console.log(newReleases);
 
 export default function Home() {
@@ -73,8 +74,8 @@ export default function Home() {
       <Link href="/">
         <>
           <nav>
-            <div className="flex h-28 w-full items-center justify-between bg-purple-950 p-10">
-              <h1 className="text-white">Spin City Records</h1>
+            <div className="h-34 flex w-full items-center justify-between bg-purple-950 p-10">
+              <Image src={logo} alt="logo" height={150} />
               <div className="flex">
                 <input type="text" placeholder="Search" className="h-12 w-96" />
                 <MagnifyingGlassIcon className="m-2 h-10 text-white" />
@@ -84,25 +85,25 @@ export default function Home() {
             <div className="flex justify-around bg-purple-950">
               <button
                 type="button"
-                className="mb-2 w-44 rounded-lg bg-purple-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+                className="mb-4 mr-2 w-44 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400"
               >
                 Category
               </button>
               <button
                 type="button"
-                className="mb-2 mr-2 w-44 rounded-lg bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800"
+                className="w- mb-4 mr-2 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400"
               >
                 Browse Collections
               </button>
               <button
                 type="button"
-                className="mb-2 mr-2 w-44 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+                className="mb-4 mr-2 w-44 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400"
               >
                 Rare
               </button>
               <button
                 type="button"
-                className="mb-2 mr-2 w-44 rounded-lg bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 px-5 py-2.5 text-center text-sm font-medium text-white shadow-lg shadow-purple-500/50 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-purple-300 dark:shadow-lg dark:shadow-purple-800/80 dark:focus:ring-purple-800"
+                className="mb-4 mr-2 w-44 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400"
               >
                 Sellers
               </button>
@@ -118,7 +119,7 @@ export default function Home() {
                     className="absolute inset-0 object-cover"
                     priority
                   />
-                  <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 text-2xl">
+                  <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 font-Belanosima text-2xl">
                     Welcome to Spin City Records, a unique online marketplace
                     built by vinyl enthusiasts, for vinyl enthusiasts. We
                     connect sellers and buyers, facilitating the exchange of
@@ -134,7 +135,7 @@ export default function Home() {
                     className="absolute inset-0 object-cover"
                     priority
                   />
-                  <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 text-2xl">
+                  <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 font-Belanosima text-2xl">
                     Our platform ensures a smooth, secure trading experience,
                     with quality at the forefront. Whether you're browsing to
                     buy or looking to list, our user-friendly interface makes it
@@ -148,7 +149,7 @@ export default function Home() {
                     className="absolute inset-0 object-cover"
                     priority
                   />
-                  <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 text-2xl">
+                  <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 font-Belanosima text-2xl">
                     Join us at Spin City Records - your dedicated hub for buying
                     and selling vinyl records. Let's keep the passion for vinyl
                     alive and spinning!
@@ -157,36 +158,92 @@ export default function Home() {
               </Slider>
             </div>
             <section>
-              <h1 className="text-center text-6xl font-bold text-purple-700">
+              <h1 className="text-center font-Belanosima text-6xl font-bold text-purple-700">
                 SHOP MUSIC
               </h1>
               <div className="m-10">
-                <h3>NEW RELEASES</h3>
-                <div className="m-10 h-56 bg-purple-50">
+                <h3 className="font-Belanosima text-2xl font-bold text-purple-700">
+                  RECENTLY ADDED
+                </h3>
+                <div className="m-10 flex overflow-x-auto rounded-xl bg-purple-50 pb-10">
                   {newReleases.map((item) => (
-                    <div key={item.id} className="flex">
-                      <img src={item.album?.artwork} alt={item.album?.name} />
-                      <h2>{item.album?.name}</h2>
-                      <p>
-                        {item.price} {item.currency}
-                      </p>
+                    <div
+                      key={item.id}
+                      className="m-5 flex flex-col items-center"
+                    >
+                      <img
+                        src={item.album?.artwork}
+                        alt={item.album?.name}
+                        className="h-40 w-40 rounded-xl object-cover"
+                      />
+                      <div className="w-40 text-center">
+                        <h2 className="m-4">{item.album?.artist}</h2>
+                        <h2 className="m-4">{item.album?.name}</h2>
+                        <p className="m-4 font-bold">
+                          {item.price} {item.currency}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="m-10">
-                <h3>BEST SELLERS</h3>
-                <div className="m-10 h-56 border-2 border-black bg-purple-50"></div>
+                <h3 className="font-Belanosima text-2xl font-bold text-purple-700">
+                  BEST SELLERS
+                </h3>
+                <div className=" m-10 flex overflow-x-auto rounded-xl border-2 border-black bg-purple-50 pb-10">
+                  {newReleases.map((item) => (
+                    <div
+                      key={item.id}
+                      className="m-5 flex flex-col items-center"
+                    >
+                      <img
+                        src={item.album?.artwork}
+                        alt={item.album?.name}
+                        className="h-40 w-40 rounded-xl object-cover"
+                      />
+                      <div className="w-40 text-center">
+                        <h2 className="m-4">{item.album?.artist}</h2>
+                        <h2 className="m-4">{item.album?.name}</h2>
+                        <p className="m-4 font-bold">
+                          {item.price} {item.currency}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="m-10">
-                <h3>MUSICAL GENRES</h3>
-                <div className="m-10 h-56 border-2 border-purple-700 bg-purple-50"></div>
+                <h3 className="font-Belanosima text-2xl font-bold text-purple-700">
+                  GENRE
+                </h3>
+                <div className=" m-10 flex overflow-x-auto rounded-xl border-2 border-purple-700 bg-purple-50 pb-10">
+                  {newReleases.map((item) => (
+                    <div
+                      key={item.id}
+                      className="m-5 flex flex-col items-center"
+                    >
+                      <img
+                        src={item.album?.artwork}
+                        alt={item.album?.name}
+                        className="h-40 w-40 rounded-xl object-cover"
+                      />
+                      <div className="w-40 text-center">
+                        <h2 className="m-4">{item.album?.artist}</h2>
+                        <h2 className="m-4">{item.album?.name}</h2>
+                        <p className="m-4 font-bold">
+                          {item.price} {item.currency}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
             <footer>
-              <div className="m-20 flex justify-evenly border-t-4 border-purple-200 bg-purple-100">
+              <div className=" flex justify-evenly bg-purple-950 text-white">
                 <div className="flex items-center">
-                  <h3>Spin City Records</h3>
+                  <Image src={logo} alt="logo" height={150} />
                 </div>
                 <ul className="m-10">
                   <li>Shop With Us</li>
