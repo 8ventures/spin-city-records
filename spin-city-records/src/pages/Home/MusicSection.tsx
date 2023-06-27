@@ -16,7 +16,7 @@ const MusicSection: React.FC<MusicSectionProps> = ({ title, items }) => (
           <img
             src={item.album?.artwork}
             alt={item.album?.artwork}
-            className="h-40 w-40 rounded-xl object-cover"
+            className="rounded-xl object-cover"
           />
           <div className="w-40 text-center">
             <h2 className="m-4">{item.album?.artist}</h2>
