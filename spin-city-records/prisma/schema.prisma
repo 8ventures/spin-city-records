@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -16,31 +13,35 @@ model Album {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   name       String
+  label      String
   artwork    String
   year       Int
-  duration   Int
   artist     Artist       @relation(fields: [artistId], references: [id])
   artistId   String
   listings   Listing[]
   Collection Collection[]
+  @@index([artistId])
 }
 
 model Artist {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  albums    Album[]
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String
+  bio           String   @db.Text
+  artistPicture String
+  albums        Album[]
 }
 
 model Review {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  rating    Int
+  rating    Float
   comment   String
-  User      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
+  @@index([userId])
 }
 
 model Listing {
@@ -48,11 +49,18 @@ model Listing {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   price     Float
+  currency  String
+  weight    String
+  format    String
+  description String @db.Text
   condition String
-  User      User     @relation(fields: [userId], references: [id])
+  edition String
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
-  Album     Album    @relation(fields: [albumId], references: [id])
+  album     Album    @relation(fields: [albumId], references: [id])
   albumId   String
+  @@index([userId])
+  @@index([albumId])
 }
 
 model Collection {
@@ -68,59 +76,18 @@ model ChatMesssage {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   message    String
-  sender     User?    @relation(name: "sentMessages", fields: [senderId], references: [id])
-  senderId   String?
-  receiver   User?    @relation(name: "receivedMessages", fields: [receiverId], references: [id])
-  receiverId String?
-}
-
-// Necessary for Next auth
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? // @db.Text
-  access_token      String? // @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? // @db.Text
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sender     User   @relation(name: "sentMessages", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User   @relation(name: "receivedMessages", fields: [receiverId], references: [id])
+  receiverId String
+  @@index([senderId])
+  @@index([receiverId])
 }
 
 model User {
-  id               String         @id @default(cuid())
-  name             String?
-  username         String
-  email            String?        @unique
-  emailVerified    DateTime?
-  image            String?
-  accounts         Account[]
-  sessions         Session[]
-  review           Review[]
-  listing          Listing[]
-  seller           Boolean
-  sentMessages     ChatMesssage[] @relation("sentMessages")
-  receivedMessages ChatMesssage[] @relation("receivedMessages")
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+  id String @id
+  listings Listing[]
+  reviews Review[]
+  sentMessages ChatMesssage[] @relation(name: "sentMessages")
+  receivedMessages ChatMesssage[] @relation(name: "receivedMessages")
 }
