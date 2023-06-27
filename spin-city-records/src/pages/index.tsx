@@ -1,3 +1,56 @@
+// import { SignInButton } from "@clerk/nextjs";
+// import { useUser } from "@clerk/clerk-react";
+// import Head from "next/head";
+// import Link from "next/link";
+// import ManageUser from "~/components/userButton";
+// import { RouterOutputs, api } from "~/utils/api";
+// import SignUpStep from "~/components/addUser";
+
+// const CreateListing = () => {
+//   const { user } = useUser();
+//   if (!user) return null;
+//   return (
+//     <div>
+//       <button className="border border-slate-800">
+//         <Link href="/create-listing">Create Listing</Link>
+//       </button>
+//     </div>
+//   );
+// };
+
+// //we gonna need this later - for now we just want to see if we can get the data
+// type ListingWithUser = RouterOutputs["listings"]["getAll"][number];
+
+// const ListingView = (props: ListingWithUser) => {
+//   const { listing, user } = props;
+//   return (
+//     <div key={listing.id}>
+//       @{user.username}---
+//       {listing.description} {listing.price} {listing.currency}
+//     </div>
+//   );
+// };
+
+// export default function Home() {
+//   const user = useUser();
+
+//   return (
+//     <>
+//       {!user.isSignedIn && <SignInButton />}
+//       {user.isSignedIn && (
+//         <div>
+//           <ManageUser />
+//           <CreateListing/>
+//         </div>
+//       )}
+//       {/* <div>
+//         {[...data]?.map((fullListing) => (
+//           <ListingView {...fullListing} key={fullListing.listing.id} />
+//         ))}
+//       </div> */}
+//     </>
+//   );
+// }
 
 // import { useUser, SignInButton, UserButton } from "@clerk/nextjs"
 
@@ -11,7 +64,7 @@
 //     </>
 //   );
 // }
-        
+
 import Link from "next/link";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -70,10 +123,10 @@ export default function Home() {
     <Link href="/">
       <>
         <Header />
-        <div className="h-full bg-purple-100">
+        <div className="h-full bg-[#111111]">
           <Carousel />
           <section>
-            <h1 className="text-center font-Belanosima text-6xl font-bold text-purple-700">
+            <h1 className="text-center font-Belanosima text-6xl font-bold text-white">
               SHOP MUSIC
             </h1>
             <MusicSection title="RECENTLY ADDED" items={newReleases} />
