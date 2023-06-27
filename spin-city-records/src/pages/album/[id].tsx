@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
 import Layout from "~/components/Layout/Layout";
 import { Album, Listing, Seller } from "./album.types";
-import AddButton from "~/components/Album/AddButton";
 import ListingInfoCard from "~/components/Album/ListingInfoCard";
 
 function AlbumPage() {
@@ -57,14 +56,8 @@ function AlbumPage() {
 
   return (
     <Layout>
-      <div className="container mx-auto flex w-fit flex-row items-center rounded-lg bg-white p-6 shadow-lg ">
-        <AlbumInfoCard album={album} />
-        <ListingInfoCard listing={listing}></ListingInfoCard>
-        <div className="m-4 flex flex-col">
-          <AddButton variant="basket" />
-          <AddButton variant="wishlist" />
-          <AddButton variant="collection" />
-        </div>
+      <div className="container mx-auto flex rounded-lg border border-[#333333] bg-black p-6 ">
+        <AlbumInfoCard album={album} seller={seller} listing={listing} />
       </div>
     </Layout>
   );
@@ -148,3 +141,10 @@ const sellerExample: Seller = {
     },
   ],
 };
+
+{
+  /* <ListingInfoCard listing={listing}></ListingInfoCard>
+<div className="m-4 flex flex-col">
+
+</div> */
+}

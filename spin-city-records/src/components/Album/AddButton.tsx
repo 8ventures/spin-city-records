@@ -11,11 +11,11 @@ interface AddButtonProps {
 }
 
 const BASE_CLASSES =
-  "flex hover:bg-opacity-80 text-white w-48 rounded-lg px-4 py-2 font-semibold mt-2 mb-2";
+  "flex hover:bg-white hover:text-black hover:border-none text-white px-4 py-2 font-semibold m-4 border border-[#333333] rounded-lg text-base w-full justify-center";
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  wishlist: `bg-[#e963c5] ${BASE_CLASSES}`,
-  basket: `bg-[#c91d45] ${BASE_CLASSES}`,
-  collection: `bg-[#e963c5] ${BASE_CLASSES}`,
+  wishlist: `bg-[#000000] ${BASE_CLASSES}`,
+  basket: `bg-[#000000] ${BASE_CLASSES}`,
+  collection: `bg-[#000000] ${BASE_CLASSES}`,
 };
 
 const VARIANT_CONTENT: Record<ButtonVariant, JSX.Element> = {
