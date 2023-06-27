@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
 import Layout from "~/components/Layout/Layout";
 import { Album, Listing, Seller } from "./album.types";
-import ListingInfoCard from "~/components/Album/ListingInfoCard";
 import ListingList from "~/components/Album/ListingList";
 
 function AlbumPage() {
