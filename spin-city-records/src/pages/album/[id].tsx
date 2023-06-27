@@ -50,10 +50,10 @@ function AlbumPage() {
   return (
     <Layout>
       <div className="flex flex-row">
-        <div className=" container mx-auto ml-6  mr-2 flex w-1/3 rounded-lg border border-[#333333] bg-black p-6">
+        <div className=" container ml-6  mr-2 flex w-1/3 rounded-lg border border-[#333333] bg-black p-6">
           <ListingList listings={listingsExample} />
         </div>
-        <div className=" container mx-auto ml-2 mr-6 flex w-2/3 rounded-lg border border-[#333333] bg-black  p-6 ">
+        <div className=" container ml-2 mr-6 flex w-2/3 rounded-lg border border-[#333333] bg-black  p-6 ">
           <AlbumInfoCard
             album={albumExample}
             seller={sellerExample}

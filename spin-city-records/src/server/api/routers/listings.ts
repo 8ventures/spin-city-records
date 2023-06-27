@@ -1,49 +1,33 @@
-// import { User, clerkClient } from "@clerk/nextjs/server";
-// import { z } from "zod";
-// import {
-//   createTRPCRouter,
-//   publicProcedure,
-//   privateProcedure,
-// } from "~/server/api/trpc";
-// import { Listing } from "~/utils/types";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { z } from 'zod';
 
-// export const listingsRouter = createTRPCRouter({
-//   getAll: publicProcedure.query(async ({ ctx }) => {
-//     try {
-//       const listings = await ctx.prisma.listing.findMany()
-//       return listings
-//     } catch (e) {
-//       console.log(e)
-//     }
-//   }),
-
-//   create: privateProcedure
-//     .input(
-//       z.object({
-//         price: z.number(),
-//         currency: z.string(),
-//         weight: z.string(),
-//         format: z.string(),
-//         description: z.string(),
-//         condition: z.string(),
-//       })
-//     )
-//     .mutation(async ({ ctx, input }) => {
-//       const userId = ctx.userId;
-//       try {
-//         const listing: Listing = await ctx.prisma.listing.create({
-//           data: {
-//             ...input,
-//             user: {
-//               connect: {
-//                 id: userId
-//               }
-//             }
-//           }
-//         });
-//         return listing;
-//       } catch (e) {
-//         console.log(e)
-//       }
-//     })
-// });
+export const albumsRouter = createTRPCRouter({
+  getByAblbumId: publicProcedure
+    .input(z.string())
+    .query( async ({ctx, input}) => {
+      try {
+        const listings = await ctx.prisma.listing.findMany({
+          where: {
+            albumId: input
+          }
+        })
+        return listings
+      } catch (e) {
+        console.log(e)
+      } 
+    }),
+  getByUserId: publicProcedure
+    .input(z.string())
+    .query( async ({ctx, input}) => {
+      try {
+        const listings = await ctx.prisma.listing.findMany({
+          where: {
+            userId: input
+          }
+        })
+        return listings;
+      } catch (e) {
+        console.log(e)
+      }
+    })
+});
