@@ -1,21 +1,10 @@
-import { User, clerkClient } from "@clerk/nextjs/server";
-import { userAgent } from "next/server";
-import { use } from "react";
-import { z } from "zod";
-import {
-  createTRPCRouter,
-  publicProcedure,
-  privateProcedure,
-} from "~/server/api/trpc";
-
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const albumsRouter = createTRPCRouter({
-  addUser: privateProcedure.query(async ({ ctx }) => {
+  getAll: publicProcedure.query( ({ctx}) => {
     try {
-      const album = await ctx.prisma.album.create({
-        data: { id: ctx.userId },
-      })
-      return album;
+      const albums = ctx.prisma.album.findMany();
+      return albums
     } catch (e) {
       console.log(e)
     }

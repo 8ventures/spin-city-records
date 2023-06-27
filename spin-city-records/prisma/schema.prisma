@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -19,7 +16,6 @@ model Album {
   label      String
   artwork    String
   year       Int
-  duration   Int
   artist     Artist       @relation(fields: [artistId], references: [id])
   artistId   String
   listings   Listing[]
@@ -28,13 +24,13 @@ model Album {
 }
 
 model Artist {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  bio       String
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String
+  bio           String   @db.Text
   artistPicture String
-  albums    Album[]
+  albums        Album[]
 }
 
 model Review {
