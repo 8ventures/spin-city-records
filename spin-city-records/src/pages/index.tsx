@@ -53,18 +53,18 @@
 //   );
 // }
 
-import { useUser, SignInButton, UserButton } from "@clerk/nextjs"
+// import { useUser, SignInButton, UserButton } from "@clerk/nextjs"
 
-export default function Home() {
-  const user = useUser();
+// export default function Home() {
+//   const user = useUser();
 
-  return (
-    <>
-      {!user.isSignedIn && <SignInButton />}
-      {user.isSignedIn && <UserButton afterSignOutUrl="/"/>}
-    </>
-  );
-}
+//   return (
+//     <>
+//       {!user.isSignedIn && <SignInButton />}
+//       {user.isSignedIn && <UserButton afterSignOutUrl="/"/>}
+//     </>
+//   );
+// }
         
 import Link from "next/link";
 import "slick-carousel/slick/slick.css";

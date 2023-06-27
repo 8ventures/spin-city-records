@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import logo from "./images/logo.png";
-import ManageUser from "~/components/userButton";
+import ProfileButton from "~/components/ProfileButton";
 import { useState } from "react";
 
 export default function Navbar() {
@@ -21,7 +21,7 @@ export default function Navbar() {
           />
           <MagnifyingGlassIcon className="m-2 h-10 text-white" />
         </div>
-        <ManageUser />
+        <ProfileButton />
       </div>
       <div className="flex justify-around bg-purple-950">
         <button className="mb-4 mr-2 w-44 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400">

@@ -8,7 +8,7 @@ interface ListingListProps {
 export default function ListingList({ listings }: ListingListProps) {
   return (
     <>
-      <div>
+      <div className=" w-full">
         {listings.map((listing, index) => (
           <div key={index} className="">
             <ListingInfoCard listing={listing} />
