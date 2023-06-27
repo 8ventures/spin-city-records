@@ -8,7 +8,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider>
       {/* <Component {...pageProps} />; */}
-      <AlbumPage></AlbumPage>
+      <AlbumPage />
     </ClerkProvider>
   );
 };

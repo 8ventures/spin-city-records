@@ -9,8 +9,8 @@ export default function Header() {
   const [searchText, setSearchText] = useState("");
 
   return (
-    <nav>
-      <div className="h-34 flex w-full items-center justify-between bg-purple-950 p-10">
+    <nav className="">
+      <div className="h-34 flex w-full items-center justify-between bg-black p-10">
         <Image src={logo} alt="logo" height={150} />
         <div className="flex">
           <input
@@ -27,7 +27,7 @@ export default function Header() {
           {user.isSignedIn && <UserButton afterSignOutUrl="/" />}
         </div>
       </div>
-      <div className="flex justify-around bg-purple-950">
+      <div className=" flex justify-around bg-black">
         <button className="mb-4 mr-2 w-44 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400">
           Category
         </button>

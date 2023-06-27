@@ -1,6 +1,6 @@
 import { Album, Seller, Listing } from "~/pages/album/album.types";
 import Image from "next/image";
-import Button from "./Button";
+import Button from "../Button";
 
 interface AlbumInfoCardProps {
   album: Album;
