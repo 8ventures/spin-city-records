@@ -1,4 +1,3 @@
-
 // import { SignInButton } from "@clerk/nextjs";
 // import { useUser } from "@clerk/clerk-react";
 // import Head from "next/head";
@@ -53,28 +52,28 @@
 //   );
 // }
 
-import { useUser, SignInButton, UserButton } from "@clerk/nextjs"
+// import { useUser, SignInButton, UserButton } from "@clerk/nextjs"
 
-export default function Home() {
-  const user = useUser();
+// export default function Home() {
+//   const user = useUser();
 
-  return (
-    <>
-      {!user.isSignedIn && <SignInButton />}
-      {user.isSignedIn && <UserButton afterSignOutUrl="/"/>}
-    </>
-  );
-}
-        
+//   return (
+//     <>
+//       {!user.isSignedIn && <SignInButton />}
+//       {user.isSignedIn && <UserButton afterSignOutUrl="/"/>}
+//     </>
+//   );
+// }
+
 import Link from "next/link";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import mockListings from "./mock-listings.json";
 import mockAlbums from "./mock-albums.json";
-import Navbar from "./Home/Navbar";
 import Carousel from "./Home/Carousel";
-import Footer from "./Home/Footer";
+import Footer from "../components/Layout/Footer";
 import MusicSection from "./Home/MusicSection";
+import Header from "~/components/Layout/Header";
 
 interface Listing {
   id: string;
@@ -123,7 +122,7 @@ export default function Home() {
   return (
     <Link href="/">
       <>
-        <Navbar />
+        <Header />
         <div className="h-full bg-purple-100">
           <Carousel />
           <section>
@@ -140,4 +139,3 @@ export default function Home() {
     </Link>
   );
 }
-
