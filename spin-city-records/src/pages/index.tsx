@@ -1,4 +1,3 @@
-
 // import { SignInButton } from "@clerk/nextjs";
 // import { useUser } from "@clerk/clerk-react";
 // import Head from "next/head";
@@ -65,16 +64,16 @@
 //     </>
 //   );
 // }
-        
+
 import Link from "next/link";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import mockListings from "./mock-listings.json";
 import mockAlbums from "./mock-albums.json";
-import Navbar from "./Home/Navbar";
 import Carousel from "./Home/Carousel";
-import Footer from "./Home/Footer";
+import Footer from "../components/Layout/Footer";
 import MusicSection from "./Home/MusicSection";
+import Header from "~/components/Layout/Header";
 
 interface Listing {
   id: string;
@@ -123,11 +122,11 @@ export default function Home() {
   return (
     <Link href="/">
       <>
-        <Navbar />
-        <div className="h-full bg-purple-100">
+        <Header />
+        <div className="h-full bg-[#111111]">
           <Carousel />
           <section>
-            <h1 className="text-center font-Belanosima text-6xl font-bold text-purple-700">
+            <h1 className="text-center font-Belanosima text-6xl font-bold text-white">
               SHOP MUSIC
             </h1>
             <MusicSection title="RECENTLY ADDED" items={newReleases} />
@@ -140,4 +139,3 @@ export default function Home() {
     </Link>
   );
 }
-
