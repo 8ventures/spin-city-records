@@ -123,10 +123,10 @@ export default function Home() {
     <Link href="/">
       <>
         <Header />
-        <div className="h-full bg-purple-100">
+        <div className="h-full bg-[#111111]">
           <Carousel />
           <section>
-            <h1 className="text-center font-Belanosima text-6xl font-bold text-purple-700">
+            <h1 className="text-center font-Belanosima text-6xl font-bold text-white">
               SHOP MUSIC
             </h1>
             <MusicSection title="RECENTLY ADDED" items={newReleases} />
