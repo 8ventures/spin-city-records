@@ -1,6 +1,6 @@
 import { Album, Seller, Listing } from "~/pages/album/album.types";
 import Image from "next/image";
-import AddButton from "./AddButton";
+import Button from "./Button";
 
 interface AlbumInfoCardProps {
   album: Album;
@@ -26,17 +26,29 @@ export default function AlbumInfoCard({
       </div>
 
       <div className="m-4">
-        <h1 className="mb-2 text-5xl font-bold text-white">{album.name}</h1>
-        <h1 className="mb-2 text-2xl font-bold text-white ">{album.artist}</h1>
-        <h2 className="text-xl text-[#A1A1A1]">
-          {album.releaseYear}, {album.label}
-        </h2>
+        <div>
+          <h1 className="mb-2 text-5xl font-bold text-white">{album.name}</h1>
+          <h1 className="mb-2 text-2xl font-bold text-white ">
+            {album.artist}
+          </h1>
+          <h2 className="text-xl text-[#A1A1A1]">
+            {album.releaseYear}, {album.label}
+          </h2>
+        </div>
+        <div className="m-4">
+          <div className="flex">
+            <span className="mr-4 text-xl text-[#A1A1A1]">Price:</span>
+            <span className="text-xl font-semibold text-white">
+              {listing.price} {listing.currency}
+            </span>
+          </div>
+        </div>
       </div>
 
       <div>
-        <AddButton variant="basket" />
-        <AddButton variant="wishlist" />
-        <AddButton variant="collection" />
+        <Button variant="basket" />
+        <Button variant="wishlist" />
+        <Button variant="collection" />
       </div>
     </div>
   );

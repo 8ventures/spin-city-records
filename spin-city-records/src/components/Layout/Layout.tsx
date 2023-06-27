@@ -7,7 +7,7 @@ export default function Layout({ children }: PropsWithChildren) {
     <>
       <div className="flex min-h-screen flex-col bg-[#111111]">
         <Header />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-1">{children}</main>
         <Footer />
       </div>
     </>
