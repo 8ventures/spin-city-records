@@ -8,7 +8,7 @@ import AlbumPage from "./album/[id]";
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
 
-    <ClerkProvider>
+    <ClerkProvider {...pageProps}>
       <Component {...pageProps} />;
     </ClerkProvider>
   )
