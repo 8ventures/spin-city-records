@@ -1,7 +1,6 @@
 export const mockListings = [
     {
-      userID: "user123",
-      albumID: "cuid1",
+      userId: "user_2RmYnqMfglB4HTLO9IUfhERAJWK",
       price: 25.99,
       currency: "USD",
       condition: "Near Mint",
@@ -12,8 +11,7 @@ export const mockListings = [
       description: "Limited edition colored vinyl in near mint condition. Comes with original sleeve."
     },
     {
-      userID: "user456",
-      albumID: "cuid7",
+      userId: "user_2RmYnqMfglB4HTLO9IUfhERAJWK",
       price: 15.99,
       currency: "USD",
       condition: "Very Good Plus",
@@ -24,8 +22,7 @@ export const mockListings = [
       description: "Complete box set in very good plus condition. Includes bonus booklet and poster."
     },
     {
-      userID: "user789",
-      albumID: "cuid10",
+      userId: "user_2RmYnqMfglB4HTLO9IUfhERAJWK",
       price: 9.99,
       currency: "USD",
       condition: "Good",
@@ -36,8 +33,7 @@ export const mockListings = [
       description: "Used vinyl in good condition. Minor surface scratches, plays without skips."
     },
     {
-      userID: "user123",
-      albumID: "cuid14",
+      userId: "user_2RmYnqMfglB4HTLO9IUfhERAJWK",
       price: 29.99,
       currency: "USD",
       condition: "Mint",
@@ -48,8 +44,7 @@ export const mockListings = [
       description: "Brand new, mint condition vinyl. Autographed by the artist."
     },
     {
-      userID: "user456",
-      albumID: "cuid21",
+      userId: "user_2RmZv2FV2FCGOpRQ9majPLkd9Bc",
       price: 12.99,
       currency: "USD",
       condition: "Very Good",
@@ -60,8 +55,7 @@ export const mockListings = [
       description: "Used vinyl in very good condition. Sleeve shows some signs of wear."
     },
     {
-      userID: "user789",
-      albumID: "cuid16",
+      userId: "user_2RmZv2FV2FCGOpRQ9majPLkd9Bc",
       price: 18.99,
       currency: "USD",
       condition: "Good Plus",
@@ -72,8 +66,7 @@ export const mockListings = [
       description: "Vinyl in good plus condition. Picture disc edition with original sleeve."
     },
     {
-      userID: "user123",
-      albumID: "cuid3",
+      userId: "user_2RmZv2FV2FCGOpRQ9majPLkd9Bc",
       price: 6.99,
       currency: "USD",
       condition: "Very Good Plus",
@@ -84,8 +77,7 @@ export const mockListings = [
       description: "Used vinyl in very good plus condition. Well-preserved sleeve with minimal wear."
     },
     {
-      userID: "user456",
-      albumID: "cuid20",
+      userId: "user_2RmZv2FV2FCGOpRQ9majPLkd9Bc",
       price: 14.99,
       currency: "USD",
       condition: "Very Good",
@@ -96,8 +88,7 @@ export const mockListings = [
       description: "Test pressing vinyl in very good condition. Plain white sleeve."
     },
     {
-      userID: "user789",
-      albumID: "cuid11",
+      userId: "user_2RehOIuW9oVpa8uq4QE6rVuTIXQ",
       price: 22.99,
       currency: "USD",
       condition: "Near Mint",

@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { mockArtists } from './mockData/mockArtists';
 import { mockAlbums } from './mockData/mockAlbums';
+import { mockUsers } from './mockData/mockUsers'
+import { mockListings } from './mockData/mockListings';
 
 const prisma = new PrismaClient();
 
@@ -35,6 +37,28 @@ async function main() {
       }
     }
     console.log('Albums added')
+
+    for (const u of mockUsers) {
+      await prisma.user.create({
+        data: u
+      })
+    }
+    console.log('Users Added')
+
+    const dbAlbums = await prisma.album.findMany();
+    if (dbAlbums.length > 0 ) {
+      for (const l of mockListings) {
+        const index = Math.floor(Math.random()*(dbAlbums.length))
+        if (dbAlbums[index]) {
+          await prisma.listing.create({
+            data: {
+              ...l,
+              albumId: dbAlbums[index]!.id
+            }
+          })
+        }
+      }
+    }
   } catch (e) {
     console.log(e)
   }
