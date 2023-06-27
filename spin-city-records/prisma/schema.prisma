@@ -52,8 +52,9 @@ model Listing {
   currency  String
   weight    String
   format    String
-  description String
+  description String @db.Text
   condition String
+  edition String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   album     Album    @relation(fields: [albumId], references: [id])
