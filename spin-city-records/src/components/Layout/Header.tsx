@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import logo from "../../pages/Home/images/logo.png";
+import logo from "../../../public/logo.svg";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import { useState } from "react";
 
@@ -10,8 +10,8 @@ export default function Header() {
 
   return (
     <nav className="">
-      <div className="h-34 flex w-full items-center justify-between bg-black p-10">
-        <Image src={logo} alt="logo" height={150} />
+      <div className="flex h-64 w-full items-center justify-between bg-black p-10">
+        <Image src={logo} alt="logo" />
         <div className="flex">
           <input
             type="text"

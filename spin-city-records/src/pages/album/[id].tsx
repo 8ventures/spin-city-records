@@ -49,16 +49,18 @@ function AlbumPage() {
 
   return (
     <Layout>
-      <div className="flex h-full flex-col md:flex-row">
-        <div className=" container m-2  w-full rounded-lg border border-[#333333] bg-black p-6 md:w-1/3">
-          <ListingList listings={listingsExample} />
-        </div>
-        <div className=" container m-2  flex w-full rounded-lg border border-[#333333] bg-black p-6 md:w-2/3">
+      <div className="flex flex-col md:flex-row">
+        <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 md:order-2 md:w-2/3">
           <AlbumInfoCard
             album={albumExample}
             seller={sellerExample}
             listing={listingExample1}
           />
+        </div>
+        <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 md:order-1 md:w-1/3">
+          <div className=" max-h-[calc(50vh)]">
+            <ListingList listings={listingsExample} />
+          </div>
         </div>
       </div>
     </Layout>
@@ -177,4 +179,59 @@ const listingExample3 = {
   description: "Used CD in good condition. Some minor scratches on the case.",
 };
 
-const listingsExample = [listingExample1, listingExample2, listingExample3];
+const listingExample4 = {
+  id: "cuid3",
+  createdAt: "2023-06-27T08:15:00Z",
+  updatedAt: "2023-06-27T12:30:00Z",
+  sellerID: "user789",
+  albumID: "cuid3",
+  price: 12.5,
+  currency: "USD",
+  condition: "Good",
+  weight: "Standard",
+  format: "CD",
+  speed: "",
+  special: [],
+  description: "Used CD in good condition. Some minor scratches on the case.",
+};
+
+const listingExample5 = {
+  id: "cuid3",
+  createdAt: "2023-06-27T08:15:00Z",
+  updatedAt: "2023-06-27T12:30:00Z",
+  sellerID: "user789",
+  albumID: "cuid3",
+  price: 12.5,
+  currency: "USD",
+  condition: "Good",
+  weight: "Standard",
+  format: "CD",
+  speed: "",
+  special: [],
+  description: "Used CD in good condition. Some minor scratches on the case.",
+};
+
+const listingExample6 = {
+  id: "cuid3",
+  createdAt: "2023-06-27T08:15:00Z",
+  updatedAt: "2023-06-27T12:30:00Z",
+  sellerID: "user789",
+  albumID: "cuid3",
+  price: 12.5,
+  currency: "USD",
+  condition: "Good",
+  weight: "Standard",
+  format: "CD",
+  speed: "",
+  special: [],
+  description: "Used CD in good condition. Some minor scratches on the case.",
+};
+
+const listingsExample = [
+  listingExample1,
+  listingExample2,
+  listingExample3,
+  listingExample4,
+  listingExample5,
+  listingExample6,
+];
