@@ -4,15 +4,13 @@ import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import AlbumPage from "./album/[id]";
 
-
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-
     <ClerkProvider>
-      <Component {...pageProps} />;
+      {/* <Component {...pageProps} />; */}
+      <AlbumPage></AlbumPage>
     </ClerkProvider>
-  )
-
+  );
 };
 
 export default api.withTRPC(MyApp);
