@@ -13,6 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <AlbumPage></AlbumPage>
     </ClerkProvider>
   )
+
 };
 
 export default api.withTRPC(MyApp);
