@@ -9,8 +9,8 @@ function AlbumPage() {
 
   // const id = useRouter().query.id as string;
   // const albumQuery = api.albums.getById.useQuery({id})
-  const albumQuery = api.albums.getById.useQuery({id: 'cljeh2c3k0004uasgpnlhofu7'})
-  const listingQuery = api.listings.getByAlbumId.useQuery({albumId: 'cljeh2c3k0004uasgpnlhofu7'})
+  const albumQuery = api.albums.getById.useQuery({id: 'cljfsjjhp0001uaecu3329kku'})
+  const listingQuery = api.listings.getByAlbumId.useQuery({albumId: 'cljfsjjhp0001uaecu3329kku'})
 
   if (albumQuery.error) {
     return (
