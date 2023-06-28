@@ -29,10 +29,10 @@ export default function AlbumInfoCard({
         <div>
           <h1 className="mb-2 text-5xl font-bold text-white">{album.name}</h1>
           <h1 className="mb-2 text-2xl font-bold text-white ">
-            {album.artist}
+            {album.artist.name}
           </h1>
           <h2 className="text-xl text-[#A1A1A1]">
-            {album.releaseYear}, {album.label}
+            {album.year}, {album.label}
           </h2>
         </div>
         <div className="m-4">
