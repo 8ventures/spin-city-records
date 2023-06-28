@@ -1,9 +1,7 @@
 import { Listing, Seller } from "~/pages/album/album.types";
 import getSymbolFromCurrency from "currency-symbol-map";
-
 import Button from "../Button";
 import RatingStars from "./RatingStars";
-import Tag from "./Tags";
 
 interface ListingInfoCardProps {
   listing: Listing;
@@ -12,33 +10,37 @@ interface ListingInfoCardProps {
 export default function ListingInfoCard({ listing }: ListingInfoCardProps) {
   return (
     <>
-      <div className="my-6 flex h-24 flex-row rounded-lg border border-[#ffffff]">
-        <div className="w-2/3 text-white">
-          <div className="flex h-full flex-col justify-center">
-            <div className="flex flex-row justify-between">
-              <div className="flex w-2/4 flex-col justify-center p-6">
-                <div className="text-l font-bold">{sellerExample.name}</div>
-                <div className="text-xs">{sellerExample.location.country}</div>
-                <RatingStars rating={sellerExample.rating} />
-              </div>
-              <div className="flex w-1/4 flex-col justify-center">
-                <Tag variant="weight" value={listing.weight} />
-                <Tag variant="speed" value={listing.speed} />
-                <Tag variant="speed" value={listing.format} />
-              </div>
-              <div className="flex w-1/4 flex-col justify-center">
-                <div className="text-xl font-bold">
-                  {getSymbolFromCurrency(listing.currency)}
-                  {listing.price}
-                </div>
-                <div className="text-l">{listing.condition}</div>
-              </div>
-            </div>
+      <div className="container my-4 flex h-24 flex-row justify-between rounded-lg border border-[#ffffff] p-4 text-white">
+        <div className=" mx-1 flex-col">
+          <div className="text-md font-bold">{sellerExample.name}</div>
+          <div className="text-xs">{sellerExample.location.country}</div>
+          <RatingStars rating={sellerExample.rating} />
+        </div>
+        <div className="mx-1  flex-col">
+          <div className="text-xs font-semibold text-white">
+            {listing.weight === "standard" ? "SD" : "OW"}
           </div>
+          <div className="text-xs font-semibold text-white">
+            {listing.format}
+          </div>
+          {listing.special.map((feature, index) => (
+            <div key={index} className="text-xs font-semibold text-white">
+              {feature}
+            </div>
+          ))}
         </div>
-        <div className="w-1/3">
-          <Button variant="select" />
+        <div className="mx-1 flex-col">
+          <div className="text-xl font-bold">
+            {getSymbolFromCurrency(listing.currency)}
+            {listing.price}
+          </div>
+          <div className="text-sm">{listing.condition}</div>
         </div>
+
+        <Button
+          variant="select"
+          className="m-2 flex rounded-lg border border-[#333333] bg-[#000000] px-2 py-2 text-sm font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+        />
       </div>
     </>
   );

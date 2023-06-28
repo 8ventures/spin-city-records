@@ -13,15 +13,6 @@ interface AddButtonProps {
   onClick?: () => void;
 }
 
-const BASE_CLASSES =
-  "flex hover:bg-white hover:text-black hover:border-[#333333] text-white px-4 py-2 font-semibold m-4 border border-[#333333] rounded-lg text-base justify-center ";
-const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  wishlist: `bg-[#000000] ${BASE_CLASSES}`,
-  basket: `bg-[#000000] ${BASE_CLASSES}`,
-  collection: `bg-[#000000] ${BASE_CLASSES}`,
-  select: `bg-[#000000] ${BASE_CLASSES}`,
-};
-
 const VARIANT_CONTENT: Record<ButtonVariant, JSX.Element> = {
   wishlist: (
     <>
@@ -45,12 +36,14 @@ const VARIANT_CONTENT: Record<ButtonVariant, JSX.Element> = {
   ),
 };
 
-const Button: React.FC<AddButtonProps> = ({ variant = "basket", onClick }) => {
+export default function Button({
+  variant,
+  onClick,
+  className,
+}: AddButtonProps) {
   return (
-    <button className={`${BASE_CLASSES} ${VARIANT_CLASSES[variant]}`}>
+    <button className={className} onClick={onClick}>
       {VARIANT_CONTENT[variant]}
     </button>
   );
-};
-
-export default Button;
+}

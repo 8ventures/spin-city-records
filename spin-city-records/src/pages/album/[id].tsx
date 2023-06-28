@@ -46,16 +46,15 @@ function AlbumPage() {
   listings? console.log(listings) : null
   return (
     <Layout>
-      <div className="flex flex-col md:flex-row">
-        <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 md:order-2 md:w-2/3">
-
+      <div className="flex flex-col xl:flex-row">
+        <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-2 xl:w-7/12">
           <AlbumInfoCard
             album={album}
             seller={sellerExample}
             listing={sellerExample.listings[0]}
           />
         </div>
-        <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 md:order-1 md:w-1/3">
+        <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-1 xl:w-5/12">
           <div className=" max-h-[calc(50vh)]">
             <ListingList listings={listings} />
           </div>
