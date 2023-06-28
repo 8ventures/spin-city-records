@@ -46,9 +46,18 @@ export default function AlbumInfoCard({
       </div>
 
       <div>
-        <Button variant="basket" />
-        <Button variant="wishlist" />
-        <Button variant="collection" />
+        <Button
+          variant="basket"
+          className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+        />
+        <Button
+          variant="wishlist"
+          className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+        />
+        <Button
+          variant="collection"
+          className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+        />
       </div>
     </div>
   );
