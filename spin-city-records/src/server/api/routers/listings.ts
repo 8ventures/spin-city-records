@@ -13,7 +13,7 @@ export const listingsRouter = createTRPCRouter({
         return listings
       } catch (e) {
         console.log(e)
-      }   
+      }
     }),
 
   create: privateProcedure
@@ -25,12 +25,15 @@ export const listingsRouter = createTRPCRouter({
         format: z.string(),
         description: z.string(),
         condition: z.string(),
-        edition: z.string(),
+        speed: z.string(),
+        // sellerId: z.string(),
+        albumId: z.string(),
+        edition: z.array(z.object({ type: z.string() })),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      const albumId = "cljeh2c3k0004uasgpnlhofu7";
+      //const albumId = "cljeh2c3k0004uasgpnlhofu7";
       try {
         const listing= await ctx.prisma.listing.create({
           data: {
@@ -40,18 +43,20 @@ export const listingsRouter = createTRPCRouter({
             format: input.format,
             description: input.description,
             condition: input.condition,
-            special: input.edition,
-            user: {
+            speed: input.speed,
+            seller: {
               connect: {
-                id: userId
+                sellerId: userId
               }
+            },
+            edition: {
+              create: input.edition,
             },
             album: {
               connect: {
-                id: albumId
+                id: input.albumId
               }
             }
-
           }
         });
         return listing;
@@ -75,8 +80,9 @@ export const listingsRouter = createTRPCRouter({
         return listings
       } catch (e) {
         console.log(e)
-      } 
+      }
     }),
+
   getByUserId: publicProcedure
     .input(
       z.string()
@@ -85,7 +91,7 @@ export const listingsRouter = createTRPCRouter({
       try {
         const listings = await ctx.prisma.listing.findMany({
           where: {
-            userId: input
+            sellerId: input
           }
         })
         return listings;
@@ -96,5 +102,5 @@ export const listingsRouter = createTRPCRouter({
 });
 
 
-        
+
 
