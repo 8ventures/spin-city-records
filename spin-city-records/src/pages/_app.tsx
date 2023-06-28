@@ -5,12 +5,13 @@ import { ClerkProvider } from "@clerk/nextjs";
 import AlbumPage from "./album/[id]";
 import ProfilePage from "./profile/[index]";
 
+
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider>
-      {/* <Component {...pageProps} />; */}
+      <Component {...pageProps} />;
       {/* <AlbumPage></AlbumPage> */}
-      <ProfilePage />
+      {/* <ProfilePage /> */}
     </ClerkProvider>
   );
 };

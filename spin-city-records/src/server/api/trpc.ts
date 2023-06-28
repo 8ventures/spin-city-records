@@ -1,25 +1,30 @@
-import { getAuth } from "@clerk/nextjs/dist/types/server-helpers.server";
+import { getAuth, clerkClient } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
+import type {User} from '@clerk/nextjs/api'
 
-type CreateContextOptions = Record<string, never>;
+interface UserProps {
+  user: User | null
+}
 
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+const createInnerTRPCContext = ( {user}: UserProps) => {
   return {
-    prisma
+    prisma,
+    user
   };
 };
 
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  const { req } = _opts
-  const userId = getAuth(req).userId
-  return {
-    ...createInnerTRPCContext({}),
-    userId
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+  async function getUser() {
+    const {userId} = getAuth(opts.req);
+    const user = userId ? await clerkClient.users.getUser(userId) : null
+    return user
   }
+  const user = await getUser();
+  return createInnerTRPCContext({user})
 };
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
@@ -41,14 +46,15 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 const isAuthed = t.middleware( async ({ next, ctx }) => {
-  if (!ctx.userId) {
+  if (!ctx.user?.id) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
     });
   }
   return next({
     ctx: {
-      userId: ctx.userId
+      user: ctx.user,
+      prisma: ctx.prisma
     },
   });
 });

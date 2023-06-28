@@ -1,64 +1,63 @@
-import { useState } from "react";
 import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
 import Layout from "~/components/Layout/Layout";
-import { Album, Listing, Seller } from "./album.types";
 import ListingList from "~/components/Album/ListingList";
+import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import NextError from 'next/error'
 
 function AlbumPage() {
-  const [album, setAlbum] = useState<Album>({
-    id: "",
-    name: "",
-    artist: "",
-    releaseYear: 0,
-    label: "",
-    genre: "",
-    artwork: "",
-    createdAt: "",
-    updatedAt: "",
-  });
-  const [listing, setListing] = useState<Listing>({
-    id: "",
-    createdAt: "",
-    updatedAt: "",
-    sellerID: "",
-    albumID: "",
-    price: 0,
-    currency: "",
-    condition: "",
-    weight: "",
-    format: "",
-    speed: "",
-    special: [],
-    description: "",
-  });
-  const [seller, setSeller] = useState<Seller>({
-    id: "",
-    name: "",
-    email: "",
-    location: {
-      city: "",
-      state: "",
-      country: "",
-      address: "",
-      postalCode: "",
-    },
-    rating: 0,
-    listings: [],
-  });
-  const [listings, setListings] = useState<Listing[]>([]);
 
+  // const id = useRouter().query.id as string;
+  // const albumQuery = api.albums.getById.useQuery({id})
+  const albumQuery = api.albums.getById.useQuery({id: 'cljeh2c3k0004uasgpnlhofu7'})
+  const listingQuery = api.listings.getByAlbumId.useQuery({albumId: 'cljeh2c3k0004uasgpnlhofu7'})
+
+  if (albumQuery.error) {
+    return (
+      <NextError
+        title={albumQuery.error.message}
+        statusCode={albumQuery.error.data?.httpStatus ?? 500}
+      />
+    );
+  }
+
+  if (listingQuery.error) {
+    return (
+      <NextError
+        title={listingQuery.error.message}
+        statusCode={listingQuery.error.data?.httpStatus ?? 500}
+      />
+    );
+  }
+
+  if (albumQuery.status!== 'success' || listingQuery.status !== 'success') {
+    return (
+      <Layout>
+      <div className="flex flex-col md:flex-row">
+        <div className="container  m-2 w-full rounded-lg border border-[#333333] bg-zinc-900/70 animate-pulse p-6 md:order-2 md:w-2/3 h-96"></div>
+        <div className="container m-2  w-full rounded-lg border border-[#333333] bg-zinc-900/70 animate-pulse p-6 md:order-1 md:w-1/3 h-96"></div>
+      </div>
+    </Layout>
+    );
+  }
+
+  const album = albumQuery.data
+  const listings = listingQuery.data
+  listings? console.log(listings) : null
   return (
     <Layout>
-      <div className="flex flex-row">
-        <div className=" container ml-6  mr-2 flex w-1/3 rounded-lg border border-[#333333] bg-black p-6">
-          <ListingList listings={listingsExample} />
-        </div>
-        <div className=" container ml-2 mr-6 flex w-2/3 rounded-lg border border-[#333333] bg-black  p-6 ">
+      <div className="flex flex-col xl:flex-row">
+        <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-2 xl:w-7/12">
           <AlbumInfoCard
-            album={albumExample}
+            album={album}
             seller={sellerExample}
-            listing={listingExample1}
+            listing={sellerExample.listings[0]}
           />
+        </div>
+        <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-1 xl:w-5/12">
+          <div className=" max-h-[calc(50vh)]">
+            <ListingList listings={listings} />
+          </div>
         </div>
       </div>
     </Layout>
@@ -67,20 +66,7 @@ function AlbumPage() {
 
 export default AlbumPage;
 
-const albumExample: Album = {
-  id: "cuid1",
-  name: "Thriller",
-  artist: "Michael Jackson",
-  releaseYear: 1982,
-  label: "Epic",
-  genre: "Pop",
-  artwork:
-    "https://i.discogs.com/VHc9hFCOdKfEc5oztrJbDEkjntspySFD34Cms5tNL9Y/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE5NTMw/NjEtMTI4MDUwMTc4/MS5qcGVn.jpeg",
-  createdAt: "2023-06-24T12:00:00Z",
-  updatedAt: "2023-06-24T12:00:00Z",
-};
-
-const sellerExample: Seller = {
+const sellerExample = {
   id: "seller123",
   name: "John Doe",
   email: "johndoe@example.com",
@@ -127,54 +113,3 @@ const sellerExample: Seller = {
   ],
 };
 
-const listingExample1 = {
-  id: "cuid1",
-  createdAt: "2023-06-24T12:00:00Z",
-  updatedAt: "2023-06-24T12:00:00Z",
-  sellerID: "user123",
-  albumID: "cuid1",
-  price: 25.99,
-  currency: "USD",
-  condition: "Near Mint",
-  weight: "Standard",
-  format: "12''",
-  speed: "33RPM",
-  special: ["colored", "limited edition"],
-  description:
-    "Limited edition colored vinyl in near mint condition. Comes with original sleeve.",
-};
-
-const listingExample2 = {
-  id: "cuid2",
-  createdAt: "2023-06-25T10:30:00Z",
-  updatedAt: "2023-06-26T14:45:00Z",
-  sellerID: "user456",
-  albumID: "cuid2",
-  price: 19.99,
-  currency: "EUR",
-  condition: "Very Good",
-  weight: "Standard",
-  format: "7''",
-  speed: "45RPM",
-  special: ["picture disc"],
-  description:
-    "Rare picture disc vinyl in very good condition. Limited pressing.",
-};
-
-const listingExample3 = {
-  id: "cuid3",
-  createdAt: "2023-06-27T08:15:00Z",
-  updatedAt: "2023-06-27T12:30:00Z",
-  sellerID: "user789",
-  albumID: "cuid3",
-  price: 12.5,
-  currency: "USD",
-  condition: "Good",
-  weight: "Standard",
-  format: "CD",
-  speed: "",
-  special: [],
-  description: "Used CD in good condition. Some minor scratches on the case.",
-};
-
-const listingsExample = [listingExample1, listingExample2, listingExample3];

@@ -11,16 +11,23 @@ export const albumsRouter = createTRPCRouter({
     }
   }),
   getById: publicProcedure
-  .input(z.string())
+  .input(
+    z.object({
+      id: z.string()
+    }),
+  )
   .query( async ({ctx, input}) => {
+    const { id } = input
     try {
       const album = await ctx.prisma.album.findUnique({
-        where: {
-          id: input
+        where: {id},
+        include: {
+          artist: true
         }
       })
       return album
     } catch (e) {
+      console.log('here')
       console.log(e)
     } 
   })
