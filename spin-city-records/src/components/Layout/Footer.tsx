@@ -5,9 +5,10 @@ export default function Footer() {
   return (
     <>
       <footer>
+        <hr className="h-px border-0 bg-gray-200 dark:bg-gray-700"></hr>
         <div className="flex justify-evenly bg-black text-white">
           <div className="flex items-center">
-            <Image src={logo} alt="logo" />
+            <Image src={logo} alt="logo" height={150} priority />
           </div>
           <ul className="m-10">
             <li>Shop With Us</li>
