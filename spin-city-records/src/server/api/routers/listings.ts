@@ -1,21 +1,20 @@
-import { User, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 import {
   createTRPCRouter,
   publicProcedure,
   privateProcedure,
 } from "~/server/api/trpc";
-import { Listing } from "~/utils/types";
 
 export const listingsRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({ ctx }) => {
-    try {
-      const listings = await ctx.prisma.listing.findMany()
-      return listings
-    } catch (e) {
-      console.log(e)
-    }
-  }),
+  getAll: publicProcedure
+    .query(async ({ ctx }) => {
+      try {
+        const listings = await ctx.prisma.listing.findMany()
+        return listings
+      } catch (e) {
+        console.log(e)
+      }   
+    }),
 
   create: privateProcedure
     .input(
@@ -30,8 +29,7 @@ export const listingsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.userId;
-      console.log({ userId })
+      const userId = ctx.user.id;
       const albumId = "cljeh2c3k0004uasgpnlhofu7";
       try {
         const listing= await ctx.prisma.listing.create({
@@ -42,7 +40,7 @@ export const listingsRouter = createTRPCRouter({
             format: input.format,
             description: input.description,
             condition: input.condition,
-            edition: input.edition,
+            special: input.edition,
             user: {
               connect: {
                 id: userId
@@ -57,9 +55,11 @@ export const listingsRouter = createTRPCRouter({
           }
         });
         return listing;
-        
+      } catch (e) {
+        console.log(e)
+      }
+    }),
 
-export const listingsRouter = createTRPCRouter({
   getByAlbumId: publicProcedure
     .input(
       z.object({
@@ -78,7 +78,9 @@ export const listingsRouter = createTRPCRouter({
       } 
     }),
   getByUserId: publicProcedure
-    .input(z.string())
+    .input(
+      z.string()
+    )
     .query( async ({ctx, input}) => {
       try {
         const listings = await ctx.prisma.listing.findMany({
@@ -92,4 +94,7 @@ export const listingsRouter = createTRPCRouter({
       }
     })
 });
+
+
+        
 
