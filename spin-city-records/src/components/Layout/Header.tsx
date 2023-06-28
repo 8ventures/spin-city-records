@@ -55,19 +55,20 @@ export default function Header() {
         </div>
       </div>
       <div className="flex justify-around bg-black">
-        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
+        <button className="focus:shadow-xs mb-5 inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 no-underline transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
           Category
         </button>
-        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
+        <button className="focus:shadow-xs inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 no-underline transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
           Browse Collections
         </button>
-        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
+        <button className="focus:shadow-xs inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 no-underline transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
           Rare
         </button>
-        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
+        <button className="focus:shadow-xs inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 no-underline transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
           Sellers
         </button>
       </div>
+      <hr className="h-px border-0 bg-gray-200 dark:bg-gray-700"></hr>
     </nav>
   );
 }

@@ -22,7 +22,6 @@ export default function ListingInfoCard({ listing }: ListingInfoCardProps) {
           <Button variant="select" />
         </div>
       </div>
-      ;
     </>
   );
 }
