@@ -23,11 +23,11 @@ export default function ListingInfoCard({ listing }: ListingInfoCardProps) {
           <div className="text-xs font-semibold text-white">
             {listing.format}
           </div>
-          {listing.special.map((feature, index) => (
+          {/* {listing.special.map((feature, index) => (
             <div key={index} className="text-xs font-semibold text-white">
               {feature}
             </div>
-          ))}
+          ))} */}
         </div>
         <div className="mx-1 flex-col">
           <div className="text-xl font-bold">
