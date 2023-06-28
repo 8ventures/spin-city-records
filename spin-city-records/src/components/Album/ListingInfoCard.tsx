@@ -3,6 +3,7 @@ import getSymbolFromCurrency from "currency-symbol-map";
 
 import Button from "../Button";
 import RatingStars from "./RatingStars";
+import Tag from "./Tags";
 
 interface ListingInfoCardProps {
   listing: Listing;
@@ -20,7 +21,11 @@ export default function ListingInfoCard({ listing }: ListingInfoCardProps) {
                 <div className="text-xs">{sellerExample.location.country}</div>
                 <RatingStars rating={sellerExample.rating} />
               </div>
-              <div className="flex w-1/4 flex-col justify-center"></div>
+              <div className="flex w-1/4 flex-col justify-center">
+                <Tag variant="weight" value={listing.weight} />
+                <Tag variant="speed" value={listing.speed} />
+                <Tag variant="speed" value={listing.format} />
+              </div>
               <div className="flex w-1/4 flex-col justify-center">
                 <div className="text-xl font-bold">
                   {getSymbolFromCurrency(listing.currency)}
@@ -62,7 +67,7 @@ const sellerExample: Seller = {
       currency: "USD",
       condition: "Near Mint",
       weight: "standard",
-      format: "12''",
+      format: "12",
       speed: "33RPM",
       special: ["colored", "limited edition"],
       description:
@@ -78,7 +83,7 @@ const sellerExample: Seller = {
       currency: "USD",
       condition: "Excellent",
       weight: "standard",
-      format: "7''",
+      format: "7",
       speed: "45RPM",
       special: [],
       description: "Classic 7'' vinyl single in excellent condition.",
