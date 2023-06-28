@@ -51,6 +51,7 @@ function AlbumPage() {
     <Layout>
       <div className="flex flex-col md:flex-row">
         <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 md:order-2 md:w-2/3">
+
           <AlbumInfoCard
             album={albumExample}
             seller={sellerExample}

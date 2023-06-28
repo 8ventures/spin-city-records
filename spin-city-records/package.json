@@ -25,6 +25,7 @@
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
     "currency-symbol-map": "^5.1.0",
+    "clsx": "^1.2.1",
     "next": "^13.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -32,6 +33,7 @@
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
     "superjson": "1.12.2",
+    "tailwind-merge": "^1.13.2",
     "zod": "^3.21.4"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import logo from "../../../public/logo.svg";
+import logo from "../../pages/Home/images/logo-black.png";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import { useState } from "react";
 
@@ -9,35 +9,62 @@ export default function Header() {
   const [searchText, setSearchText] = useState("");
 
   return (
-    <nav className="">
-      <div className="flex h-64 w-full items-center justify-between bg-black p-10">
-        <Image src={logo} alt="logo" />
-        <div className="flex">
-          <input
-            type="text"
-            placeholder="Search"
-            className="h-14 w-[800px] rounded-xl p-5"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <MagnifyingGlassIcon className="m-2 h-10 text-white" />
-        </div>
+    <nav>
+      <div className="h-34 flex w-full items-center justify-between bg-black p-10">
+        <Image src={logo} alt="logo" height={120} />
+        <form>
+          <label className="sr-only mb-2 text-sm font-medium text-gray-700 dark:text-white">
+            Search
+          </label>
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg
+                aria-hidden="true"
+                className="h-5 w-5 text-gray-500 dark:text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="search"
+              className="w-[950px] rounded-lg p-4 pl-10 text-sm"
+              placeholder="Search"
+              required
+            />
+            <button
+              type="submit"
+              className="absolute bottom-2.5 right-2.5 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white"
+            >
+              Search
+            </button>
+          </div>
+        </form>
         <div className="text-white">
           {!user.isSignedIn && <SignInButton />}
           {user.isSignedIn && <UserButton afterSignOutUrl="/" />}
         </div>
       </div>
-      <div className=" flex justify-around bg-black">
-        <button className="mb-4 mr-2 w-44 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400">
+      <div className="flex justify-around bg-black">
+        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
           Category
         </button>
-        <button className="w- mb-4 mr-2 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400">
+        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
           Browse Collections
         </button>
-        <button className="mb-4 mr-2 w-44 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400">
+        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
           Rare
         </button>
-        <button className="mb-4 mr-2 w-44 rounded-lg bg-yellow-300 px-5 py-2.5 font-Belanosima text-lg font-medium text-black hover:bg-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-400">
+        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
           Sellers
         </button>
       </div>
