@@ -1,16 +1,13 @@
 import Image from "next/image";
 import logo from "../../pages/Home/images/logo-black.png";
 
-import Image from "next/image";
-import logo from "../../pages/Home/images/logo.png";
-
 export default function Footer() {
   return (
     <>
       <footer>
         <div className="flex justify-evenly bg-black text-white">
           <div className="flex items-center">
-            <Image src={logo} alt="logo" height={150} />
+            <Image src={logo} alt="logo" />
           </div>
           <ul className="m-10">
             <li>Shop With Us</li>
