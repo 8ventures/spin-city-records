@@ -3,14 +3,17 @@ import Layout from "~/components/Layout/Layout";
 import ListingList from "~/components/Album/ListingList";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
-import NextError from 'next/error'
+import NextError from "next/error";
 
 function AlbumPage() {
-
   // const id = useRouter().query.id as string;
   // const albumQuery = api.albums.getById.useQuery({id})
-  const albumQuery = api.albums.getById.useQuery({id: 'cljeh2c3k0004uasgpnlhofu7'})
-  const listingQuery = api.listings.getByAlbumId.useQuery({albumId: 'cljeh2c3k0004uasgpnlhofu7'})
+  const albumQuery = api.albums.getById.useQuery({
+    id: "cljfsjjhp0001uaecu3329kku",
+  });
+  const listingQuery = api.listings.getByAlbumId.useQuery({
+    albumId: "cljfsjjhp0001uaecu3329kku",
+  });
 
   if (albumQuery.error) {
     return (
@@ -30,20 +33,20 @@ function AlbumPage() {
     );
   }
 
-  if (albumQuery.status!== 'success' || listingQuery.status !== 'success') {
+  if (albumQuery.status !== "success" || listingQuery.status !== "success") {
     return (
       <Layout>
-      <div className="flex flex-col md:flex-row">
-        <div className="container  m-2 w-full rounded-lg border border-[#333333] bg-zinc-900/70 animate-pulse p-6 md:order-2 md:w-2/3 h-96"></div>
-        <div className="container m-2  w-full rounded-lg border border-[#333333] bg-zinc-900/70 animate-pulse p-6 md:order-1 md:w-1/3 h-96"></div>
-      </div>
-    </Layout>
+        <div className="flex flex-col md:flex-row">
+          <div className="container  m-2 h-96 w-full animate-pulse rounded-lg border border-[#333333] bg-zinc-900/70 p-6 md:order-2 md:w-2/3"></div>
+          <div className="container m-2  h-96 w-full animate-pulse rounded-lg border border-[#333333] bg-zinc-900/70 p-6 md:order-1 md:w-1/3"></div>
+        </div>
+      </Layout>
     );
   }
 
-  const album = albumQuery.data
-  const listings = listingQuery.data
-  listings? console.log(listings) : null
+  const album = albumQuery.data;
+  const listings = listingQuery.data;
+  listings ? console.log(listings) : null;
   return (
     <Layout>
       <div className="flex flex-col xl:flex-row">
@@ -112,4 +115,3 @@ const sellerExample = {
     },
   ],
 };
-

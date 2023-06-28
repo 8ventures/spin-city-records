@@ -6,15 +6,14 @@ import {
 } from "~/server/api/trpc";
 
 export const listingsRouter = createTRPCRouter({
-  getAll: publicProcedure
-    .query(async ({ ctx }) => {
-      try {
-        const listings = await ctx.prisma.listing.findMany()
-        return listings
-      } catch (e) {
-        console.log(e)
-      }   
-    }),
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const listings = await ctx.prisma.listing.findMany();
+      return listings;
+    } catch (e) {
+      console.log(e);
+    }
+  }),
 
   create: privateProcedure
     .input(
@@ -30,9 +29,9 @@ export const listingsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      const albumId = "cljeh2c3k0004uasgpnlhofu7";
+      const albumId = "cljfsjjhp0001uaecu3329kku";
       try {
-        const listing= await ctx.prisma.listing.create({
+        const listing = await ctx.prisma.listing.create({
           data: {
             price: input.price,
             currency: input.currency,
@@ -43,58 +42,51 @@ export const listingsRouter = createTRPCRouter({
             special: input.edition,
             user: {
               connect: {
-                id: userId
-              }
+                id: userId,
+              },
             },
             album: {
               connect: {
-                id: albumId
-              }
-            }
-
-          }
+                id: albumId,
+              },
+            },
+          },
         });
         return listing;
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }),
 
   getByAlbumId: publicProcedure
     .input(
       z.object({
-        albumId: z.string()
-      }),
+        albumId: z.string(),
+      })
     )
-    .query( async ({ctx, input}) => {
-      const {albumId} = input
+    .query(async ({ ctx, input }) => {
+      const { albumId } = input;
       try {
         const listings = await ctx.prisma.listing.findMany({
-          where: {albumId}
-        })
-        return listings
+          where: { albumId },
+        });
+        return listings;
       } catch (e) {
-        console.log(e)
-      } 
+        console.log(e);
+      }
     }),
   getByUserId: publicProcedure
-    .input(
-      z.string()
-    )
-    .query( async ({ctx, input}) => {
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
       try {
         const listings = await ctx.prisma.listing.findMany({
           where: {
-            userId: input
-          }
-        })
+            userId: input,
+          },
+        });
         return listings;
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    })
+    }),
 });
-
-
-        
-
