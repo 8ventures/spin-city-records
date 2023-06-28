@@ -3,13 +3,16 @@ import { z } from 'zod';
 
 export const listingsRouter = createTRPCRouter({
   getByAlbumId: publicProcedure
-    .input(z.string())
+    .input(
+      z.object({
+        albumId: z.string()
+      }),
+    )
     .query( async ({ctx, input}) => {
+      const {albumId} = input
       try {
         const listings = await ctx.prisma.listing.findMany({
-          where: {
-            albumId: input
-          }
+          where: {albumId}
         })
         return listings
       } catch (e) {
