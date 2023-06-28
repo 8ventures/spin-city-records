@@ -1,15 +1,18 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from 'zod';
 
-export const albumsRouter = createTRPCRouter({
-  getByAblbumId: publicProcedure
-    .input(z.string())
+export const listingsRouter = createTRPCRouter({
+  getByAlbumId: publicProcedure
+    .input(
+      z.object({
+        albumId: z.string()
+      }),
+    )
     .query( async ({ctx, input}) => {
+      const {albumId} = input
       try {
         const listings = await ctx.prisma.listing.findMany({
-          where: {
-            albumId: input
-          }
+          where: {albumId}
         })
         return listings
       } catch (e) {
