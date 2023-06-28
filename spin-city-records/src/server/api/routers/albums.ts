@@ -20,7 +20,10 @@ export const albumsRouter = createTRPCRouter({
     const { id } = input
     try {
       const album = await ctx.prisma.album.findUnique({
-        where: {id}
+        where: {id},
+        include: {
+          artist: true
+        }
       })
       return album
     } catch (e) {
