@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import logo from "../../pages/Home/images/logo-black.png";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import { useState } from "react";
@@ -11,7 +10,7 @@ export default function Header() {
   return (
     <nav>
       <div className="h-34 flex w-full items-center justify-between bg-black p-10">
-        <Image src={logo} alt="logo" height={120} />
+        <Image src={logo} alt="logo" height={120} priority />
         <form>
           <label className="sr-only mb-2 text-sm font-medium text-gray-700 dark:text-white">
             Search
@@ -27,9 +26,9 @@ export default function Header() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 ></path>
               </svg>
