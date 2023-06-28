@@ -17,21 +17,6 @@ export const listingsRouter = createTRPCRouter({
     }
   }),
 
-  updateUser: privateProcedure.mutation(async ({ ctx }) => {
-    const userId = ctx.userId;
-    try {
-      const user = await ctx.prisma.user.upsert({
-        where: { id: userId },
-        update: {},
-        create: { id: userId },
-      });
-      return user;
-    } catch (error) {
-      console.log(error)
-    }
-  }),
-
-
   create: privateProcedure
     .input(
       z.object({
@@ -72,8 +57,39 @@ export const listingsRouter = createTRPCRouter({
           }
         });
         return listing;
+        
+
+export const listingsRouter = createTRPCRouter({
+  getByAlbumId: publicProcedure
+    .input(
+      z.object({
+        albumId: z.string()
+      }),
+    )
+    .query( async ({ctx, input}) => {
+      const {albumId} = input
+      try {
+        const listings = await ctx.prisma.listing.findMany({
+          where: {albumId}
+        })
+        return listings
+      } catch (e) {
+        console.log(e)
+      } 
+    }),
+  getByUserId: publicProcedure
+    .input(z.string())
+    .query( async ({ctx, input}) => {
+      try {
+        const listings = await ctx.prisma.listing.findMany({
+          where: {
+            userId: input
+          }
+        })
+        return listings;
       } catch (e) {
         console.log(e)
       }
     })
 });
+

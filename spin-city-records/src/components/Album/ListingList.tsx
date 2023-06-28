@@ -8,13 +8,11 @@ interface ListingListProps {
 export default function ListingList({ listings }: ListingListProps) {
   return (
     <>
-      <div>
-        {listings.map((listing, index) => (
-          <div key={index} className="">
-            <ListingInfoCard listing={listing} />
-          </div>
-        ))}
-      </div>
+      {listings.map((listing, index) => (
+        <div key={index}>
+          <ListingInfoCard listing={listing} />
+        </div>
+      ))}
     </>
   );
 }
