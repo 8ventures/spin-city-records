@@ -1,8 +1,8 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from 'zod';
 
-export const albumsRouter = createTRPCRouter({
-  getByAblbumId: publicProcedure
+export const listingsRouter = createTRPCRouter({
+  getByAlbumId: publicProcedure
     .input(z.string())
     .query( async ({ctx, input}) => {
       try {

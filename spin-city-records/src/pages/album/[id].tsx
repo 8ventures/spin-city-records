@@ -1,59 +1,45 @@
-import { useState } from "react";
 import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
 import Layout from "~/components/Layout/Layout";
-import { Album, Listing, Seller } from "./album.types";
 import ListingList from "~/components/Album/ListingList";
+import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import NextError from 'next/error'
 
 function AlbumPage() {
-  const [album, setAlbum] = useState<Album>({
-    id: "",
-    name: "",
-    artist: "",
-    releaseYear: 0,
-    label: "",
-    genre: "",
-    artwork: "",
-    createdAt: "",
-    updatedAt: "",
-  });
-  const [listing, setListing] = useState<Listing>({
-    id: "",
-    createdAt: "",
-    updatedAt: "",
-    sellerID: "",
-    albumID: "",
-    price: 0,
-    currency: "",
-    condition: "",
-    weight: "",
-    format: "",
-    speed: "",
-    special: [],
-    description: "",
-  });
-  const [seller, setSeller] = useState<Seller>({
-    id: "",
-    name: "",
-    email: "",
-    location: {
-      city: "",
-      state: "",
-      country: "",
-      address: "",
-      postalCode: "",
-    },
-    rating: 0,
-    listings: [],
-  });
-  const [listings, setListings] = useState<Listing[]>([]);
 
+  // const id = useRouter().query.id as string;
+  // const albumQuery = api.albums.getById.useQuery({id})
+  const albumQuery = api.albums.getById.useQuery({id: 'cljeh2c3k0004uasgpnlhofu7'})
+  const listingQuery = api.listings
+
+  if (albumQuery.error) {
+    return (
+      <NextError
+        title={albumQuery.error.message}
+        statusCode={albumQuery.error.data?.httpStatus ?? 500}
+      />
+    );
+  }
+
+  if (albumQuery.status!== 'success') {
+    return (
+      <Layout>
+      <div className="flex flex-col md:flex-row">
+        <div className="container  m-2 w-full rounded-lg border border-[#333333] bg-zinc-900/70 animate-pulse p-6 md:order-2 md:w-2/3 h-96"></div>
+        <div className="container m-2  w-full rounded-lg border border-[#333333] bg-zinc-900/70 animate-pulse p-6 md:order-1 md:w-1/3 h-96"></div>
+      </div>
+    </Layout>
+    );
+  }
+
+  const { data } = albumQuery
   return (
     <Layout>
       <div className="flex flex-col md:flex-row">
         <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 md:order-2 md:w-2/3">
 
           <AlbumInfoCard
-            album={albumExample}
+            album={data}
             seller={sellerExample}
             listing={listingExample1}
           />
@@ -70,20 +56,7 @@ function AlbumPage() {
 
 export default AlbumPage;
 
-const albumExample: Album = {
-  id: "cuid1",
-  name: "Thriller",
-  artist: "Michael Jackson",
-  releaseYear: 1982,
-  label: "Epic",
-  genre: "Pop",
-  artwork:
-    "https://i.discogs.com/VHc9hFCOdKfEc5oztrJbDEkjntspySFD34Cms5tNL9Y/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE5NTMw/NjEtMTI4MDUwMTc4/MS5qcGVn.jpeg",
-  createdAt: "2023-06-24T12:00:00Z",
-  updatedAt: "2023-06-24T12:00:00Z",
-};
-
-const sellerExample: Seller = {
+const sellerExample = {
   id: "seller123",
   name: "John Doe",
   email: "johndoe@example.com",
