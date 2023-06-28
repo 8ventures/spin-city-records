@@ -123,15 +123,15 @@ const newReleases = combineData.slice(0, 10);
 export default function Home() {
 
 
-  const updateUserMutation = api.listings.updateUser.useMutation();
-  const user = useUser();
-  console.log({user})
-  console.log(user.isSignedIn)
-  useEffect(() => {
-    if (user.isSignedIn) {
-      updateUserMutation.mutate();
-    }
-  }, [user.isSignedIn]);
+  // const updateUserMutation = api.user.updateUser.useMutation();
+  // const user = useUser();
+  // console.log({user})
+  // console.log(user.isSignedIn)
+  // useEffect(() => {
+  //   if (user.isSignedIn) {
+  //     updateUserMutation.mutate();
+  //   }
+  // }, [user.isSignedIn]);
 
 
   return (
