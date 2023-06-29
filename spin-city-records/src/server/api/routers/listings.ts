@@ -74,7 +74,7 @@ export const listingsRouter = createTRPCRouter({
       } catch (e) {
         console.log(e);
       }
-    }),
+
   getByUserId: publicProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
