@@ -69,9 +69,8 @@ import NextError from "next/error";
 import { useState, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import mockAlbums from "./mock-albums.json";
-import Carousel from "./Home/Carousel";
-import MusicSection from "./Home/MusicSection";
+import Carousel from "~/components/Home/Carousel";
+import MusicSection from "~/components/Home/MusicSection";
 import Layout from "~/components/Layout/Layout";
 
 export default function Home() {

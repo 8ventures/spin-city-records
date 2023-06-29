@@ -39,9 +39,9 @@ function AlbumPage() {
     );
   }
 
-  const album = albumQuery.data
-  const listings = listingQuery.data
-  listings? console.log(listings) : null
+  const album = albumQuery.data;
+  const listings = listingQuery.data;
+  listings ? console.log(listings) : null;
   return (
     <Layout>
       <div className="flex flex-col xl:flex-row">
