@@ -71,9 +71,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import mockListings from "./mock-listings.json";
 import mockAlbums from "./mock-albums.json";
-import Carousel from "./Home/Carousel";
+import Carousel from "../components/Home/Carousel";
 import Footer from "../components/Layout/Footer";
-import MusicSection from "./Home/MusicSection";
+import MusicSection from "../components/Home/MusicSection";
 import { useEffect } from "react";
 import Header from "~/components/Layout/Header";
 
@@ -121,8 +121,6 @@ combineData.sort(
 const newReleases = combineData.slice(0, 10);
 
 export default function Home() {
-
-
   // const updateUserMutation = api.user.updateUser.useMutation();
   // const user = useUser();
   // console.log({user})
@@ -132,7 +130,6 @@ export default function Home() {
   //     updateUserMutation.mutate();
   //   }
   // }, [user.isSignedIn]);
-
 
   return (
     <Link href="/">
