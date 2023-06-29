@@ -13,56 +13,52 @@ async function main() {
     // await prisma.album.deleteMany();
     // await prisma.artist.deleteMany();
     await prisma.listing.deleteMany();
-    // await prisma.special.deleteMany(); // commented out to stop indexs of special types changing
-    // await prisma.user.deleteMany();
+    // await prisma.edition.deleteMany();
     console.log('Data Removed')
 
     // for (const a of mockArtists) {
-    //   await prisma.artist.create({
-    //     data: a
+    //   const albumOfArtist = mockAlbums.filter((al) => (al.artist === a.name) )
+    //   const albums = albumOfArtist.map((al) => {
+    //     const {artist, ...album} = al;
+    //     return album
     //   })
-    // }
-    // console.log('Artist added')   
-
-    // for (const a of mockAlbums) {
-    //   const { artist, ...album} = a
-    //   const dbArtist = await prisma.artist.findFirst({
-    //     where: {
-    //       name: artist
+    //   await prisma.artist.create({
+    //     data: {
+    //       ...a,
+    //       albums: {
+    //         createMany: {
+    //           data: albums
+    //         }
+    //       }
     //     }
     //   })
-    //   if (dbArtist) {
-    //     await prisma.album.create({
-    //       data: {
-    //         ...album,
-    //         artistId: dbArtist.id
-    //       }
-    //     })
-    //   }
     // }
-    // console.log('Albums added')
+    // console.log('Artists and Albums added')   
     
     // for (const e of editions) {
-    //   await prisma.special.create({
+    //   await prisma.edition.create({
     //     data: e
     //   })
     // }
     // console.log('editions added')
 
-    // for (const u of mockUsers) {
-    //   await prisma.user.create({
-    //     data: u
-    //   })
-    // }
-    // console.log('Users Added')
-
     for (const l of mockListings) {
-      const {special, ...listing} = l
+      const {edition, sellerId, albumId, ...listing} = l
       await prisma.listing.create({
         data: {
           ...listing,
-          special: {
-            connect: special
+          edition: {
+            connect: edition
+          },
+          seller: {
+            connect: {
+              sellerId: sellerId
+            }
+          },
+          album: {
+            connect: {
+              id: albumId
+            }
           }
         }
       })

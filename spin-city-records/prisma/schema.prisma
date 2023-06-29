@@ -39,7 +39,6 @@ model Review {
   updatedAt DateTime @updatedAt
   rating    Float
   comment   String
-  user      User     @relation(fields: [userId], references: [id])
   userId    String
   @@index([userId])
 }
@@ -55,12 +54,12 @@ model Listing {
   description String @db.Text
   condition String
   speed     String
-  special   Special[]
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  edition  Edition[]
+  seller    Seller @relation(fields: [sellerId], references: [sellerId])
+  sellerId    String
   album     Album    @relation(fields: [albumId], references: [id])
   albumId   String
-  @@index([userId])
+  @@index([sellerId])
   @@index([albumId])
 }
 
@@ -77,25 +76,24 @@ model ChatMesssage {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   message    String
-  sender     User   @relation(name: "sentMessages", fields: [senderId], references: [id])
   senderId   String
-  receiver   User   @relation(name: "receivedMessages", fields: [receiverId], references: [id])
   receiverId String
   @@index([senderId])
   @@index([receiverId])
 }
 
-model User {
-  id String @id @default(cuid())
-  clerkId String @unique
-  listings Listing[]
-  reviews Review[]
-  sentMessages ChatMesssage[] @relation(name: "sentMessages")
-  receivedMessages ChatMesssage[] @relation(name: "receivedMessages")
-}
-
-model Special {
+model Edition {
   id Int @id @default(autoincrement())
   type String
+  listings Listing[]
+}
+
+model Seller {
+  id String @id @default(cuid())
+  sellerId String @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  email String?
+  location String?
   listings Listing[]
 }

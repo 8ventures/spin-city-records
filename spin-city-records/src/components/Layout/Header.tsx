@@ -1,17 +1,29 @@
 import Image from "next/image";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import logo from "../../pages/Home/images/logo-black.png";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import { useState } from "react";
+import Link from "next/link";
+
 
 export default function Header() {
   const user = useUser();
   const [searchText, setSearchText] = useState("");
+  const CreateListing = () => {
+  const { user } = useUser();
+  if (!user) return null;
+  return (
+    <div>
+      <button className="border border-slate-800">
+        <Link href="/create-listing">Create Listing</Link>
+      </button>
+    </div>
+  );
+};
 
   return (
     <nav>
       <div className="h-34 flex w-full items-center justify-between bg-black p-10">
-        <Image src={logo} alt="logo" height={120} />
+        <Image src={logo} alt="logo" height={120} priority />
         <form>
           <label className="sr-only mb-2 text-sm font-medium text-gray-700 dark:text-white">
             Search
@@ -51,23 +63,29 @@ export default function Header() {
         </form>
         <div className="text-white">
           {!user.isSignedIn && <SignInButton />}
-          {user.isSignedIn && <UserButton afterSignOutUrl="/" />}
+          {user.isSignedIn && (
+            <div className="flex flex-col items-center">
+              <UserButton afterSignOutUrl="/" />
+              <CreateListing />
+            </div>
+          ) }
         </div>
       </div>
       <div className="flex justify-around bg-black">
-        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
+        <button className="focus:shadow-xs mb-5 inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 no-underline transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
           Category
         </button>
-        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
+        <button className="focus:shadow-xs inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 no-underline transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
           Browse Collections
         </button>
-        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
+        <button className="focus:shadow-xs inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 no-underline transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
           Rare
         </button>
-        <button className="mb-4 h-12 w-48 rounded-lg border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300">
+        <button className="focus:shadow-xs inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 no-underline transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
           Sellers
         </button>
       </div>
+      <hr className="h-px border-0 bg-gray-200 dark:bg-gray-700"></hr>
     </nav>
   );
 }
