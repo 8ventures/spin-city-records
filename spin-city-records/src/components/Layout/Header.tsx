@@ -4,6 +4,7 @@ import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import CartButton from '../Cart/CartButton'
 
 export default function Header() {
   const router = useRouter();
@@ -77,6 +78,7 @@ export default function Header() {
             <div className="flex flex-col items-center">
               <UserButton afterSignOutUrl="/" />
               <CreateListing />
+              <CartButton />
             </div>
           )}
         </div>
