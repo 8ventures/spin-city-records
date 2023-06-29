@@ -6,11 +6,9 @@ import { useRouter } from "next/router";
 import NextError from "next/error";
 
 function AlbumPage() {
-  // const id = useRouter().query.id as string;
-  // const albumQuery = api.albums.getById.useQuery({id})
-
-  const albumQuery = api.albums.getById.useQuery({id: 'cljfsjjhp0001uaecu3329kku'})
-  const listingQuery = api.listings.getByAlbumId.useQuery({albumId: 'cljfsjjhp0001uaecu3329kku'})
+  const id = useRouter().query.id as string;
+  const albumQuery = api.albums.getById.useQuery({ id });
+  const listingQuery = api.listings.getByAlbumId.useQuery({ albumId: id });
 
   if (albumQuery.error) {
     return (

@@ -2,18 +2,19 @@ export interface Review {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  userID: string;
   rating: number;
   comment: string;
+  userId: string;
 }
 
 export interface Artist {
   id: string;
-  artist: string;
-  bio: string;
-  artistPicture: string;
   createdAt: Date;
   updatedAt: Date;
+  name: string;
+  bio: string;
+  artistPicture: string;
+  albums: Album[];
 }
 
 export interface Album {
@@ -24,10 +25,10 @@ export interface Album {
   label: string;
   artwork: string;
   year: number;
-  duration: number;
   artist: Artist;
+  artistId: string;
   listings: Listing[];
-  collection: Collection[];
+  Collection: Collection[];
 }
 
 export interface Listing {
@@ -40,17 +41,28 @@ export interface Listing {
   format: string;
   description: string;
   condition: string;
-  user: User;
-  userId: string;
+  speed: string;
+  edition: Edition[];
+  seller: Seller;
+  sellerId: string;
   album: Album;
+  albumId: string;
 }
 
-export interface User {
+export interface Edition {
   id: string;
+  type: string;
   listings: Listing[];
-  reviews: Review[];
-  sentMessages: ChatMesssage[];
-  recievedMessages: ChatMesssage[];
+}
+
+export interface Seller {
+  id: string;
+  sellerId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  location: string;
+  listings: Listing[];
 }
 
 export interface ChatMesssage {
@@ -58,9 +70,7 @@ export interface ChatMesssage {
   createdAt: Date;
   updatedAt: Date;
   message: string;
-  sender: User;
   senderId: string;
-  receiver: User;
   receiverId: string;
 }
 

@@ -8,9 +8,7 @@ import ProfilePage from "./profile/[index]";
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider>
-      <Component {...pageProps} />;
-      {/* <AlbumPage></AlbumPage> */}
-      {/* <ProfilePage /> */}
+      <Component {...pageProps} />
     </ClerkProvider>
   );
 };
