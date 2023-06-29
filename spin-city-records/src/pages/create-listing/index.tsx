@@ -6,26 +6,26 @@ import { RouterOutputs, api } from "~/utils/api";
 const CreateListingPage = () => {
   const [form, setForm] = useState({
     price: 0,
-    currency: '',
-    weight: '',
-    format: '',
-    description: '',
-    edition: '',
-    condition: '',
+    currency: "",
+    weight: "",
+    format: "",
+    description: "",
+    edition: "",
+    condition: "",
   });
   const { user } = useUser();
   const createListingMutation = api.listings.create.useMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.name === 'price' ? Number(e.target.value) : e.target.value;
+    const value =
+      e.target.name === "price" ? Number(e.target.value) : e.target.value;
     setForm({
       ...form,
       [e.target.name]: value,
     });
   };
-  console.log({form})
-  console.log({user})
-
+  console.log({ form });
+  console.log({ user });
 
   const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,19 +35,18 @@ const CreateListingPage = () => {
       // Reset form after submission
       setForm({
         price: 0,
-        currency: '',
-        weight: '',
-        format: '',
-        description: '',
-        edition: '',
-        condition: '',
+        currency: "",
+        weight: "",
+        format: "",
+        description: "",
+        edition: "",
+        condition: "",
       });
-      router.push("/")
+      router.push("/");
     } catch (error) {
       console.error(error);
     }
   };
-
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
@@ -107,15 +106,13 @@ const CreateListingPage = () => {
         onChange={handleChange}
         value={form.edition}
       />
-      <button className="rounded-lg border border-gray-900 bg-gray-300" type="submit">Create Listing</button>
+      <button
+        className="rounded-lg border border-gray-900 bg-gray-300"
+        type="submit"
+      >
+        Create Listing
+      </button>
     </form>
   );
 };
 export default CreateListingPage;
-
-
-
-
-
-
-

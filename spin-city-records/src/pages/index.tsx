@@ -65,89 +65,60 @@
 //   );
 // }
 import { api } from "~/utils/api";
-import { useUser } from "@clerk/clerk-react";
-import Link from "next/link";
+import NextError from "next/error";
+import { useState, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import mockListings from "./mock-listings.json";
-import mockAlbums from "./mock-albums.json";
-import Carousel from "../components/Home/Carousel";
-import Footer from "../components/Layout/Footer";
-import MusicSection from "../components/Home/MusicSection";
-import { useEffect } from "react";
-import Header from "~/components/Layout/Header";
-
-interface Listing {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  userID: string;
-  albumID: string;
-  price: number;
-  currency: string;
-  condition: string;
-  weight: string;
-  format: string;
-  speed: string;
-  special: string[];
-  description: string;
-}
-
-interface Album {
-  id: string;
-  name: string;
-  artist: string;
-  releaseYear: number;
-  label: string;
-  artwork: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CombinedData extends Listing {
-  album?: Album;
-}
-
-const combineData: CombinedData[] = mockListings.map((listing: Listing) => {
-  const album = mockAlbums.find((album: Album) => album.id === listing.albumID);
-  return { ...listing, album };
-});
-
-combineData.sort(
-  (a: CombinedData, b: CombinedData) =>
-    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-);
-
-const newReleases = combineData.slice(0, 10);
+import Carousel from "~/components/Home/Carousel";
+import MusicSection from "~/components/Home/MusicSection";
+import Layout from "~/components/Layout/Layout";
 
 export default function Home() {
-  // const updateUserMutation = api.user.updateUser.useMutation();
-  // const user = useUser();
-  // console.log({user})
-  // console.log(user.isSignedIn)
-  // useEffect(() => {
-  //   if (user.isSignedIn) {
-  //     updateUserMutation.mutate();
-  //   }
-  // }, [user.isSignedIn]);
+  const [recentlyAdded, setRecentlyAdded] = useState<any>([]); //TODO map function to Album[]
 
+  const recentlyAddedQuery = api.collections.getById.useQuery({
+    id: "cljgvs5rg00001yjyvjeygbbp",
+  });
+
+  useEffect(() => {
+    if (!recentlyAddedQuery.isLoading && !recentlyAddedQuery.error) {
+      setRecentlyAdded(recentlyAddedQuery.data);
+    }
+  }, [recentlyAddedQuery.isLoading, recentlyAddedQuery.error]);
+
+  if (recentlyAddedQuery.error) {
+    return (
+      <NextError
+        title={recentlyAddedQuery.error.message}
+        statusCode={recentlyAddedQuery.error.data?.httpStatus ?? 500}
+      />
+    );
+  }
+
+  //TODO PLACEHOLDER SKELETON
+  if (recentlyAddedQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
-    <Link href="/">
-      <>
-        <Header />
-        <div className="h-full bg-[#111111]">
-          <Carousel />
-          <section>
-            <h1 className="text-center font-Belanosima text-6xl font-bold text-white">
-              SHOP MUSIC
-            </h1>
-            <MusicSection title="RECENTLY ADDED" items={newReleases} />
-            <MusicSection title="BEST SELLERS" items={newReleases} />
-            <MusicSection title="GENRE" items={newReleases} />
-          </section>
-          <Footer />
-        </div>
-      </>
-    </Link>
+    <Layout>
+      <Carousel />
+      <section>
+        <h1 className="mt-8 text-center font-Belanosima text-3xl font-bold text-white">
+          SHOP MUSIC
+        </h1>
+        <MusicSection title="Recently Added" collection={recentlyAdded} />
+        {/* <MusicSection title="BEST SELLERS" items={newReleases} />
+          <MusicSection title="GENRE" items={newReleases} /> */}
+      </section>
+    </Layout>
   );
 }
+// const updateUserMutation = api.user.updateUser.useMutation();
+// const user = useUser();
+// console.log({user})
+// console.log(user.isSignedIn)
+// useEffect(() => {
+//   if (user.isSignedIn) {
+//     updateUserMutation.mutate();
+//   }
+// }, [user.isSignedIn]);
