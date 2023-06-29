@@ -65,6 +65,7 @@
 //   );
 // }
 import { api } from "~/utils/api";
+import NextError from "next/error";
 import { useUser } from "@clerk/clerk-react";
 import Link from "next/link";
 import "slick-carousel/slick/slick.css";
@@ -72,10 +73,8 @@ import "slick-carousel/slick/slick-theme.css";
 import mockListings from "./mock-listings.json";
 import mockAlbums from "./mock-albums.json";
 import Carousel from "./Home/Carousel";
-import Footer from "../components/Layout/Footer";
 import MusicSection from "./Home/MusicSection";
-import { useEffect } from "react";
-import Header from "~/components/Layout/Header";
+import Layout from "~/components/Layout/Layout";
 
 interface Listing {
   id: string;
@@ -119,10 +118,9 @@ combineData.sort(
 );
 
 const newReleases = combineData.slice(0, 10);
+console.log(newReleases);
 
 export default function Home() {
-
-
   // const updateUserMutation = api.user.updateUser.useMutation();
   // const user = useUser();
   // console.log({user})
@@ -133,24 +131,36 @@ export default function Home() {
   //   }
   // }, [user.isSignedIn]);
 
+  const recentlyAddedQuery = api.collections.getById.useQuery({
+    id: "cljgvs5rg00001yjyvjeygbbp",
+  });
+
+  if (recentlyAddedQuery.error) {
+    return (
+      <NextError
+        title={recentlyAddedQuery.error.message}
+        statusCode={recentlyAddedQuery.error.data?.httpStatus ?? 500}
+      />
+    );
+  }
+
+  const recentlyAdded = recentlyAddedQuery.data?.albums ?? [];
+
+  console.log(recentlyAdded);
 
   return (
     <Link href="/">
-      <>
-        <Header />
-        <div className="h-full bg-[#111111]">
-          <Carousel />
-          <section>
-            <h1 className="text-center font-Belanosima text-6xl font-bold text-white">
-              SHOP MUSIC
-            </h1>
-            <MusicSection title="RECENTLY ADDED" items={newReleases} />
-            <MusicSection title="BEST SELLERS" items={newReleases} />
-            <MusicSection title="GENRE" items={newReleases} />
-          </section>
-          <Footer />
-        </div>
-      </>
+      <Layout>
+        <Carousel />
+        <section>
+          <h1 className="mt-8 text-center font-Belanosima text-6xl font-bold text-white">
+            SHOP MUSIC
+          </h1>
+          <MusicSection title="RECENTLY ADDED" items={newReleases} />
+          {/* <MusicSection title="BEST SELLERS" items={newReleases} />
+          <MusicSection title="GENRE" items={newReleases} /> */}
+        </section>
+      </Layout>
     </Link>
   );
 }

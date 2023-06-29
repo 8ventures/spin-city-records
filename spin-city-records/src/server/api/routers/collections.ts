@@ -22,7 +22,12 @@ export const collectionRouter = createTRPCRouter({
         const collection = await ctx.prisma.collection.findUnique({
           where: { id },
           include: {
-            albums: true,
+            albums: {
+              include: {
+                artist: true,
+                listings: true,
+              },
+            },
           },
         });
         return collection;

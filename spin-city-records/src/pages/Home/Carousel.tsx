@@ -45,7 +45,7 @@ export default function Carousel() {
   };
 
   return (
-    <div style={{ height: "500px" }}>
+    <div style={{ height: "" }}>
       <Slider {...settings}>
         <div className="relative flex h-80 justify-center text-center text-white">
           <Image
