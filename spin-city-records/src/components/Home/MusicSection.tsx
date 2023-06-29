@@ -1,4 +1,4 @@
-import { CombinedData } from "../index";
+import { CombinedData } from "../../pages/index";
 
 interface MusicSectionProps {
   title: string;

@@ -1,24 +1,23 @@
 import Image from "next/image";
-import logo from "../../pages/Home/images/logo-black.png";
+import logo from "../Home/images/logo-black.png";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import { useState } from "react";
 import Link from "next/link";
-
 
 export default function Header() {
   const user = useUser();
   const [searchText, setSearchText] = useState("");
   const CreateListing = () => {
-  const { user } = useUser();
-  if (!user) return null;
-  return (
-    <div>
-      <button className="border border-slate-800">
-        <Link href="/create-listing">Create Listing</Link>
-      </button>
-    </div>
-  );
-};
+    const { user } = useUser();
+    if (!user) return null;
+    return (
+      <div>
+        <button className="border border-slate-800">
+          <Link href="/create-listing">Create Listing</Link>
+        </button>
+      </div>
+    );
+  };
 
   return (
     <nav>
@@ -68,7 +67,7 @@ export default function Header() {
               <UserButton afterSignOutUrl="/" />
               <CreateListing />
             </div>
-          ) }
+          )}
         </div>
       </div>
       <div className="flex justify-around bg-black">

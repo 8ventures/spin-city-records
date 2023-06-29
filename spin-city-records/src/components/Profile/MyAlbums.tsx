@@ -6,17 +6,13 @@ function MyAlbums() {
 
   return (
     <>
-      <h2>My Albums</h2>
+      <h1>My Albums</h1>
       {albums?.map((album) => (
         <div
           key={album.id}
           className="m-10 flex w-[250px] flex-col items-center"
         >
-          <img
-            src={album.artwork}
-            alt={album.name}
-            className="rounded-xl object-cover"
-          />
+          <img src={album.artwork} alt={album.name} className="rounded-xl" />
           <div>
             <h2>{album.name}</h2>
           </div>
