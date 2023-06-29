@@ -59,8 +59,13 @@ export const listingsRouter = createTRPCRouter({
                   'sellerId': stripeId as string
                 }
               })
-              return newProduct
-              // Add new porduct to db
+              //TODO Add new product to db
+              const newPrice = await ctx.stripe.prices.create({
+                unit_amount: 2000,
+                currency: 'gbp',
+                product: newProduct.id
+              })
+              return {newProduct, newPrice}
             } catch (e) {
               console.log(e)
             }

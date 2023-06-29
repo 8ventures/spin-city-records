@@ -4,9 +4,12 @@ import MyAlbums from "~/components/Profile/MyAlbums";
 import Selling from "~/components/Profile/Selling";
 import Sidebar from "~/components/Profile/Sidebar";
 import WishList from "~/components/Profile/WishList";
+import { api } from "~/utils/api";
 
 function ProfilePage() {
   const [activeView, setActiveView] = useState("MyAlbums");
+
+  const mutation = api.listings.create.useMutation()
 
   const getView = () => {
     switch (activeView) {
@@ -21,12 +24,22 @@ function ProfilePage() {
     }
   };
 
+  const handleClick = () => {
+      const handleClick = () => {
+      
+    
+    
+  }
+
   return (
     <Layout>
       <div className="flex">
         <Sidebar setActiveView={setActiveView} />
         <div className="m-10 flex h-[60rem] w-[80rem] flex-wrap justify-center overflow-auto rounded border border-white bg-black text-white">
           {getView()}
+          <button onClick={handleClick}>
+            Add Listing
+          </button>
         </div>
       </div>
     </Layout>
