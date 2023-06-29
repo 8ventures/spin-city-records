@@ -67,16 +67,12 @@
 import { api } from "~/utils/api";
 import NextError from "next/error";
 import { useState, useEffect } from "react";
-import { useUser } from "@clerk/clerk-react";
-import Link from "next/link";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import mockListings from "./mock-listings.json";
 import mockAlbums from "./mock-albums.json";
 import Carousel from "./Home/Carousel";
 import MusicSection from "./Home/MusicSection";
 import Layout from "~/components/Layout/Layout";
-import { Album } from "@prisma/client";
 
 export default function Home() {
   const [recentlyAdded, setRecentlyAdded] = useState<any>([]); //TODO map function to Album[]
@@ -104,7 +100,6 @@ export default function Home() {
   if (recentlyAddedQuery.isLoading) {
     return <div>Loading...</div>;
   }
-
   return (
     <Layout>
       <Carousel />
