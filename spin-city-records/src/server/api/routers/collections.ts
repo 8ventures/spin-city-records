@@ -26,11 +26,12 @@ export const collectionRouter = createTRPCRouter({
               include: {
                 artist: true,
                 listings: true,
+                Collection: true,
               },
             },
           },
         });
-        return collection;
+        return collection?.albums;
       } catch (e) {
         console.log("here");
         console.log(e);

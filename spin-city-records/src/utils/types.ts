@@ -28,7 +28,7 @@ export interface Album {
   artist: Artist;
   artistId: string;
   listings: Listing[];
-  collection: Collection[];
+  Collection: Collection[];
 }
 
 export interface Listing {
