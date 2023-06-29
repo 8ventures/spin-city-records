@@ -4,7 +4,17 @@ import { z } from "zod";
 export const collectionRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     try {
-      const collections = await ctx.prisma.collection.findMany();
+      const collections = await ctx.prisma.collection.findMany({
+        include: {
+          albums: {
+            include: {
+              artist: true,
+              listings: true,
+              Collection: true,
+            },
+          },
+        },
+      });
       return collections;
     } catch (e) {
       console.log(e);
