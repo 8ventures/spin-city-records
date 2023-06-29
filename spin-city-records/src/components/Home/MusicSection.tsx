@@ -35,7 +35,7 @@ const MusicSection: React.FC<MusicSectionProps> = ({ title, collection }) => {
           <div
             key={album.id}
             onClick={() => handleClick(album)}
-            className="m-5 flex flex-col items-center"
+            className="m-5 flex cursor-pointer flex-col items-center"
           >
             <img
               src={album.artwork}
