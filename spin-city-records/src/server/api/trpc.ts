@@ -5,6 +5,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { prisma } from "~/server/db";
 import type {User} from '@clerk/nextjs/api'
+import { stripe } from '../../utils/getStripe'
 
 interface UserProps {
   user: User | null
@@ -12,6 +13,7 @@ interface UserProps {
 
 const createInnerTRPCContext = ( {user}: UserProps) => {
   return {
+    stripe,
     prisma,
     user
   };
