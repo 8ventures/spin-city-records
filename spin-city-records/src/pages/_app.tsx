@@ -4,13 +4,15 @@ import "~/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import AlbumPage from "./album/[id]";
 import ProfilePage from "./profile/[index]";
+import ArtistPage from "./artist/[index]";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ClerkProvider>
-      <Component {...pageProps} />;
+      {/* <Component {...pageProps} /> */}
       {/* <AlbumPage></AlbumPage> */}
       {/* <ProfilePage /> */}
+      <ArtistPage />
     </ClerkProvider>
   );
 };
