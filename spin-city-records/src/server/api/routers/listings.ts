@@ -53,6 +53,7 @@ export const listingsRouter = createTRPCRouter({
           },
         });
         return listing;
+        
       } catch (e) {
         console.log(e);
       }
