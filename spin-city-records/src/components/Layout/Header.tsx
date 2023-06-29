@@ -1,10 +1,12 @@
 import Image from "next/image";
-import logo from "../Home/images/logo-black.png";
+import logo from "../../../public/logo.svg";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Header() {
+  const router = useRouter();
   const user = useUser();
   const [searchText, setSearchText] = useState("");
   const CreateListing = () => {
@@ -22,7 +24,16 @@ export default function Header() {
   return (
     <nav>
       <div className="h-34 flex w-full items-center justify-between bg-black p-10">
-        <Image src={logo} alt="logo" height={120} priority />
+        <Image
+          src={logo}
+          alt="logo"
+          height={100}
+          priority
+          onClick={() => {
+            router.push("/");
+          }}
+          className="cursor-pointer"
+        />
         <form>
           <label className="sr-only mb-2 text-sm font-medium text-gray-700 dark:text-white">
             Search
