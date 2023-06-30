@@ -5,7 +5,7 @@ import Selling from "~/components/Profile/Selling";
 import Sidebar from "~/components/Profile/Sidebar";
 import WishList from "~/components/Profile/WishList";
 import { useRouter } from 'next/router'
-import { useUser } from "@clerk/nextjs";
+import CreateListingForm from "~/components/createListingForm";
 function ProfilePage() {
   const [activeView, setActiveView] = useState("MyAlbums");
 
@@ -19,6 +19,8 @@ function ProfilePage() {
         return <Selling />;
       default:
         return <MyAlbums />;
+      case "AddListing":
+        return <CreateListingForm/>
     }
   };
 
@@ -32,7 +34,7 @@ function ProfilePage() {
     <Layout>
       <div className="flex">
         <Sidebar setActiveView={setActiveView} />
-        <div className="m-10 flex h-[60rem] w-[80rem] flex-wrap justify-center overflow-auto rounded border border-white bg-black text-white">
+        <div className="m-10 flex h-[60rem] w-[80rem] flex-wrap justify-center rounded-xl bg-black text-white br" >
           {getView()}
         </div>
       </div>

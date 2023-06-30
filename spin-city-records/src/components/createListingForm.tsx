@@ -1,134 +1,168 @@
-import {
-  Controller,
-  ControllerProps,
-  FieldPath,
-  FieldValues,
-  FormProvider,
-  useFormContext,
-} from "react-hook-form"
-import { z } from 'zod';
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from './ui/form';
-import { useContext } from 'react';
+import { useState } from "react";
+import { api } from "~/utils/api";
+import SearchAlbumsForm from "~/components/SearchAlbumsForm";
 
+export default function CreateListingForm () {
 
-const listingFormSchema = z.object({
-  album: z.string({required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
-    })
-    .min(3, { message: "Must be 3 or more characters long" }),
-  description: z.string({required_error: "Description is required",
-    invalid_type_error: "Description must be a string",
-    })
-    .min(3, { message: "Must be 3 or more characters long" }),
-  weight: z.preprocess((val) => Number(val), z.number({required_error: "Weight is required",
-    invalid_type_error: "Weight must be a number",
-    })
-    .positive()),
-  price: z.preprocess((val) => Number(val), z.optional(z.number({invalid_type_error: "Price must be a number",})
-    .nonnegative()))
-})
+  const [form, setForm] = useState({
+    price: 0,
+    currency: "",
+    weight: "",
+    format: "",
+    speed: "",
+    description: "",
+    edition: [{ type: "" }],
+    condition: "",
+    // sellerId: "",
+    albumId: "",
+  });
 
-type ItemFormProps = {
-  setter?: React.Dispatch<React.SetStateAction<Item[]>>
-  packId?: number
-  categoryId: number
-  setPackItems?: React.Dispatch<React.SetStateAction<Item[]>>
-}
+  const { data: editions, error } = api.editions.getAll.useQuery();
 
-export function ItemForm ({packId, categoryId, setPackItems}: ItemFormProps) {
+  const createListingMutation = api.listings.create.useMutation();
 
-  console.log(setPackItems)
-
-  const userId = useContext(userContext)
-
-  const form = useForm<z.infer<typeof itemFormSchema>>({
-    resolver: zodResolver(itemFormSchema),
-    defaultValues: {
-      name: '',
-      description: '',
-      weight: 0,
-      cost: 0
-    }
-  })
-
-  function onSubmit(item: z.infer<typeof itemFormSchema>) {
-    const addItem = async (item: z.infer<typeof itemFormSchema>) => {
-      const newItem = {...item, categoryId: categoryId }
-      const addedItem = await apiService.addItem(newItem, userId);
-      if (packId) {
-        const connection = await apiService.connectItemToPack(addedItem.id, packId)
-        console.log(connection)
-      }
-      if (setPackItems && packId) {
-        const items = await apiService.getPackItems(packId);
-        setPackItems(items[0].packItems)
-      }
-    }
-    addItem(item);    
-    form.reset();
+  if (error) {
+    console.error(error);
+    return <div>Error loading editions</div>;
   }
 
+  if (!editions) {
+    return <div>Loading...</div>;
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value =
+      e.target.name === "price" ? Number(e.target.value) : e.target.value;
+    setForm({
+      ...form,
+      [e.target.name]: value,
+    });
+  };
+
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // try {
+    //   createListingMutation.mutate(form);
+    //   console.log({ form });
+    //   // Reset form after submission
+    //   setForm({
+    //     price: 0,
+    //     currency: "",
+    //     weight: "",
+    //     format: "",
+    //     speed: "",
+    //     description: "",
+    //     edition: [{ type: "" }],
+    //     condition: "",
+    //     // sellerId: "",
+    //     albumId: "",
+    //   });
+    //   //router.push("/");
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  };
+
   return (
-    <Form {...form}>
-        <form className='flex flex-col items-center space-y-2' onSubmit={form.handleSubmit(onSubmit)}>
-          <div className=' flex justify-start space-x-2'>
-            <FormField
-            control={form.control}
-            name= 'name'
-            render = {({ field }) => (
-              <FormItem className='flex flex-col items-center'>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input className='' placeholder='e.g Tent' {...field} />
-                </FormControl>
-                <FormMessage></FormMessage>
-              </FormItem>
-            )}
-            />
-          <FormField
-            control={form.control}
-            name= 'description'
-            render = {({ field }) => (
-              <FormItem className='flex flex-col items-center'>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input className='w-max' placeholder='e.g Zpacks Duplex' {...field} />
-                </FormControl>
-                <FormMessage></FormMessage>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name= 'weight'
-            render = {({ field }) => (
-              <FormItem className='flex flex-col items-center'>
-                <FormLabel>Weight</FormLabel>
-                <FormControl>
-                  <Input className='w-max' placeholder='In Kg'  type='number' {...field} />
-                </FormControl>
-                <FormMessage></FormMessage>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name= 'cost'
-            render = {({ field }) => (
-              <FormItem className='flex flex-col items-center'>
-                <FormLabel>Cost</FormLabel>
-                <FormControl>
-                  <Input className='w-max' placeholder='Optional..' type='number' {...field} />
-                </FormControl>
-                <FormMessage></FormMessage>
-              </FormItem>
-            )}
-          />
-          </div>
-          <Button type='submit'>Add</Button>
-        </form>
-    </Form>
+    <div className=" ">
+      <form className="flex flex-col gap-3 bg-gray-800 p-4 rounded-lg" onSubmit={handleSubmit}>
+        <SearchAlbumsForm setForm={setForm}/>
+        <input
+          type="number"
+          name="price"
+          required
+          placeholder="Price"
+          className="rounded-lg border border-gray-300 bg-gray-700 text-white py-2 px-4"
+          onChange={handleChange}
+          value={form.price}
+        />
+        <input
+          type="text"
+          required
+          name="currency"
+          placeholder="Currency"
+          className="rounded-lg border border-gray-300 bg-gray-700 text-white py-2 px-4"
+          onChange={handleChange}
+          value={form.currency}
+        />
+        <input
+          type="text"
+          required
+          name="speed"
+          placeholder="Speed"
+          className="rounded-lg border border-gray-300 bg-gray-700 text-white py-2 px-4"
+          onChange={handleChange}
+          value={form.speed}
+        />
+        <input
+          type="text"
+          name="weight"
+          required
+          placeholder="Weight"
+          className="rounded-lg border border-gray-300 bg-gray-700 text-white py-2 px-4"
+          onChange={handleChange}
+          value={form.weight}
+        />
+        <input
+          type="text"
+          name="format"
+          required
+          placeholder="Format"
+          className="rounded-lg border border-gray-300 bg-gray-700 text-white py-2 px-4"
+          onChange={handleChange}
+          value={form.format}
+        />
+        <input
+          type="text"
+          name="description"
+          required
+          placeholder="Description"
+          className="rounded-lg border border-gray-300 bg-gray-700 text-white py-2 px-4"
+          onChange={handleChange}
+          value={form.description}
+        />
+        <input
+          type="text"
+          name="condition"
+          required
+          placeholder="Condition"
+          className="rounded-lg border border-gray-300 bg-gray-700 text-white py-2 px-4"
+          onChange={handleChange}
+          value={form.condition}
+        />
+        <div className="flex space-x-4 flex-wrap text-white">
+          {editions.map((edition) => (
+            <label key={edition.id} className="flex items-center">
+              <input
+                type="checkbox"
+                name="edition"
+                value={edition.type}
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  setForm((prevForm) => {
+                    const alreadySelected = prevForm.edition.find((ed) => ed.type === edition.type);
+                    if (checked && !alreadySelected) {
+                      // Add the checked edition
+                      return { ...prevForm, edition: [...prevForm.edition, { type: edition.type }] };
+                    } else if (!checked && alreadySelected) {
+                      // Remove the unchecked edition
+                      return { ...prevForm, edition: prevForm.edition.filter((ed) => ed.type !== edition.type) };
+                    }
+                    return prevForm;
+                  });
+                }}
+                className="mr-2 rounded border-gray-300 focus:ring-primary-500 h-6 w-6"
+              />
+              <span>{edition.type}</span>
+            </label>
+          ))}
+        </div>
+      <button className="rounded-lg border border-gray-900 bg-gray-300 text-gray-900 py-2 px-4" type="submit">
+        Create Listing
+      </button>
+    </form>
+
+    </div>
   )
 }
