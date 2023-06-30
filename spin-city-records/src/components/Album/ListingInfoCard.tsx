@@ -1,13 +1,17 @@
-import { Listing, Seller } from "~/pages/album/album.types";
+import { Listing } from "~/utils/types";
 import getSymbolFromCurrency from "currency-symbol-map";
 import Button from "../Button";
 import RatingStars from "./RatingStars";
 
 interface ListingInfoCardProps {
   listing: Listing;
+  setCurrentListing: React.Dispatch<React.SetStateAction<Listing>>;
 }
 
-export default function ListingInfoCard({ listing }: ListingInfoCardProps) {
+export default function ListingInfoCard({
+  listing,
+  setCurrentListing,
+}: ListingInfoCardProps) {
   return (
     <>
       <div className="container my-4 flex h-24 flex-row justify-between rounded-lg border border-[#ffffff] p-4 text-white">
@@ -23,11 +27,6 @@ export default function ListingInfoCard({ listing }: ListingInfoCardProps) {
           <div className="text-xs font-semibold text-white">
             {listing.format}
           </div>
-          {/* {listing.special.map((feature, index) => (
-            <div key={index} className="text-xs font-semibold text-white">
-              {feature}
-            </div>
-          ))} */}
         </div>
         <div className="mx-1 flex-col">
           <div className="text-xl font-bold">
@@ -40,13 +39,16 @@ export default function ListingInfoCard({ listing }: ListingInfoCardProps) {
         <Button
           variant="select"
           className="m-2 flex rounded-lg border border-[#333333] bg-[#000000] px-2 py-2 text-sm font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+          onClick={() => {
+            setCurrentListing(listing);
+          }}
         />
       </div>
     </>
   );
 }
 
-const sellerExample: Seller = {
+const sellerExample = {
   id: "seller123",
   name: "John Doe",
   email: "johndoe@example.com",
