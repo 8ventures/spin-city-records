@@ -1,16 +1,23 @@
-import { Listing } from "~/pages/album/album.types";
+import { Listing } from "~/utils/types";
 import ListingInfoCard from "./ListingInfoCard";
 
 interface ListingListProps {
   listings: Listing[];
+  setCurrentListing: React.Dispatch<React.SetStateAction<Listing>>;
 }
 
-export default function ListingList({ listings }: ListingListProps) {
+export default function ListingList({
+  listings,
+  setCurrentListing,
+}: ListingListProps) {
   return (
     <>
       {listings.map((listing, index) => (
         <div key={index}>
-          <ListingInfoCard listing={listing} />
+          <ListingInfoCard
+            listing={listing}
+            setCurrentListing={setCurrentListing}
+          />
         </div>
       ))}
     </>
