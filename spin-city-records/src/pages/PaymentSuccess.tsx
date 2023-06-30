@@ -3,11 +3,11 @@ import Layout from "~/components/Layout/Layout";
 function PaymentSuccessPage() {
 
   return (
-    <Layout>
+    // <Layout>
       <div className="flex text-white">
         Payment Complete!
       </div>
-    </Layout>
+    // {/* </Layout> */}
   );
 }
 

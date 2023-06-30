@@ -1,5 +1,4 @@
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
-import { clerkClient } from "@clerk/nextjs";
 
 export const stripeRouter = createTRPCRouter({
   checkoutSession: privateProcedure
@@ -10,12 +9,12 @@ export const stripeRouter = createTRPCRouter({
             line_items: [
               {
                 // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                price: '{{PRICE_ID}}',
+                price: 'price_1NOVBHLS7dhrxjRDDc15h5D7',
                 quantity: 1,
               },
             ],
             mode: 'payment',
-            success_url: 'http://localhost:3000/success',
+            success_url: 'http://localhost:3000/PaymentSuccess',
             cancel_url: 'http://localhost:3000/fail',
             automatic_tax: {enabled: true},
           });

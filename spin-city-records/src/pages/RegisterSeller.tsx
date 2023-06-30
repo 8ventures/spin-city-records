@@ -3,19 +3,18 @@ import Layout from "~/components/Layout/Layout";
 import { api } from "~/utils/api";
 
 export default function RegisterSeller() {
-  const { mutate: createSeller, data }= api.sellers.create.useMutation();
+  const { mutate: createSeller, data: url, isSuccess }= api.sellers.create.useMutation();
   const router = useRouter()
 
-  // const handleClick = async () => {
-  //   createSeller()
-  //   const url = data
-  //   if (url) {
-  //     console.log('here')
-  //     await router.push(url)
-  //   } else {
-  //     console.log('Unable to register')
-  //   }
-  // }
+  const handleClick = () => {
+    createSeller()
+    if (isSuccess && url) {
+      console.log('here')
+      router.push(url).catch((e) => console.log(e))
+    } else {
+      console.log('Unable to register')
+    }
+  }
 
   return (
     <Layout>
