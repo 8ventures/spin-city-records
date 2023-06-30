@@ -12,7 +12,7 @@ export const appRouter = createTRPCRouter({
   listings: listingsRouter,
   collections: collectionRouter,
   sellers: sellersRouter,
-  stripe: stripeRouter
+  stripe: stripeRouter,
   artists: artistsRouter,
   editions: editionsRouter,
 });
