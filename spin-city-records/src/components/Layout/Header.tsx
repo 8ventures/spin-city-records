@@ -91,7 +91,7 @@ export default function Header() {
           </div>
 
 
-          <div className="mx-2">
+          <div className="mx-2 text-white w-10">
             {!user.isSignedIn && <SignInButton />}
             {user.isSignedIn && (
               <div className="">
