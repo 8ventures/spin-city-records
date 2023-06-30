@@ -31,7 +31,7 @@ const styles = {
   clearButton:
     "absolute inset-y-0 right-0 w-10 inline-flex items-center justify-center text-white hover:text-hotpink-300",
   listbox:
-    "w-full bg-black sm:border sm:border-crystal-500 sm:rounded-md text-left sm:mt-2 p-2 sm:drop-shadow-xl",
+    "w-full bg-black sm:border sm:border-crystal-500 sm:rounded-md text-left sm:mt-2 p-2 sm:drop-shadow-xl text-white",
   groupHeading:
     "cursor-default mt-2 mb-0.5 px-1.5 uppercase text-sm text-hotpink-500",
   item: "cursor-pointer p-1.5 text-lg whitespace-nowrap text-ellipsis overflow-hidden text-white",
