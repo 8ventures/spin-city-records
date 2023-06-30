@@ -4,26 +4,39 @@ import ListingList from "~/components/Album/ListingList";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import NextError from "next/error";
+import { useState, useEffect } from "react";
 
 function AlbumPage() {
   const id = useRouter().query.id as string;
+  const [album, setAlbum] = useState<any>(null);
+  const [listings, setListings] = useState<any>([]);
+  const [currentListing, setCurrentListing] = useState<any>(null);
   const albumQuery = api.albums.getById.useQuery({ id });
   const listingQuery = api.listings.getByAlbumId.useQuery({ albumId: id });
+  const firstListing = listingQuery.data?.[0];
 
-  if (albumQuery.error) {
+  useEffect(() => {
+    if (albumQuery.status === "success") {
+      setAlbum(albumQuery.data);
+    }
+  }, [albumQuery.status]);
+
+  useEffect(() => {
+    if (listingQuery.status === "success") {
+      setListings(listingQuery.data);
+      setCurrentListing(firstListing);
+    }
+  }, [listingQuery.status, listingQuery.data]);
+
+  if (albumQuery.error || listingQuery.error) {
     return (
       <NextError
-        title={albumQuery.error.message}
-        statusCode={albumQuery.error.data?.httpStatus ?? 500}
-      />
-    );
-  }
-
-  if (listingQuery.error) {
-    return (
-      <NextError
-        title={listingQuery.error.message}
-        statusCode={listingQuery.error.data?.httpStatus ?? 500}
+        title={albumQuery.error?.message || listingQuery.error?.message}
+        statusCode={
+          albumQuery.error?.data?.httpStatus ||
+          listingQuery.error?.data?.httpStatus ||
+          500
+        }
       />
     );
   }
@@ -39,18 +52,11 @@ function AlbumPage() {
     );
   }
 
-  const album = albumQuery.data;
-  const listings = listingQuery.data;
-  listings ? console.log(listings) : null;
   return (
     <Layout>
       <div className="flex flex-col xl:flex-row">
         <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-2 xl:w-7/12">
-          <AlbumInfoCard
-            album={album}
-            seller={sellerExample}
-            listing={sellerExample.listings[0]}
-          />
+          <AlbumInfoCard album={album} listing={currentListing} />
         </div>
         <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-1 xl:w-5/12">
           <div className=" max-h-[calc(50vh)]">

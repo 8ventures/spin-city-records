@@ -4,13 +4,11 @@ import Button from "../Button";
 
 interface AlbumInfoCardProps {
   album: Album;
-  seller: Seller;
   listing: Listing;
 }
 
 export default function AlbumInfoCard({
   album,
-  seller,
   listing,
 }: AlbumInfoCardProps) {
   return (
