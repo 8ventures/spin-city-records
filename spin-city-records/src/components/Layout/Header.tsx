@@ -6,27 +6,29 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
-  MagnifyingGlassIcon,
   ShoppingBagIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 // import CurrencySelect from "./CurrencySelect";
 
 export default function Header() {
   const router = useRouter();
-  const user = useUser();
+  const user  = useUser();
   const [searchText, setSearchText] = useState("");
   const [isSelected, setIsSelected] = useState(false);
-  const CreateListing = () => {
-    const { user } = useUser();
-    if (!user) return null;
-    return (
-      <div>
-        <button className="border border-slate-500 rounded text-white">
-          <Link href="/create-listing">Create Listing</Link>
-        </button>
-      </div>
-    );
-  };
+console.log(user.user?.id);
+const currentUserId = user.user?.id;
+  // const CreateListing = () => {
+  //   const { user } = useUser();
+  //   if (!user) return null;
+  //   return (
+  //     <div>
+  //       <button className="border border-slate-500 rounded text-white">
+  //         <Link href="/create-listing">Create Listing</Link>
+  //       </button>
+  //     </div>
+  //   );
+  // };
 
   return (
     <nav className="min-h-34 mb-4 flex w-full flex-col items-center justify-between border-b border-[#A1A1A1] bg-black px-6 py-4 lg:flex-row ">
@@ -62,7 +64,7 @@ export default function Header() {
           />
         </div> */}
         <SearchAlbumsHome />
-        <div className="mb-4 flex flex-col items-center sm:flex-row">
+        <div className="flex flex-col items-center sm:flex-row">
           <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
             Categories
           </button>
@@ -75,13 +77,24 @@ export default function Header() {
           <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
             Sellers
           </button>
-          <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
+
+          <button
+            onClick={() => {
+              router.push(`/profile/${currentUserId}`);
+            }}
+            className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+          >
             Profile
           </button>
+
+          <Link href="/artist">
+            <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
+              Artist
+            </button>
+          </Link>
         </div>
       </div>
-      <div className="flex-col w-fit justify-center">
-
+      <div className="w-fit flex-col justify-center">
         <div className="flex items-center">
           <div
             onClick={() => router.push("/cart")}
@@ -89,9 +102,7 @@ export default function Header() {
           >
             <ShoppingBagIcon className="h-10 w-10 text-white" />
           </div>
-
-
-          <div className="mx-2 text-white w-10">
+          <div className="mx-2 w-10 text-white">
             {!user.isSignedIn && <SignInButton />}
             {user.isSignedIn && (
               <div className="">
@@ -100,7 +111,6 @@ export default function Header() {
             )}
           </div>
         </div>
-        <CreateListing />
       </div>
       {/* <CurrencySelect /> */}
     </nav>

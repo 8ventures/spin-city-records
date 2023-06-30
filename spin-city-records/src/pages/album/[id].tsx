@@ -9,6 +9,28 @@ import { api } from "~/utils/api";
 
 import { Listing } from "~/utils/types";
 
+
+interface Listing{
+  price: number,
+    currency: string,
+    weight:string,
+    format: string,
+    speed: string,
+    description: string,
+    edition: [{ type: string }],
+    condition: string,
+    sellerId: string,
+    albumId: string,
+}
+type GetResult<T> = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+} & T;
+
+// You can now use this GetResult type with Listing:
+type GetListingResult = GetResult<Listing>;
+
 function AlbumPage() {
   const router = useRouter();
   const id = router.query.id as string;
@@ -48,7 +70,21 @@ function AlbumPage() {
       />
     );
   }
+  if (albumQuery.status !== "success" || listingQuery.status !== "success") {
+    return (
+      <Layout>
+        <div className="flex flex-col md:flex-row">
+          <div className="container  m-2 h-96 w-full animate-pulse rounded-lg border border-[#333333] bg-zinc-900/70 p-6 md:order-2 md:w-2/3"></div>
+          <div className="container m-2  h-96 w-full animate-pulse rounded-lg border border-[#333333] bg-zinc-900/70 p-6 md:order-1 md:w-1/3"></div>
+        </div>
+      </Layout>
+    );
+  }
 
+  const album = albumQuery.data;
+  const listings = (listingQuery.data as GetListingResult[]) || [];
+  listings ? console.log(listings) : null;
+  
   return (
     <Layout>
       <div className="flex flex-col xl:flex-row">
@@ -66,6 +102,7 @@ function AlbumPage() {
               listings={listings}
               setCurrentListing={setCurrentListing}
             />
+
           </div>
         </div>
       </div>
@@ -74,3 +111,51 @@ function AlbumPage() {
 }
 
 export default AlbumPage;
+
+
+const sellerExample = {
+  id: "seller123",
+  name: "John Doe",
+  email: "johndoe@example.com",
+  location: {
+    city: "New York City",
+    state: "New York",
+    country: "United States",
+    address: "123 Main Street",
+    postalCode: "10001",
+  },
+  rating: 4.5,
+  listings: [
+    {
+      id: "listing1",
+      createdAt: "2023-06-24T12:00:00Z",
+      updatedAt: "2023-06-24T12:00:00Z",
+      sellerID: "seller123",
+      albumID: "album1",
+      price: 25.99,
+      currency: "USD",
+      condition: "Near Mint",
+      weight: "standard",
+      format: "12''",
+      speed: "33RPM",
+      edition: ["colored", "limited edition"],
+      description:
+        "Limited edition colored vinyl in near mint condition. Comes with original sleeve.",
+    },
+    {
+      id: "listing2",
+      createdAt: "2023-06-25T09:30:00Z",
+      updatedAt: "2023-06-25T09:30:00Z",
+      sellerID: "seller123",
+      albumID: "album2",
+      price: 19.99,
+      currency: "USD",
+      condition: "Excellent",
+      weight: "standard",
+      format: "7''",
+      speed: "45RPM",
+      edition: [],
+      description: "Classic 7'' vinyl single in excellent condition.",
+    },
+  ],
+};
