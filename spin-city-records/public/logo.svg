@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="80" viewBox="0 0 300 80">
-  <rect width="300" height="80" rx="10" fill="#000" />
-  <text x="35" y="52" fill="#fff" font-family="Arial, sans-serif" font-size="40">Spin City</text>
-  <text x="35" y="85" fill="#fff" font-family="Arial, sans-serif" font-size="40">Records</text>
-  <circle cx="255" cy="40" r="30" fill="#FF5500" />
-  <path d="M245 40a10 10 0 0 1 20 0" fill="#FF5500" />
-  <path d="M260 35a5 5 0 0 1 10 0" fill="#FF5500" />
-  <path d="M260 45a5 5 0 0 1 10 0" fill="#FF5500" />
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="80" viewBox="0 0 400 80">
+  <rect width="400" height="80" rx="10" fill="#000" />
+  <text x="35" y="50" fill="#fff" font-family="Arial, sans-serif" font-size="40">Spin City</text>
+  <text x="35" y="80" fill="#fff" font-family="Arial, sans-serif" font-size="40">Records</text>
+  <circle cx="355" cy="40" r="30" fill="#FF5500" />
+  <path d="M345 40a10 10 0 0 1 20 0" fill="#FF5500" />
+  <path d="M360 35a5 5 0 0 1 10 0" fill="#FF5500" />
+  <path d="M360 45a5 5 0 0 1 10 0" fill="#FF5500" />
 </svg>

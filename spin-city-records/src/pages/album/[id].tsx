@@ -9,18 +9,17 @@ import { api } from "~/utils/api";
 
 import { Listing } from "~/utils/types";
 
-
-interface Listing{
-  price: number,
-    currency: string,
-    weight:string,
-    format: string,
-    speed: string,
-    description: string,
-    edition: [{ type: string }],
-    condition: string,
-    sellerId: string,
-    albumId: string,
+interface Listing {
+  price: number;
+  currency: string;
+  weight: string;
+  format: string;
+  speed: string;
+  description: string;
+  edition: [{ type: string }];
+  condition: string;
+  sellerId: string;
+  albumId: string;
 }
 type GetResult<T> = {
   id: string;
@@ -81,10 +80,6 @@ function AlbumPage() {
     );
   }
 
-  const album = albumQuery.data;
-  const listings = (listingQuery.data as GetListingResult[]) || [];
-  listings ? console.log(listings) : null;
-  
   return (
     <Layout>
       <div className="flex flex-col xl:flex-row">
@@ -102,7 +97,6 @@ function AlbumPage() {
               listings={listings}
               setCurrentListing={setCurrentListing}
             />
-
           </div>
         </div>
       </div>
@@ -111,7 +105,6 @@ function AlbumPage() {
 }
 
 export default AlbumPage;
-
 
 const sellerExample = {
   id: "seller123",
