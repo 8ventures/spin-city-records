@@ -18,6 +18,8 @@
     "@heroicons/react": "^2.0.18",
     "@prisma/client": "^4.14.0",
     "@radix-ui/react-hover-card": "^1.0.6",
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-select": "^1.2.2",
     "@t3-oss/env-nextjs": "^0.3.1",
     "@tanstack/react-query": "^4.29.7",
     "@trpc/client": "^10.26.0",
@@ -34,8 +36,12 @@
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
     "stripe": "^12.11.0",
+
+    "split-match": "^0.2.2",
+
     "superjson": "1.12.2",
     "tailwind-merge": "^1.13.2",
+    "turnstone": "^2.2.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {

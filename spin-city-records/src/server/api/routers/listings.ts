@@ -15,6 +15,55 @@ export const listingsRouter = createTRPCRouter({
     }
   }),
 
+  create: privateProcedure
+    .input(
+      z.object({
+        price: z.number(),
+        currency: z.string(),
+        weight: z.string(),
+        format: z.string(),
+        description: z.string(),
+        condition: z.string(),
+        speed: z.string(),
+        // sellerId: z.string(),
+        albumId: z.string(),
+        edition: z.array(z.object({ type: z.string() })),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+      //const albumId = "cljeh2c3k0004uasgpnlhofu7";
+      try {
+        const listing= await ctx.prisma.listing.create({
+          data: {
+            price: input.price,
+            currency: input.currency,
+            weight: input.weight,
+            format: input.format,
+            description: input.description,
+            condition: input.condition,
+            speed: input.speed,
+            seller: {
+              connect: {
+                sellerId: userId
+              }
+            },
+            edition: {
+              create: input.edition,
+            },
+            album: {
+              connect: {
+                id: input.albumId
+              }
+            }
+          }
+        });
+        return listing;
+      } catch (e) {
+        console.log(e)
+      }
+    }),
+
   getByAlbumId: publicProcedure
   .input(
     z.object({

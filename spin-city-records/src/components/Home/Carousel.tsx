@@ -41,11 +41,11 @@ export default function Carousel() {
     nextArrow: <Arrow type="next" />,
     prevArrow: <Arrow type="prev" />,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 10000,
   };
 
   return (
-    <div style={{ height: "" }}>
+    <div>
       <Slider {...settings}>
         <div className="relative flex h-80 justify-center text-center text-white">
           <Image

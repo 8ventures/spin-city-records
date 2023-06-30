@@ -28,7 +28,7 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-  ],
+, "src/components/Layout/CurrencySelect.tsx"  ],
   "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {

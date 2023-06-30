@@ -1,18 +1,17 @@
-import { Album, Seller, Listing } from "~/pages/album/album.types";
+import { Album, Listing } from "~/utils/types";
 import Image from "next/image";
 import Button from "../Button";
 
 interface AlbumInfoCardProps {
   album: Album;
-  seller: Seller;
-  listing: Listing;
+  listing?: Listing;
 }
 
-export default function AlbumInfoCard({
-  album,
-  seller,
-  listing,
-}: AlbumInfoCardProps) {
+export default function AlbumInfoCard({ album, listing }: AlbumInfoCardProps) {
+  if (!album) {
+    return null;
+  }
+
   return (
     <div className="flex">
       <div className="mr-6">
@@ -36,12 +35,42 @@ export default function AlbumInfoCard({
           </h2>
         </div>
         <div className="m-4">
-          <div className="flex">
-            <span className="mr-4 text-xl text-[#A1A1A1]">Price:</span>
-            <span className="text-xl font-semibold text-white">
-              {listing.price} {listing.currency}
-            </span>
-          </div>
+          {listing ? (
+            <div>
+              <div className="flex flex-row">
+                <span className="text-md mr-4 text-[#A1A1A1]">Price:</span>
+                <span className="text-md font-semibold text-white">
+                  {listing.price} {listing.currency}
+                </span>
+              </div>
+              <div className="flex flex-row">
+                <span className="text-md ml-4 text-[#A1A1A1]">Condition:</span>
+                <span className="text-md font-semibold text-white">
+                  {listing.condition}
+                </span>
+              </div>
+              <div className="flex flex-row">
+                <span className="text-md ml-4 text-[#A1A1A1]">Format:</span>
+                <span className="text-md font-semibold text-white">
+                  {listing.format}
+                </span>
+              </div>
+              <div className="flex flex-row">
+                <span className="text-md ml-4 text-[#A1A1A1]">Speed:</span>
+                <span className="text-md font-semibold text-white">
+                  {listing.speed}
+                </span>
+              </div>
+              <div className="flex flex-row">
+                <span className="text-md ml-4 text-[#A1A1A1]">Weight:</span>
+                <span className="text-md font-semibold text-white">
+                  {listing.weight}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="text-white">Not available</div>
+          )}
         </div>
       </div>
 
