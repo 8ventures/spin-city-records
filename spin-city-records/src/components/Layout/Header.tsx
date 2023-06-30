@@ -13,10 +13,11 @@ import {
 
 export default function Header() {
   const router = useRouter();
-  const user = useUser();
+  const user  = useUser();
   const [searchText, setSearchText] = useState("");
   const [isSelected, setIsSelected] = useState(false);
-
+console.log(user.user?.id);
+const currentUserId = user.user?.id;
   // const CreateListing = () => {
   //   const { user } = useUser();
   //   if (!user) return null;
@@ -76,11 +77,16 @@ export default function Header() {
           <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
             Sellers
           </button>
-          <Link href="/profile">
-            <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
-              Profile
-            </button>
-          </Link>
+
+          <button
+            onClick={() => {
+              router.push(`/profile/${currentUserId}`);
+            }}
+            className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+          >
+            Profile
+          </button>
+
           <Link href="/artist">
             <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
               Artist
