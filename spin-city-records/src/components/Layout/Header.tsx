@@ -5,7 +5,10 @@ import SearchAlbumsHome from "~/components/SearchAlbumsHome";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ShoppingBagIcon } from "@heroicons/react/24/solid";
+import {
+  ShoppingBagIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/solid";
 // import CurrencySelect from "./CurrencySelect";
 
 export default function Header() {
@@ -60,7 +63,7 @@ export default function Header() {
           />
         </div> */}
         <SearchAlbumsHome />
-        <div className="mb-4 flex flex-col items-center sm:flex-row">
+        <div className="flex flex-col items-center sm:flex-row">
           <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
             Categories
           </button>
@@ -93,7 +96,7 @@ export default function Header() {
           >
             <ShoppingBagIcon className="h-10 w-10 text-white" />
           </div>
-          <div className="mx-2 text-white w-10">
+          <div className="mx-2 w-10 text-white">
             {!user.isSignedIn && <SignInButton />}
             {user.isSignedIn && (
               <div className="">
