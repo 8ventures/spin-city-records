@@ -4,10 +4,12 @@ import MyAlbums from "~/components/Profile/MyAlbums";
 import Selling from "~/components/Profile/Selling";
 import Sidebar from "~/components/Profile/Sidebar";
 import WishList from "~/components/Profile/WishList";
-import { useRouter } from 'next/router'
-import CreateListingForm from "~/components/createListingForm";
+import { api } from "~/utils/api";
+
 function ProfilePage() {
   const [activeView, setActiveView] = useState("MyAlbums");
+
+  const { mutate: createListing } = api.listings.create.useMutation()
 
   const getView = () => {
     switch (activeView) {
@@ -19,23 +21,22 @@ function ProfilePage() {
         return <Selling />;
       default:
         return <MyAlbums />;
-      case "AddListing":
-        return <CreateListingForm/>
     }
   };
 
-  // will be handy later
-  // const { data, error } = useUser(router.query.userId);
-  const router = useRouter()
-  // const user = useUser();
-  console.log(router.query.userId);
-  //simple example: <h1>Profile Page for User: {router.query.userId}</h1>
+  const handleClick = () => {
+      createListing()
+  }
+
   return (
     <Layout>
       <div className="flex">
         <Sidebar setActiveView={setActiveView} />
-        <div className="m-10 flex h-[60rem] w-[80rem] flex-wrap justify-center rounded-xl bg-black text-white br" >
+        <div className="m-10 flex h-[60rem] w-[80rem] flex-wrap justify-center overflow-auto rounded border border-white bg-black text-white">
           {getView()}
+          <button onClick={handleClick}>
+            Add Listing
+          </button>
         </div>
       </div>
     </Layout>
