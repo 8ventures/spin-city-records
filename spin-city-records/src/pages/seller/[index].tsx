@@ -6,16 +6,16 @@ export default function RegisterSeller() {
   const { mutate: createSeller, data }= api.sellers.create.useMutation();
   const router = useRouter()
 
-  const handleClick = async () => {
-    createSeller()
-    const url = data
-    if (url) {
-      console.log('here')
-      await router.push(url)
-    } else {
-      console.log('Unable to register')
-    }
-  }
+  // const handleClick = async () => {
+  //   createSeller()
+  //   const url = data
+  //   if (url) {
+  //     console.log('here')
+  //     await router.push(url)
+  //   } else {
+  //     console.log('Unable to register')
+  //   }
+  // }
 
   return (
     <Layout>
