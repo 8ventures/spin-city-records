@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { Album, Listing } from "~/utils/types";
 import Image from "next/image";
 import Button from "../Button";
+import { CartContext } from "../CartContext";
 
 interface AlbumInfoCardProps {
   album: Album;
@@ -11,6 +13,24 @@ export default function AlbumInfoCard({ album, listing }: AlbumInfoCardProps) {
   if (!album) {
     return null;
   }
+
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
+
+  const isInCart = listing
+    ? cart.some((item) => item.id === listing.id)
+    : false;
+
+  const handleClick = () => {
+    if (listing) {
+      if (isInCart) {
+        removeFromCart(listing);
+        console.log("Item removed from cart: ", listing);
+      } else {
+        addToCart(listing);
+        console.log("Item added to cart: ", listing);
+      }
+    }
+  };
 
   return (
     <div className="flex">
@@ -67,26 +87,35 @@ export default function AlbumInfoCard({ album, listing }: AlbumInfoCardProps) {
                   {listing.weight}
                 </span>
               </div>
+              <div>
+                {isInCart ? (
+                  <Button
+                    variant="removeBasket"
+                    className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+                    onClick={handleClick}
+                  />
+                ) : (
+                  <Button
+                    variant="addBasket"
+                    className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+                    onClick={handleClick}
+                  />
+                )}
+
+                <Button
+                  variant="wishlist"
+                  className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+                />
+                <Button
+                  variant="collection"
+                  className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+                />
+              </div>
             </div>
           ) : (
             <div className="text-white">Not available</div>
           )}
         </div>
-      </div>
-
-      <div>
-        <Button
-          variant="basket"
-          className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-        />
-        <Button
-          variant="wishlist"
-          className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-        />
-        <Button
-          variant="collection"
-          className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-        />
       </div>
     </div>
   );

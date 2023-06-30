@@ -20,7 +20,7 @@ interface Listing{
 
 interface ListingListProps {
   listings: Listing[];
-  setCurrentListing: React.Dispatch<React.SetStateAction<Listing>>;
+  setCurrentListing: React.Dispatch<React.SetStateAction<Listing | undefined>>;
 }
 
 export default function ListingList({
