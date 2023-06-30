@@ -130,22 +130,6 @@ const SearchAlbumsHome = () => {
   const onFocus = () => setHasFocus(true);
 
   return (
-
-    <Turnstone
-      Item={ItemContents}
-      autoFocus={true}
-      cancelButton={true}
-      clearButton={true}
-      defaultListbox={defaultListBox}
-      defaultListboxIsImmutable={false}
-      id="album"
-      noItemsMessage="no results"
-      listbox={listbox}
-      matchText={true}
-      styles={styles}
-      onSelect={handleSelect}
-      placeholder="Search albums"
-    />
     <div className={containerStyles}>
       <span
         className={`absolute inset-y-0 left-2 z-10 h-12 w-10 items-center justify-center ${iconDisplayStyle}`}
