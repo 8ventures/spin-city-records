@@ -9,7 +9,7 @@ import { api } from "~/utils/api";
 function ProfilePage() {
   const [activeView, setActiveView] = useState("MyAlbums");
 
-  const mutation = api.listings.create.useMutation()
+  const { mutate: createListing } = api.listings.create.useMutation()
 
   const getView = () => {
     switch (activeView) {
@@ -25,10 +25,7 @@ function ProfilePage() {
   };
 
   const handleClick = () => {
-      const handleClick = () => {
-      
-    
-    
+      createListing()
   }
 
   return (
