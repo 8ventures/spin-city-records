@@ -93,8 +93,7 @@ export default function Header() {
           >
             <ShoppingBagIcon className="h-10 w-10 text-white" />
           </div>
-
-          <div className="mx-2">
+          <div className="mx-2 text-white w-10">
             {!user.isSignedIn && <SignInButton />}
             {user.isSignedIn && (
               <div className="">

@@ -7,7 +7,7 @@ import ArtistPage from "./artist/[index]";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <ClerkProvider>
+    <ClerkProvider {...pageProps}>
       {/* <AlbumPage></AlbumPage> */}
       {/* <ProfilePage /> */}
       {/*<ArtistPage /> */}
