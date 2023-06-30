@@ -1,3 +1,6 @@
+import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
+
 interface SidebarButtonProps {
   iconPath: string;
   buttonText: string;
@@ -38,6 +41,20 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ setActiveView }) => {
+  const CreateListing = () => {
+    const { user } = useUser();
+    if (!user) return null;
+    return (
+      <div>
+        <Link href="/create-listing">
+          <button className="focus:shadow-xs m-10 inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline">
+            Create Listing
+          </button>
+        </Link>
+      </div>
+    );
+  };
+
   return (
     <div className="m-10 flex h-[60rem] w-[20rem] flex-col rounded-lg border border-white bg-black text-white">
       <div>
@@ -60,6 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveView }) => {
           viewName="Selling"
           setActiveView={setActiveView}
         />
+        <CreateListing />
       </div>
       <div className="mt-auto">
         <SidebarButton

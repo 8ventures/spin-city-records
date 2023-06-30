@@ -5,10 +5,7 @@ import SearchAlbumsHome from "~/components/SearchAlbumsHome";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  MagnifyingGlassIcon,
-  ShoppingBagIcon,
-} from "@heroicons/react/24/solid";
+import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 // import CurrencySelect from "./CurrencySelect";
 
 export default function Header() {
@@ -16,17 +13,18 @@ export default function Header() {
   const user = useUser();
   const [searchText, setSearchText] = useState("");
   const [isSelected, setIsSelected] = useState(false);
-  const CreateListing = () => {
-    const { user } = useUser();
-    if (!user) return null;
-    return (
-      <div>
-        <button className="border border-slate-500 rounded text-white">
-          <Link href="/create-listing">Create Listing</Link>
-        </button>
-      </div>
-    );
-  };
+
+  // const CreateListing = () => {
+  //   const { user } = useUser();
+  //   if (!user) return null;
+  //   return (
+  //     <div>
+  //       <button className="border border-slate-500 rounded text-white">
+  //         <Link href="/create-listing">Create Listing</Link>
+  //       </button>
+  //     </div>
+  //   );
+  // };
 
   return (
     <nav className="min-h-34 mb-4 flex w-full flex-col items-center justify-between border-b border-[#A1A1A1] bg-black px-6 py-4 lg:flex-row ">
@@ -75,13 +73,19 @@ export default function Header() {
           <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
             Sellers
           </button>
-          <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
-            Profile
-          </button>
+          <Link href="/profile">
+            <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
+              Profile
+            </button>
+          </Link>
+          <Link href="/artist">
+            <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
+              Artist
+            </button>
+          </Link>
         </div>
       </div>
-      <div className="flex-col w-fit justify-center">
-
+      <div className="w-fit flex-col justify-center">
         <div className="flex items-center">
           <div
             onClick={() => router.push("/cart")}
@@ -89,7 +93,6 @@ export default function Header() {
           >
             <ShoppingBagIcon className="h-10 w-10 text-white" />
           </div>
-
 
           <div className="mx-2">
             {!user.isSignedIn && <SignInButton />}
@@ -100,7 +103,6 @@ export default function Header() {
             )}
           </div>
         </div>
-        <CreateListing />
       </div>
       {/* <CurrencySelect /> */}
     </nav>
