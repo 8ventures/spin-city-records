@@ -4,7 +4,8 @@ import MyAlbums from "~/components/Profile/MyAlbums";
 import Selling from "~/components/Profile/Selling";
 import Sidebar from "~/components/Profile/Sidebar";
 import WishList from "~/components/Profile/WishList";
-
+import { useRouter } from 'next/router'
+import { useUser } from "@clerk/nextjs";
 function ProfilePage() {
   const [activeView, setActiveView] = useState("MyAlbums");
 
@@ -21,6 +22,12 @@ function ProfilePage() {
     }
   };
 
+  // will be handy later
+  // const { data, error } = useUser(router.query.userId);
+  const router = useRouter()
+  // const user = useUser();
+  console.log(router.query.userId);
+  //simple example: <h1>Profile Page for User: {router.query.userId}</h1>
   return (
     <Layout>
       <div className="flex">

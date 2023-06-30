@@ -5,6 +5,28 @@ import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import NextError from "next/error";
 
+
+interface Listing{
+  price: number,
+    currency: string,
+    weight:string,
+    format: string,
+    speed: string,
+    description: string,
+    edition: [{ type: string }],
+    condition: string,
+    sellerId: string,
+    albumId: string,
+}
+type GetResult<T> = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+} & T;
+
+// You can now use this GetResult type with Listing:
+type GetListingResult = GetResult<Listing>;
+
 function AlbumPage() {
   const id = useRouter().query.id as string;
   const albumQuery = api.albums.getById.useQuery({ id });
@@ -40,7 +62,7 @@ function AlbumPage() {
   }
 
   const album = albumQuery.data;
-  const listings = listingQuery.data;
+  const listings = (listingQuery.data as GetListingResult[]) || [];
   listings ? console.log(listings) : null;
   return (
     <Layout>
@@ -54,6 +76,7 @@ function AlbumPage() {
         </div>
         <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-1 xl:w-5/12">
           <div className=" max-h-[calc(50vh)]">
+
             <ListingList listings={listings} />
           </div>
         </div>
@@ -89,7 +112,7 @@ const sellerExample = {
       weight: "standard",
       format: "12''",
       speed: "33RPM",
-      special: ["colored", "limited edition"],
+      edition: ["colored", "limited edition"],
       description:
         "Limited edition colored vinyl in near mint condition. Comes with original sleeve.",
     },
@@ -105,7 +128,7 @@ const sellerExample = {
       weight: "standard",
       format: "7''",
       speed: "45RPM",
-      special: [],
+      edition: [],
       description: "Classic 7'' vinyl single in excellent condition.",
     },
   ],

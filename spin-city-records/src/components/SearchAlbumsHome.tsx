@@ -133,7 +133,7 @@ const SearchAlbumsHome= () => {
       matchText={true}
       styles={styles}
       onSelect={handleSelect}
-      placeholder="Choose album"
+      placeholder="Search albums"
     />
   );
 };
