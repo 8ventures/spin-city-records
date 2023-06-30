@@ -1,9 +1,13 @@
+import { useState, useEffect, createContext, useContext } from "react";
+import { useRouter } from "next/router";
+import NextError from "next/error";
+
 import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
 import Layout from "~/components/Layout/Layout";
 import ListingList from "~/components/Album/ListingList";
 import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import NextError from "next/error";
+
+import { Listing } from "~/utils/types";
 
 
 interface Listing{
@@ -28,9 +32,33 @@ type GetResult<T> = {
 type GetListingResult = GetResult<Listing>;
 
 function AlbumPage() {
-  const id = useRouter().query.id as string;
+  const router = useRouter();
+  const id = router.query.id as string;
+
+  const [listings, setListings] = useState<any>([]);
+  const [album, setAlbum] = useState<any>(null);
+  const [currentListing, setCurrentListing] = useState<Listing>();
+
   const albumQuery = api.albums.getById.useQuery({ id });
   const listingQuery = api.listings.getByAlbumId.useQuery({ albumId: id });
+
+  useEffect(() => {
+    if (albumQuery.status === "success") {
+      setAlbum(albumQuery.data);
+    }
+  }, [albumQuery]);
+
+  useEffect(() => {
+    if (listingQuery.status === "success") {
+      setListings(listingQuery.data);
+    }
+  }, [listingQuery]);
+
+  useEffect(() => {
+    if (listings.length > 0) {
+      setCurrentListing(listings[0]);
+    }
+  }, [listings]);
 
   if (albumQuery.error) {
     return (
@@ -49,7 +77,6 @@ function AlbumPage() {
       />
     );
   }
-
   if (albumQuery.status !== "success" || listingQuery.status !== "success") {
     return (
       <Layout>
@@ -64,20 +91,21 @@ function AlbumPage() {
   const album = albumQuery.data;
   const listings = (listingQuery.data as GetListingResult[]) || [];
   listings ? console.log(listings) : null;
+  
   return (
     <Layout>
       <div className="flex flex-col xl:flex-row">
         <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-2 xl:w-7/12">
-          <AlbumInfoCard
-            album={album}
-            seller={sellerExample}
-            listing={sellerExample.listings[0]}
-          />
+          <AlbumInfoCard album={album} listing={currentListing} />
         </div>
         <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-1 xl:w-5/12">
           <div className=" max-h-[calc(50vh)]">
+            <h2 className="text-2xl font-bold text-white">Listings</h2>
+            <ListingList
+              listings={listings}
+              setCurrentListing={setCurrentListing}
+            />
 
-            <ListingList listings={listings} />
           </div>
         </div>
       </div>
@@ -86,6 +114,7 @@ function AlbumPage() {
 }
 
 export default AlbumPage;
+
 
 const sellerExample = {
   id: "seller123",

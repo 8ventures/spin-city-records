@@ -7,15 +7,24 @@ interface RatingStarsProps {
 export default function RatingStars({ rating }: RatingStarsProps) {
   const renderStars = () => {
     const fullStar = (
-      <BsStarFill className="mr-1 h-4 w-4 fill-current text-yellow-400" />
+      <BsStarFill
+        key="full-star"
+        className="mr-1 h-4 w-4 fill-current text-yellow-400"
+      />
     );
 
     const halfStar = (
-      <BsStarHalf className="mr-1 h-4 w-4  fill-current text-yellow-400" />
+      <BsStarHalf
+        key="half-star"
+        className="mr-1 h-4 w-4 fill-current text-yellow-400"
+      />
     );
 
     const emptyStar = (
-      <BsStar className="mr-1 h-4 w-4  text-yellow-400 opacity-75" />
+      <BsStar
+        key="empty-star"
+        className="mr-1 h-4 w-4 text-yellow-400 opacity-75"
+      />
     );
 
     const stars = [];
@@ -25,11 +34,11 @@ export default function RatingStars({ rating }: RatingStarsProps) {
 
     for (let i = 0; i < 5; i++) {
       if (i < floorRating) {
-        stars.push(fullStar);
+        stars.push(<div key={`star-${i}`}>{fullStar}</div>);
       } else if (i === floorRating && decimalPart >= 0.25) {
-        stars.push(halfStar);
+        stars.push(<div key={`star-${i}`}>{halfStar}</div>);
       } else {
-        stars.push(emptyStar);
+        stars.push(<div key={`star-${i}`}>{emptyStar}</div>);
       }
     }
 
