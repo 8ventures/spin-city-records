@@ -1,17 +1,23 @@
+import { useContext } from "react";
 import { Listing } from "~/utils/types";
 import getSymbolFromCurrency from "currency-symbol-map";
 import Button from "../Button";
 import RatingStars from "./RatingStars";
+import { CartContext } from "../CartContext";
 
 interface ListingInfoCardProps {
   listing: Listing;
-  setCurrentListing: React.Dispatch<React.SetStateAction<Listing>>;
+  setCurrentListing: React.Dispatch<React.SetStateAction<Listing | undefined>>;
 }
 
 export default function ListingInfoCard({
   listing,
   setCurrentListing,
 }: ListingInfoCardProps) {
+  const { cart } = useContext(CartContext);
+
+  const isInCart = cart.some((item) => item.id === listing.id);
+
   return (
     <>
       <div className="container my-4 flex h-24 flex-row justify-between rounded-lg border border-[#ffffff] p-4 text-white">
@@ -43,6 +49,12 @@ export default function ListingInfoCard({
             setCurrentListing(listing);
           }}
         />
+
+        {isInCart && (
+          <div className="m-2 flex rounded-lg border border-[#333333] bg-[#000000] px-2 py-2 text-sm font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
+            In Cart
+          </div>
+        )}
       </div>
     </>
   );

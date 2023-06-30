@@ -15,8 +15,7 @@ function AlbumPage() {
 
   const [listings, setListings] = useState<any>([]);
   const [album, setAlbum] = useState<any>(null);
-  const [currentListing, setCurrentListing] = useState<Listing>();
-
+  const [currentListing, setCurrentListing] = useState<Listing | undefined>();
   const albumQuery = api.albums.getById.useQuery({ id });
   const listingQuery = api.listings.getByAlbumId.useQuery({ albumId: id });
 
@@ -31,12 +30,6 @@ function AlbumPage() {
       setListings(listingQuery.data);
     }
   }, [listingQuery]);
-
-  useEffect(() => {
-    if (listings.length > 0) {
-      setCurrentListing(listings[0]);
-    }
-  }, [listings]);
 
   if (albumQuery.error) {
     return (
@@ -65,6 +58,10 @@ function AlbumPage() {
         <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-1 xl:w-5/12">
           <div className=" max-h-[calc(50vh)]">
             <h2 className="text-2xl font-bold text-white">Listings</h2>
+
+            {listings.length === 0 && (
+              <div className="text-white">No listings found.</div>
+            )}
             <ListingList
               listings={listings}
               setCurrentListing={setCurrentListing}

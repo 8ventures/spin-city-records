@@ -3,9 +3,15 @@ import {
   ShoppingBagIcon,
   MusicalNoteIcon,
   CursorArrowRaysIcon,
+  TrashIcon,
 } from "@heroicons/react/24/solid";
 
-type ButtonVariant = "wishlist" | "basket" | "collection" | "select";
+type ButtonVariant =
+  | "wishlist"
+  | "addBasket"
+  | "removeBasket"
+  | "collection"
+  | "select";
 
 interface AddButtonProps {
   className?: string;
@@ -19,9 +25,14 @@ const VARIANT_CONTENT: Record<ButtonVariant, JSX.Element> = {
       <HeartIcon className="mr-2 h-6 w-6 text-red-500 " /> Add to wishlist{" "}
     </>
   ),
-  basket: (
+  addBasket: (
     <>
       <ShoppingBagIcon className="mr-2 h-6 w-6  " /> Add to basket{" "}
+    </>
+  ),
+  removeBasket: (
+    <>
+      <TrashIcon className="mr-2 h-6 w-6  " /> Remove from basket{" "}
     </>
   ),
   collection: (
