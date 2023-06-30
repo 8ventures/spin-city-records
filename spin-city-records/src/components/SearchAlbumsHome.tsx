@@ -3,11 +3,11 @@ import Turnstone from "turnstone";
 import { api } from "~/utils/api";
 import SplitMatch from "split-match";
 import { useRouter } from "next/router";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 interface SplitMatchProps {
   children: React.ReactNode;
 }
-
 
 interface Album {
   id: string;
@@ -22,9 +22,9 @@ interface Album {
 
 const styles = {
   input:
-    "w-full h-12 border border-crystal-400 py-2 pl-5 pr-9 text-xl text-white outline-none rounded-md bg-black ",
+    "h-12 w-full bg-transparent pl-12 text-white outline-none rounded-full border",
   inputFocus:
-    "w-full h-12 border-x-0 border-t-0 border-b border-crystal-500 py-2 pl-5 pr-9 text-xl text-white outline-none sm:rounded-md sm:border bg-black",
+    "h-12 w-full bg-transparent pl-12 text-white outline-none rounded-full border-2 border-cyan-200 shadow-lg shadow-cyan-500/50",
   query: "text-white placeholder-oldsilver-400",
   typeahead: "text-white border-white",
   cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-white inline-flex sm:hidden`,
@@ -40,11 +40,8 @@ const styles = {
   noItems: "cursor-default text-center my-20 text-white",
 };
 
-
-const SearchAlbumsHome= () => {
-
+const SearchAlbumsHome = () => {
   const { data: albums } = api.albums.getAll.useQuery();
-  console.log(albums);
   const router = useRouter();
   const albumsData = albums;
   const defaultListBox = albumsData;
@@ -119,22 +116,46 @@ const SearchAlbumsHome= () => {
     },
   ];
 
+  const [hasFocus, setHasFocus] = useState(false);
+
+  const containerStyles = hasFocus
+    ? "fixed block w-full h-full top-0 left-0 z-50 relative"
+    : "relative w-full";
+
+  const iconDisplayStyle = hasFocus
+    ? "inline-flex text-crystal-600"
+    : "inline-flex text-oldsilver-400";
+
+  const onBlur = () => setHasFocus(false);
+  const onFocus = () => setHasFocus(true);
+
   return (
-    <Turnstone
-      Item={ItemContents}
-      autoFocus={true}
-      cancelButton={true}
-      clearButton={true}
-      defaultListbox={defaultListBox}
-      defaultListboxIsImmutable={false}
-      id="album"
-      noItemsMessage="no results"
-      listbox={listbox}
-      matchText={true}
-      styles={styles}
-      onSelect={handleSelect}
-      placeholder="Choose album"
-    />
+    <div className={containerStyles}>
+      <span
+        className={`absolute inset-y-0 left-2 z-10 h-12 w-10 items-center justify-center ${iconDisplayStyle}`}
+      >
+        <MagnifyingGlassIcon className="h-6 w-6 text-gray-500" />
+      </span>
+
+      <Turnstone
+        Item={ItemContents}
+        autoFocus={true}
+        cancelButton={true}
+        clearButton={true}
+        defaultListbox={albums}
+        defaultListboxIsImmutable={false}
+        id="album"
+        noItemsMessage="no results"
+        listbox={listbox}
+        matchText={true}
+        styles={styles}
+        onSelect={handleSelect}
+        placeholder="Search..."
+        onBlur={onBlur}
+        onFocus={onFocus}
+      />
+    </div>
   );
 };
+
 export default SearchAlbumsHome;
