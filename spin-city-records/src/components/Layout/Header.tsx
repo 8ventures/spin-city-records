@@ -1,6 +1,7 @@
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
+import SearchAlbumsHome from "~/components/SearchAlbumsHome";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -20,7 +21,7 @@ export default function Header() {
     if (!user) return null;
     return (
       <div>
-        <button className="border border-slate-800">
+        <button className="border border-slate-500 rounded text-white">
           <Link href="/create-listing">Create Listing</Link>
         </button>
       </div>
@@ -38,7 +39,7 @@ export default function Header() {
         className="max-h-full max-w-full cursor-pointer"
       />
       <div className=" mt-5 flex flex-col items-center px-8 xl:w-full xl:flex-row">
-        <div
+        {/* <div
           className={`mb-4 flex h-10 w-full cursor-pointer items-center justify-center rounded-full border ${
             isSelected
               ? "border-2 border-cyan-200 shadow-lg shadow-cyan-500/50"
@@ -59,7 +60,8 @@ export default function Header() {
               setIsSelected(false);
             }}
           />
-        </div>
+        </div> */}
+        <SearchAlbumsHome />
         <div className="mb-4 flex flex-col items-center sm:flex-row">
           <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
             Categories
@@ -78,7 +80,8 @@ export default function Header() {
           </button>
         </div>
       </div>
-      <div className="flex w-fit justify-center">
+      <div className="flex-col w-fit justify-center">
+
         <div className="flex items-center">
           <div
             onClick={() => router.push("/cart")}
@@ -86,6 +89,8 @@ export default function Header() {
           >
             <ShoppingBagIcon className="h-10 w-10 text-white" />
           </div>
+
+
           <div className="mx-2">
             {!user.isSignedIn && <SignInButton />}
             {user.isSignedIn && (
@@ -95,6 +100,7 @@ export default function Header() {
             )}
           </div>
         </div>
+        <CreateListing />
       </div>
       {/* <CurrencySelect /> */}
     </nav>
