@@ -35,7 +35,10 @@
     "react-icons": "^4.10.1",
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
+    "stripe": "^12.11.0",
+
     "split-match": "^0.2.2",
+
     "superjson": "1.12.2",
     "tailwind-merge": "^1.13.2",
     "turnstone": "^2.2.0",

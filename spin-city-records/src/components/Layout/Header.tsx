@@ -92,6 +92,7 @@ const currentUserId = user.user?.id;
               Artist
             </button>
           </Link>
+
         </div>
       </div>
       <div className="w-fit flex-col justify-center">
