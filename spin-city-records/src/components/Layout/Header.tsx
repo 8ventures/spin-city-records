@@ -26,9 +26,8 @@ export default function Header() {
           }}
           className="max-h-full max-w-full cursor-pointer"
         />
-        <div className=" mt-5 flex flex-col items-center px-8 xl:w-full xl:flex-row">
-          <SearchAlbumsHome />
-          <div className="flex flex-col items-center sm:flex-row">
+        <div className="mt-12 flex flex-col px-8 xl:w-full xl:flex-row">
+          <div className="flex flex-col sm:flex-row">
             <button className="button-class">Categories</button>
             <button className="button-class">Collections</button>
             <button className="button-class">Rare</button>
@@ -46,15 +45,15 @@ export default function Header() {
             </Link>
           </div>
         </div>
-        <div className="w-fit flex-col justify-center">
+        <div className="flex w-full flex-col items-end justify-center">
           <div className="flex items-center">
             <div
               onClick={() => router.push("/cart")}
               className=" justify-cent mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
             >
-              <ShoppingBagIcon className="h-10 w-10 text-white" />
+              <ShoppingBagIcon className="mb-3 h-10 w-10 text-white" />
             </div>
-            <div className="mx-2 w-10 text-white">
+            <div className="mx-2 mb-3 w-10 text-white">
               {!user.isSignedIn && <SignInButton />}
               {user.isSignedIn && (
                 <div className="">
@@ -63,6 +62,7 @@ export default function Header() {
               )}
             </div>
           </div>
+          <SearchAlbumsHome />
         </div>
         {/* <CurrencySelect /> */}
       </nav>
