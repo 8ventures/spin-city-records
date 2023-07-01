@@ -24,7 +24,7 @@ function ArtistPage() {
             alt={artist.name}
           />
         </div>
-        <div className="al m-10 w-[32rem] rounded-3xl border-2 bg-black p-5 text-center text-lg text-white">
+        <div className="al m-10 w-[32rem] bg-black p-5 text-center text-lg text-white">
           <span className="text-3xl font-bold">{artist.name}</span>
           <br />
           <br />
@@ -34,7 +34,7 @@ function ArtistPage() {
       <div className="m-10 flex flex-row justify-evenly">
         {artist.albums.map((album) => (
           <div
-            className="rounded-xl border-2 bg-black p-5 text-center text-xl font-bold text-white"
+            className=" bg-black p-5 text-center text-xl font-bold text-white"
             key={album.id}
           >
             <img className="mb-5" src={album.artwork} alt={album.name} />

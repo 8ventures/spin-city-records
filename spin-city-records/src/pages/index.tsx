@@ -37,7 +37,7 @@ export default function Home() {
     <Layout>
       <Carousel />
       <section>
-        <h1 className="mt-8 text-center font-Belanosima text-3xl font-bold text-white">
+        <h1 className="mt-8 text-center text-3xl font-bold text-white">
           SHOP MUSIC
         </h1>
         <MusicSection title="Recently Added" collection={recentlyAdded} />

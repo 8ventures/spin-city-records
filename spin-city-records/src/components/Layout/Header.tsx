@@ -5,22 +5,19 @@ import SearchAlbumsHome from "~/components/SearchAlbumsHome";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  ShoppingBagIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/solid";
+import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 // import CurrencySelect from "./CurrencySelect";
 
 export default function Header() {
   const router = useRouter();
-  const user  = useUser();
+  const user = useUser();
   const [searchText, setSearchText] = useState("");
   const [isSelected, setIsSelected] = useState(false);
-console.log(user.user?.id);
-const currentUserId = user.user?.id;
+  console.log(user.user?.id);
+  const currentUserId = user.user?.id;
   return (
-    <div className="flex justify-center border-b border-[#A1A1A1] bg-black min-w-full">
-      <nav className="min-h-34 mb-4 flex w-full flex-col max-w-screen-2xl items-center justify-between  px-6 py-4 lg:flex-row ">
+    <div className="flex min-w-full justify-center border-b border-[#A1A1A1] bg-black">
+      <nav className="min-h-34 mb-4 flex w-full max-w-screen-2xl flex-col items-center justify-between  px-6 py-4 lg:flex-row ">
         <Image
           src={logo}
           alt="logo"
@@ -32,34 +29,21 @@ const currentUserId = user.user?.id;
         <div className=" mt-5 flex flex-col items-center px-8 xl:w-full xl:flex-row">
           <SearchAlbumsHome />
           <div className="flex flex-col items-center sm:flex-row">
-            <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
-              Categories
-            </button>
-            <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
-              Collections
-            </button>
-            <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
-              Rare
-            </button>
-            <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
-              Sellers
-            </button>
-
+            <button className="button-class">Categories</button>
+            <button className="button-class">Collections</button>
+            <button className="button-class">Rare</button>
+            <button className="button-class">Sellers</button>
             <button
               onClick={() => {
                 router.push(`/profile/${currentUserId}`);
               }}
-              className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+              className="button-class"
             >
               Profile
             </button>
-
             <Link href="/artist">
-              <button className="m-2 flex justify-center rounded-lg border  bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
-                Artist
-              </button>
+              <button className="button-class">Artist</button>
             </Link>
-
           </div>
         </div>
         <div className="w-fit flex-col justify-center">

@@ -5,7 +5,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        Belanosima: ["Belanosima", "sans-serif"],
+        DMSerif: ["DM Serif Display", "serif"],
+        DMSans: ["DM Sans", "sans-serif"],
       },
     },
   },
