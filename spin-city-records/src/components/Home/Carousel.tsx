@@ -54,7 +54,7 @@ export default function Carousel() {
             className="absolute inset-0 object-cover"
             priority
           />
-          <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 font-Belanosima text-2xl">
+          <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 text-2xl">
             Welcome to Spin City Records, a unique online marketplace built by
             vinyl enthusiasts, for vinyl enthusiasts. We connect sellers and
             buyers, facilitating the exchange of vinyl records from every corner
@@ -69,7 +69,7 @@ export default function Carousel() {
             className="absolute inset-0 object-cover"
             priority
           />
-          <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 font-Belanosima text-2xl">
+          <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 text-2xl">
             Our platform ensures a smooth, secure trading experience, with
             quality at the forefront. Whether you're browsing to buy or looking
             to list, our user-friendly interface makes it effortless.
@@ -82,7 +82,7 @@ export default function Carousel() {
             className="absolute inset-0 object-cover"
             priority
           />
-          <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 font-Belanosima text-2xl">
+          <p className="absolute inset-0 m-5 flex items-center justify-center bg-black bg-opacity-20 p-3 text-2xl">
             Join us at Spin City Records - your dedicated hub for buying and
             selling vinyl records. Let's keep the passion for vinyl alive and
             spinning!

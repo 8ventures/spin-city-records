@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="80" viewBox="0 0 400 80">
-  <rect width="400" height="80" rx="10" fill="#000" />
-  <text x="35" y="50" fill="#fff" font-family="Arial, sans-serif" font-size="40" font-weight="bold">Spin City</text>
-  <text x="35" y="80" fill="#fff" font-family="Arial, sans-serif" font-size="40">Records</text>
-  <circle cx="360" cy="40" r="30" fill="#FF5500" />
-  <path d="M351 40a9.5 9.5 0 0 1 19 0" fill="#FF5500" />
-  <path d="M366 35a5 5 0 0 1 10 0" fill="#FF5500" />
-  <path d="M366 45a5 5 0 0 1 10 0" fill="#FF5500" />
+
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80">
+  <defs>
+    <filter id="f1" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000000" />
+    </filter>
+  </defs>
+  <rect width="240" height="80" rx="10" fill="#000" />
+  <text x="30" y="50" fill="#fff" font-family="Arial, sans-serif" font-size="30" font-weight="bold" filter="url(#f1)">Spin City</text>
+  <text x="30" y="80" fill="#fff" font-family="Arial, sans-serif" font-size="30" font-weight="bold" filter="url(#f1)">Records</text>
+  <circle cx="200" cy="50" r="30" fill="#FF5500" />
 </svg>
 

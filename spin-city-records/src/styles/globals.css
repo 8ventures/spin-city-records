@@ -1,12 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
 
 html,
 body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
-  background-color: #000;
+  background-color: black;
+  font-family: "DM Sans", sans-serif;
 }
 
 /*
@@ -55,7 +58,10 @@ select {
 /*
   7. Avoid text overflows
 */
-p,
+p {
+  overflow-wrap: break-word;
+}
+
 h1,
 h2,
 h3,
@@ -63,6 +69,7 @@ h4,
 h5,
 h6 {
   overflow-wrap: break-word;
+  font-family: "DM Serif Display", serif;
 }
 /*
   8. Create a root stacking context
@@ -71,8 +78,6 @@ h6 {
 #__next {
   isolation: isolate;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Belanosima&display=swap");
 
 /* Set the width and height of the scrollbar */
 ::-webkit-scrollbar {
@@ -94,4 +99,8 @@ h6 {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1a1;
+}
+
+.button-class {
+  @apply m-2 inline-flex h-14 cursor-pointer select-none items-center justify-center rounded-xl border-2 border-solid border-gray-900 bg-transparent px-2 py-0 text-center align-middle font-semibold text-gray-200 transition-all duration-300 ease-in-out hover:border-cyan-200 hover:shadow-lg hover:shadow-cyan-500/50 focus:no-underline;
 }

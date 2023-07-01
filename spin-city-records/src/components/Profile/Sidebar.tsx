@@ -16,7 +16,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
   return (
     <button
       onClick={() => setActiveView(viewName)}
-      className="focus:shadow-xs m-10 inline-flex h-14 w-[230px] cursor-pointer select-none items-center justify-center rounded-full border-2 border-solid border-gray-600 bg-transparent px-10 py-0 text-center align-middle font-semibold text-gray-200 transition-all duration-300 ease-in-out hover:border-white hover:text-white focus:no-underline"
+      className="button-class w-[250px]"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,6 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ setActiveView }) => {
-
   return (
     <div className="m-10 flex h-[60rem] w-[20rem] flex-col rounded-xl bg-black text-white">
       <div>

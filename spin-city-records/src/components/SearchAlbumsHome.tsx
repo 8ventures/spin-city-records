@@ -22,9 +22,9 @@ interface Album {
 
 const styles = {
   input:
-    "h-12 w-full bg-transparent pl-12 text-white outline-none rounded-full border",
+    "h-12 w-full bg-transparent pl-12 text-white outline-none rounded-xl border",
   inputFocus:
-    "h-12 w-full bg-transparent pl-12 text-white outline-none rounded-full border-2 border-cyan-200 shadow-lg shadow-cyan-500/50",
+    "h-12 w-full bg-transparent pl-12 text-white outline-none rounded-xl border-2 border-cyan-200 shadow-lg shadow-cyan-500/50",
   query: "text-white placeholder-oldsilver-400",
   typeahead: "text-white border-white",
   cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-white inline-flex sm:hidden`,

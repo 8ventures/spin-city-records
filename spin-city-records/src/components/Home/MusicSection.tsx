@@ -29,7 +29,7 @@ const MusicSection: React.FC<MusicSectionProps> = ({ title, collection }) => {
 
   return (
     <div className="m-10">
-      <h3 className="font-Belanosime text-2xl font-bold text-white">{title}</h3>
+      <h3 className="text-2xl font-bold text-white">{title}</h3>
       <div className="m-10 flex overflow-x-auto rounded-xl bg-black pb-10">
         {collection.map((album) => (
           <div
