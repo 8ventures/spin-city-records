@@ -3,7 +3,7 @@ import { clerkClient } from "@clerk/nextjs";
 
 export const sellersRouter = createTRPCRouter({
   create: privateProcedure
-    .mutation(
+  .mutation(
       async ({ ctx }) => {
         try {
           // Create Stripe Account
@@ -13,6 +13,12 @@ export const sellersRouter = createTRPCRouter({
             business_type: 'individual'
           }) 
           // Add account to DB
+          const {url} = await ctx.stripe.accountLinks.create({
+            account: account?.id,
+            refresh_url: 'http://localhost:3000/profile/' + ctx.user.id,
+            return_url: 'http://localhost:3000/profile/' + ctx.user.id,
+            type: 'account_onboarding'
+          })
           await ctx.prisma.seller.create({
             data: {
               sellerId: account.id
@@ -25,12 +31,6 @@ export const sellersRouter = createTRPCRouter({
             }
           })
           
-          const {url} = await ctx.stripe.accountLinks.create({
-            account: account?.id,
-            refresh_url: 'http://localhost:3000/seller' + ctx.user.id,
-            return_url: 'http://localhost:3000/profile' + ctx.user.id,
-            type: 'account_onboarding'
-          })
           return url 
         } catch (e) {
           console.log(e)
