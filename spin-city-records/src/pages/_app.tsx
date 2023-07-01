@@ -7,7 +7,6 @@ import { CartProvider } from "~/components/CartContext";
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
    <ClerkProvider>
-
       <CartProvider>
         <Component {...pageProps} />
       </CartProvider>
