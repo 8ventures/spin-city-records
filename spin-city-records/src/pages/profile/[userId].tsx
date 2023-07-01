@@ -6,6 +6,7 @@ import Sidebar from "~/components/Profile/Sidebar";
 import WishList from "~/components/Profile/WishList";
 import { useRouter } from 'next/router'
 import CreateListingForm from "~/components/createListingForm";
+import OnboardingForm from "~/components/Profile/onboardingForm";
 function ProfilePage() {
   const [activeView, setActiveView] = useState("MyAlbums");
 
@@ -20,7 +21,9 @@ function ProfilePage() {
       default:
         return <MyAlbums />;
       case "AddListing":
-        return <CreateListingForm/>
+        return <CreateListingForm/>;
+      case "OnboardingForm":
+        return <OnboardingForm/>;
     }
   };
 

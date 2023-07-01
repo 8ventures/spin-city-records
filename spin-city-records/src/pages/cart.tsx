@@ -7,6 +7,10 @@ import getSymbolFromCurrency from "currency-symbol-map";
 function Cart() {
   const { cart } = useContext(CartContext);
 
+  const handleCheckout = () => {
+    console.log('here')
+  }
+
   return (
     <Layout>
       <div className="h-screen text-white">
@@ -36,10 +40,11 @@ function Cart() {
               </div>
             </div>
           ))
-        ) : (
-          <div>Your cart is empty.</div>
-        )}
+          ) : (
+            <div>Your cart is empty.</div>
+            )}
       </div>
+            <button className=" text-2xl text-white " onClick={handleCheckout}>Checkout</button>
     </Layout>
   );
 }

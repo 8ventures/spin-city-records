@@ -1,3 +1,4 @@
+
 <svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80">
   <defs>
     <filter id="f1" x="-50%" y="-50%" width="200%" height="200%">
@@ -9,5 +10,4 @@
   <text x="30" y="80" fill="#fff" font-family="Arial, sans-serif" font-size="30" font-weight="bold" filter="url(#f1)">Records</text>
   <circle cx="200" cy="50" r="30" fill="#FF5500" />
 </svg>
-
 
