@@ -27,8 +27,8 @@ export const sellersRouter = createTRPCRouter({
           
           const {url} = await ctx.stripe.accountLinks.create({
             account: account?.id,
-            refresh_url: 'http://localhost:3000/seller',
-            return_url: 'http://localhost:3000/profile',
+            refresh_url: 'http://localhost:3000/seller' + ctx.user.id,
+            return_url: 'http://localhost:3000/profile' + ctx.user.id,
             type: 'account_onboarding'
           })
           return url 
