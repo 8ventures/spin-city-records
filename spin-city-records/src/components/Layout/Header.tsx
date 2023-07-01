@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
-import SearchAlbumsHome from "~/components/SearchAlbumsHome";
+import SearchAlbumsHome from "~/components/Create Listing/SearchAlbumsHome";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
