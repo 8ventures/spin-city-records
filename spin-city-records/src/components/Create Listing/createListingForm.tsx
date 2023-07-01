@@ -48,7 +48,13 @@ export default function CreateListingForm () {
         <div className="flex flex-col rounded-xl">
           <form className="flex flex-col p-4 rounded-xl" onSubmit={handleSubmit(onSubmit)}>
             <label className="my-2 text-xl text-white">Select Album</label>
-            {/* <SearchAlbumsForm setForm={setForm} /> */}
+            {/* <Controller
+                name="albumId"
+                control={control}
+                render={({ field }) => {
+                  return <SearchAlbumsForm ref={field.ref} field={field} />;
+                }}
+              /> */}
             <label className="my-2 text-xl text-white">Set Price</label>
             <div className="flex space-x-10">
               <div className="flex flex-col">
@@ -62,7 +68,7 @@ export default function CreateListingForm () {
                 name="currency"
                 control={control}
                 render={({ field }) => {
-                  return <SelectCurrency field={field} />;
+                  return <SelectCurrency ref={field.ref} field={field} />;
                 }}
               />
             </div>
@@ -72,28 +78,28 @@ export default function CreateListingForm () {
                 name="speed"
                 control={control}
                 render={({ field }) => {
-                  return <SelectSpeed field={field} />;
+                  return <SelectSpeed ref={field.ref} field={field} />;
                 }}
               />
               <Controller
                 name="weight"
                 control={control}
                 render={({ field }) => {
-                  return <SelectWeight field={field} />;
+                  return <SelectWeight ref={field.ref} field={field} />;
                 }}
               />
               <Controller
                 name="format"
                 control={control}
                 render={({ field }) => {
-                  return <SelectFormat field={field} />;
+                  return <SelectFormat ref={field.ref} field={field} />;
                 }}
               />
               <Controller
                 name="condition"
                 control={control}
                 render={({ field }) => {
-                  return <SelectCondition field={field} />;
+                  return <SelectCondition ref={field.ref} field={field} />;
                 }}
               />
             </div>

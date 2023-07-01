@@ -17,30 +17,35 @@ type selectCurrencyProps = {
     editions: string;
 }, "currency">
 }
-export default function SelectCurrency ({field}: selectCurrencyProps) {
+const SelectCurrency  = React.forwardRef<HTMLButtonElement, selectCurrencyProps>(
+  ({field}, forwardedRef) => {
+    return (
+      <Select.Root onValueChange={field.onChange} name={field.name} value={field.value}>
+        <Select.Trigger
+          className="inline-flex bg-white text-black items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
+          aria-label="Condition"
+          ref={forwardedRef}
+        >
+          <Select.Value placeholder="Select Currency" />
+          <Select.Icon className="">
+            <ChevronDownIcon />
+          </Select.Icon>
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Content className="overflow-hidden bg-white rounded-xl">
+            <Select.Viewport className="p-[5px]">
+              <Select.Group>
+                <SelectItem value="gbp">GBP</SelectItem>
+                <SelectItem value="eur">EUR</SelectItem>
+                <SelectItem value="usd">USD</SelectItem>
+              </Select.Group>
+            </Select.Viewport>
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+    )
+  }
+)
+SelectCurrency.displayName = 'SelectCurrency';
 
-  return (
-    <Select.Root onValueChange={field.onChange}{...field}>
-      <Select.Trigger
-        className="inline-flex bg-white text-black items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
-        aria-label="Condition"
-      >
-        <Select.Value placeholder="Select Currency" />
-        <Select.Icon className="">
-          <ChevronDownIcon />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content className="overflow-hidden bg-white rounded-xl">
-          <Select.Viewport className="p-[5px]">
-            <Select.Group>
-              <SelectItem value="gbp">GBP</SelectItem>
-              <SelectItem value="eur">EUR</SelectItem>
-              <SelectItem value="usd">USD</SelectItem>
-            </Select.Group>
-          </Select.Viewport>
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
-  )
-}
+export default SelectCurrency;

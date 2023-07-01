@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Turnstone from "turnstone";
 import { api } from "~/utils/api";
 import SplitMatch from "split-match";
-
+import type { ControllerRenderProps } from "react-hook-form/dist/types";
+import Image from "next/image";
 interface SplitMatchProps {
   children: React.ReactNode;
 }
@@ -21,8 +22,18 @@ type SetForm = React.Dispatch<
   }>
 >;
 
-interface SearchAlbumsFormProps {
-  setForm: SetForm;
+type SearchAlbumsFormProps= {
+  field: ControllerRenderProps<{
+    price: number;
+    currency: string;
+    weight: string;
+    format: string;
+    description: string;
+    condition: string;
+    speed: string;
+    albumId: string;
+    editions: string;
+  }, "format">
 }
 interface Album {
   id: string;
@@ -56,111 +67,116 @@ const styles = {
 };
 
 
-const SearchAlbumsForm: React.FC<SearchAlbumsFormProps> = ({ setForm }) => {
-  //const [inputAlbum, setInputAlbum] = useState<string | null>(null);
+const SearchAlbumsForm = React.forwardRef<HTMLButtonElement, SearchAlbumsFormProps> (
+  ({ field }, forwardedRef) => {
+    //const [inputAlbum, setInputAlbum] = useState<string | null>(null);
 
-  const { data: albums } = api.albums.getAll.useQuery();
-  console.log(albums);
+    const { data: albums } = api.albums.getAll.useQuery();
+    console.log(albums);
 
-  const albumsData = albums;
-  const defaultListBox = albumsData;
-  const [selectedItem, setSelectedItem] = useState<Album | null>(null);
+    const albumsData = albums;
+    const defaultListBox = albumsData;
+    const [selectedItem, setSelectedItem] = useState<Album | null>(null);
 
-  useEffect(() => {
-    if (selectedItem && selectedItem.id) {
-      console.log("useEffect called", selectedItem);
-      setForm((prevForm) => ({ ...prevForm, albumId: selectedItem.id }));
-    }
-  }, [selectedItem]);
+    useEffect(() => {
+      if (selectedItem && selectedItem.id) {
+        console.log("useEffect called", selectedItem);
+      }
+    }, [selectedItem]);
 
-  const handleSelect = (item: Album, name: string, index: number) => {
-    setSelectedItem(item);
-  };
+    const handleSelect = (item: Album, name: string, index: number) => {
+      setSelectedItem(item);
+    };
 
-  // const handleSelect = (item: Album, name: string, index: number) => {
-  //   if (item && item.id) {
-  //     console.log('handleSelect called', item, name, index);
-  //     //console.log({item})
-  //     setForm(prevForm => ({ ...prevForm, albumId: item.id }));
-  //     //setInputAlbum(item.id);
-  //   }
-  // };
+    // const handleSelect = (item: Album, name: string, index: number) => {
+    //   if (item && item.id) {
+    //     console.log('handleSelect called', item, name, index);
+    //     //console.log({item})
+    //     setForm(prevForm => ({ ...prevForm, albumId: item.id }));
+    //     //setInputAlbum(item.id);
+    //   }
+    // };
 
-  const ItemContents: React.FC<{
-    index: number;
-    item: Album;
-    query: string;
-  }> = (props) => {
-    const { index, item, query } = props;
-    const img = () => {
+    const ItemContents: React.FC<{
+      index: number;
+      item: Album;
+      query: string;
+    }> = (props) => {
+      const { index, item, query } = props;
+      const img = () => {
+        return (
+          <div className="h-12 w-12">
+            <Image
+              src={item.artwork}
+              alt={item.name}
+              width={48}
+              height={48}
+            />
+          </div>
+        );
+      };
+
+      const matchedText = () => {
+        return (
+          <SplitMatch
+            searchText={query}
+            globalMatch={false}
+            globalSplit={false}
+            caseSensitiveMatch={false}
+            caseSensitiveSplit={false}
+            separator=","
+            MatchComponent={({ children }: SplitMatchProps) => (
+              <span className="font-semibold text-gray-800">{children}</span>
+            )}
+            SplitComponent={({ children }: SplitMatchProps) => (
+              <span>{children}</span>
+            )}
+          >
+            {item.name}
+          </SplitMatch>
+        );
+      };
+
       return (
-        <div className="h-12 w-12">
-          <img
-            src={item.artwork}
-            alt={item.name}
-            // className="h-full w-full rounded object-cover"
-          />
+        <div
+          className="flex cursor-pointer items-center space-x-2 rounded p-2 hover:bg-gray-100"
+          onClick={() => handleSelect(item, item.name, index)}
+        >
+          {img()}
+          {matchedText()}
         </div>
       );
     };
 
-    const matchedText = () => {
-      return (
-        <SplitMatch
-          searchText={query}
-          globalMatch={false}
-          globalSplit={false}
-          caseSensitiveMatch={false}
-          caseSensitiveSplit={false}
-          separator=","
-          MatchComponent={({ children }: SplitMatchProps) => (
-            <span className="font-semibold text-gray-800">{children}</span>
-          )}
-          SplitComponent={({ children }: SplitMatchProps) => (
-            <span>{children}</span>
-          )}
-        >
-          {item.name}
-        </SplitMatch>
-      );
-    };
+    const listbox = [
+      {
+        name: "albums",
+        data: albumsData,
+        searchType: "contains",
+        displayField: "name",
+      },
+    ];
 
     return (
-      <div
-        className="flex cursor-pointer items-center space-x-2 rounded p-2 hover:bg-gray-100"
-        onClick={() => handleSelect(item, item.name, index)}
-      >
-        {img()}
-        {matchedText()}
-      </div>
+      <Turnstone
+        Item={ItemContents}
+        autoFocus={true}
+        cancelButton={true}
+        clearButton={true}
+        defaultListbox={defaultListBox}
+        defaultListboxIsImmutable={false}
+        id="album"
+        noItemsMessage="no results"
+        listbox={listbox}
+        matchText={true}
+        styles={styles}
+        onSelect={field.onChange}
+        placeholder="Search Albums..."
+        ref={forwardedRef}
+      />
     );
-  };
+  }
+)
 
-  const listbox = [
-    {
-      name: "albums",
-      data: albumsData,
-      searchType: "contains",
-      displayField: "name",
-    },
-  ];
-
-  return (
-    <Turnstone
-      Item={ItemContents}
-      autoFocus={true}
-      cancelButton={true}
-      clearButton={true}
-      defaultListbox={defaultListBox}
-      defaultListboxIsImmutable={false}
-      id="album"
-      noItemsMessage="no results"
-      listbox={listbox}
-      matchText={true}
-      styles={styles}
-      onSelect={handleSelect}
-      placeholder="Search Albums..."
-    />
-  );
-};
+SearchAlbumsForm.displayName = 'SearchAlbumsForm'
 export default SearchAlbumsForm;
