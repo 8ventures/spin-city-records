@@ -2,11 +2,26 @@ import React from 'react';
 import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { SelectItem } from '../../components/selectItem'
+import type { ControllerRenderProps } from 'react-hook-form/dist/types/controller';
 
-export default function SelectFormat () {
+type selectFormatProps = {
+  field: ControllerRenderProps<{
+    price: number;
+    currency: string;
+    weight: string;
+    format: string;
+    description: string;
+    condition: string;
+    speed: string;
+    albumId: string;
+    editions: string;
+  }, "format">
+}
+
+export default function SelectFormat ({field}: selectFormatProps) {
 
   return (
-    <Select.Root>
+    <Select.Root onValueChange={field.onChange} {...field}>
       <Select.Trigger
         className="inline-flex bg-white text-black items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
         aria-label="Format"

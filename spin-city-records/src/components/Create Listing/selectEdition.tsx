@@ -2,11 +2,21 @@ import React from 'react';
 import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { SelectItem } from '../../components/selectItem'
-import { api } from '~/utils/api';
-import { Edition } from '~/utils/types';
+import type { ControllerRenderProps } from 'react-hook-form';
 
 type SelectEditionProps = {
-  editions: { id: number; type: string; }[]
+  editions: { id: number; type: string; }[],
+  field: ControllerRenderProps<{
+    price: number;
+    currency: string;
+    weight: string;
+    format: string;
+    description: string;
+    condition: string;
+    speed: string;
+    albumId: string;
+    editions: string;
+    }, "editions">
 }
 
 export default function SelectEdition ({editions}: SelectEditionProps) {
