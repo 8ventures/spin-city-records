@@ -41,14 +41,16 @@ export default function OnboardingForm() {
         className=" h-24 w-48"
         />
       </div>
-      {isLoading || isSuccess? (
-        <Spinner/>
-        ) : (
-          <button className="text-white w-fit h-fit text-2xl mt-5" onClick={handleClick}>
-            Accept and Continue
-          </button>
-        )
-      }
+      <div className="mt-5">
+        {isLoading || isSuccess? (
+          <Spinner/>
+          ) : (
+            <button className="text-white text-2xl" onClick={handleClick}>
+              Accept and Continue
+            </button>
+          )
+        }
+      </div>
     </div>
   )
 }

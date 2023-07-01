@@ -159,7 +159,7 @@ const SearchAlbumsForm: React.FC<SearchAlbumsFormProps> = ({ setForm }) => {
       matchText={true}
       styles={styles}
       onSelect={handleSelect}
-      placeholder="Choose album"
+      placeholder="Search Albums..."
     />
   );
 };

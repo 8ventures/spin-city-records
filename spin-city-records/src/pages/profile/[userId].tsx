@@ -5,7 +5,7 @@ import Selling from "~/components/Profile/Selling";
 import Sidebar from "~/components/Profile/Sidebar";
 import WishList from "~/components/Profile/WishList";
 import { useRouter } from 'next/router'
-import CreateListingForm from "~/components/createListingForm";
+import CreateListingForm from "~/components/Create Listing/createListingForm";
 import OnboardingForm from "~/components/Profile/onboardingForm";
 function ProfilePage() {
   const [activeView, setActiveView] = useState("MyAlbums");
