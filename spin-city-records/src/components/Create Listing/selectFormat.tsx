@@ -11,7 +11,7 @@ export default function SelectFormat () {
         className="inline-flex bg-white text-black items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
         aria-label="Format"
       >
-        <Select.Value placeholder="Select format..." />
+        <Select.Value placeholder="Select Format" />
         <Select.Icon className="">
           <ChevronDownIcon />
         </Select.Icon>

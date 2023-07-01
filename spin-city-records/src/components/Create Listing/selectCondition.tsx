@@ -11,7 +11,7 @@ export default function SelectConditon () {
         className="inline-flex bg-white text-black items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
         aria-label="Condition"
       >
-        <Select.Value placeholder="Select condition..." />
+        <Select.Value placeholder="Select Condition" />
         <Select.Icon className="">
           <ChevronDownIcon />
         </Select.Icon>

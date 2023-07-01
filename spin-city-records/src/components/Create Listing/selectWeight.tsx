@@ -11,7 +11,7 @@ export default function SelectWeight () {
         className="inline-flex bg-white text-black items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
         aria-label="Weight"
       >
-        <Select.Value placeholder="Select weight..." />
+        <Select.Value placeholder="Select Weight" />
         <Select.Icon className="">
           <ChevronDownIcon />
         </Select.Icon>
