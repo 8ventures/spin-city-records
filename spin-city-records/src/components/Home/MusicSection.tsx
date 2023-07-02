@@ -9,6 +9,15 @@ interface MusicSectionProps {
 const MusicSection: React.FC<MusicSectionProps> = ({ title, collection }) => {
   const router = useRouter();
 
+  const handleClick = (album: Album) => {
+    const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
+    const normalizedAlbum = album.name.replace(/\s+/g, "-");
+    router.push({
+      pathname: `/${normalizedArtist}/${normalizedAlbum}`,
+      query: { id: album.id },
+    });
+  };
+
   const getLowestPrice = (album: Album, exchangeRate: number) => {
     if (album.listings.length === 0) {
       return 0;
@@ -21,10 +30,6 @@ const MusicSection: React.FC<MusicSectionProps> = ({ title, collection }) => {
       }
     });
     return lowestPrice;
-  };
-
-  const handleClick = (album: Album) => {
-    router.push(`/album/${album.id}`);
   };
 
   return (
