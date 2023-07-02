@@ -75,6 +75,10 @@ export const listingsRouter = createTRPCRouter({
       try {
         const listings = await ctx.prisma.listing.findMany({
           where: { albumId },
+          include: {
+            edition: true,
+            seller: true,
+          },
         });
         return listings;
       } catch (e) {

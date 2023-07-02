@@ -6,7 +6,7 @@ export default function Footer() {
   const router = useRouter();
   return (
     <>
-      <footer className="flex justify-center border-t border-[#A1A1A1] bg-black min-w-full">
+      <footer className="relative bottom-0 flex min-w-full justify-center border-t border-[#A1A1A1] bg-black">
         <hr className="h-px border-0 bg-gray-200 dark:bg-gray-700"></hr>
         <div className="flex justify-evenly bg-black text-white">
           <div className="flex items-center">

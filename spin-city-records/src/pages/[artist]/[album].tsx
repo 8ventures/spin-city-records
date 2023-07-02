@@ -1,184 +1,185 @@
 import { useState, useEffect, createContext, useContext } from "react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+
 import { useRouter } from "next/router";
 import NextError from "next/error";
 import Image from "next/image";
-import Layout from "~/components/Layout/Layout";
+
 import { api } from "~/utils/api";
 import { Album, Listing } from "~/utils/types";
 
-type GetResult<T extends object> = {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-} & T;
-type AlbumResult = GetResult<Album>;
-type ListingResult = GetResult<Listing>;
+import Layout from "~/components/Layout/Layout";
+import ListingInfoCard from "~/components/Album/ListingInfoCard";
 
 export default function AlbumPage() {
-  // State
-  const [currentAlbum, setCurrentAlbum] = useState<Album | undefined>();
-  const [currentListing, setCurrentListing] = useState<Listing | undefined>();
-  const [listings, setListings] = useState<Listing[] | undefined>([]);
-
   //Data Fetching
-  //TODO Error Handling
   const router = useRouter();
   const id = router.query.id as string;
   const {
     data: albumQueryData,
+    error: albumQueryError,
     isLoading: albumQueryLoading,
-    isError: albumQueryError,
+    isError: albumQueryIsError,
     isSuccess: albumQuerySuccess,
-  } = api.albums.getById.useQuery<AlbumResult | undefined>({ id: id });
+  } = api.albums.getById.useQuery<Album | undefined>({ id: id });
   const {
     data: listingQueryData,
+    error: listingQueryError,
     isLoading: listingQueryLoading,
-    isError: listingQueryError,
+    isError: listingQueryIsError,
     isSuccess: listingQuerySuccess,
-  } = api.listings.getByAlbumId.useQuery<ListingResult[] | undefined>({
+  } = api.listings.getByAlbumId.useQuery<Listing[] | undefined>({
     albumId: id,
   });
 
-  if (albumQuerySuccess && albumQueryData) {
-    setCurrentAlbum(albumQueryData);
+  // Error Handling
+  if (albumQueryIsError || listingQueryIsError) {
+    return (
+      <NextError
+        title={albumQueryError?.message ?? listingQueryError?.message}
+        statusCode={
+          albumQueryError?.data?.httpStatus ??
+          listingQueryError?.data?.httpStatus ??
+          500
+        }
+      />
+    );
   }
 
-  return albumQuerySuccess && albumQueryData ? (
-    <Layout>
-      <div className="flex flex-col">
-        <div className="flex flex-col md:flex-row">
-          <Image
-            src={albumQueryData.artwork}
-            width={300}
-            height={300}
-            alt="Album Artwork"
-          />
+  // State
+  const [currentListing, setCurrentListing] = useState<Listing | undefined>();
+  const [filterPrice, setFilterPrice] = useState("");
+
+  return (
+    albumQuerySuccess &&
+    albumQueryData && (
+      <Layout>
+        <div className="flex flex-1 flex-col text-white">
+          <div className="space-around m-16 flex flex-1 flex-col justify-center xl:flex-row">
+            <div className="w-400 h-400 aspect-w-1 aspect-h-1 xl:mx-6">
+              <Image
+                src={albumQueryData.artwork}
+                width={400}
+                height={400}
+                alt={`Artwork for ${albumQueryData.name} by ${albumQueryData.artist.name}`}
+              />
+            </div>
+            <div className="flex flex-col">
+              <div className="">
+                <span className="mx-6 my-2 block text-6xl">
+                  {albumQueryData.name}
+                </span>
+                <span className="mx-6 my-2  block text-4xl">
+                  {albumQueryData.artist.name}
+                </span>
+                <span className="mx-6 my-2  block text-2xl">
+                  {albumQueryData.year}, {albumQueryData.label}
+                </span>
+              </div>
+
+              {!currentListing && listingQueryData && (
+                <>
+                  <span className="mx-6 my-4 text-3xl">
+                    Starting from{" "}
+                    <span className="inline-block font-semibold">
+                      {listingQueryData[0]?.price}{" "}
+                      {listingQueryData[0]?.currency}
+                    </span>
+                  </span>
+                </>
+              )}
+
+              {listingQueryData && listingQueryData.length === 0 && (
+                <>
+                  <span className="mx-6 my-4 text-3xl">Not available</span>
+                </>
+              )}
+
+              {listingQueryData &&
+                listingQueryData.length !== 0 &&
+                currentListing && (
+                  <div className=" text-white">
+                    <span className="mx-6 my-4  block text-4xl font-semibold">
+                      {listingQueryData[0]!.price}{" "}
+                      {listingQueryData[0]!.currency}
+                    </span>
+                    <span className="mx-6 my-2 block">
+                      <span className="font-semibold">Condition: </span>
+                      {listingQueryData[0]!.condition}
+                    </span>
+                    <span className="mx-6 my-2 block">
+                      <span className="font-semibold">Weight : </span>{" "}
+                      {listingQueryData[0]!.weight}
+                    </span>
+                    <span className="mx-6 my-2 block">
+                      <span className="font-semibold">Format : </span>{" "}
+                      {listingQueryData[0]!.format}
+                    </span>
+                    <span className="mx-6 my-2 block">
+                      <span className="font-semibold">Speed : </span>{" "}
+                      {listingQueryData[0]!.speed}
+                    </span>
+
+                    {listingQueryData[0]?.edition &&
+                      listingQueryData[0].edition.length > 0 && (
+                        <>
+                          <span className="mx-6 my-2 block">
+                            <span className="text-yellow font-semibold">
+                              Edition :{" "}
+                            </span>{" "}
+                            {listingQueryData[0].edition.map(
+                              (edition, index) => (
+                                <span key={index}>
+                                  {index > 0 && ", "} {edition.type}
+                                </span>
+                              )
+                            )}
+                          </span>
+                        </>
+                      )}
+                  </div>
+                )}
+            </div>
+          </div>
+          <div className="flex flex-col text-white">
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>Filter By Price</DropdownMenu.Trigger>
+
+              <DropdownMenu.Content>
+                <DropdownMenu.Label>Select a Price Range</DropdownMenu.Label>
+                <DropdownMenu.Item onSelect={() => setFilterPrice("100")}>
+                  Less than $100
+                </DropdownMenu.Item>
+                <DropdownMenu.Item onSelect={() => setFilterPrice("500")}>
+                  Less than $500
+                </DropdownMenu.Item>
+                <DropdownMenu.Item onSelect={() => setFilterPrice("1000")}>
+                  Less than $1000
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Separator />
+
+                <DropdownMenu.Item onSelect={() => setFilterPrice("")} disabled>
+                  Clear Filter
+                </DropdownMenu.Item>
+
+                <DropdownMenu.Arrow />
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+
+            <div className="text-white">
+              {listingQueryData?.map((listing, index) => (
+                <div key={index}>
+                  <ListingInfoCard
+                    listing={listingQueryData[index]}
+                    setCurrentListing={setCurrentListing}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </Layout>
-  ) : (
-    <div>Loading...</div>
+      </Layout>
+    )
   );
 }
-
-// if (listingQueryData && !listingQueryLoading && !listingQueryError) {
-//   setListings(listingQueryData);
-// }
-
-// useEffect(() => {
-//   console.log("albumQueryData", albumQueryData);
-//   console.log("listingQueryData", listingQueryData);
-// }, [albumQueryData, listingQueryData]);
-
-/* <div className="flex flex-col xl:flex-row">
-// <div className="container  m-2 w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-2 xl:w-7/12">
-//   <AlbumInfoCard album={album} listing={currentListing} />
-// </div>
-// <div className="container m-2  w-full overflow-auto rounded-lg border border-[#333333] bg-black p-6 xl:order-1 xl:w-5/12">
-//   <div className=" max-h-[calc(50vh)]">
-//     <h2 className="text-2xl font-bold text-white">Listings</h2>
-
-//     {listings.length === 0 && (
-//       <div className="text-white">No listings found.</div>
-//     )}
-//     <ListingList
-//       listings={listings}
-//       setCurrentListing={setCurrentListing}
-//     />
-//   </div>
-// </div>
-// </div> */
-
-// // const sellerExample = {
-// //   id: "seller123",
-// //   name: "John Doe",
-// //   email: "johndoe@example.com",
-// //   location: {
-// //     city: "New York City",
-// //     state: "New York",
-// //     country: "United States",
-// //     address: "123 Main Street",
-// //     postalCode: "10001",
-// //   },
-// //   rating: 4.5,
-// //   listings: [
-// //     {
-// //       id: "listing1",
-// //       createdAt: "2023-06-24T12:00:00Z",
-// //       updatedAt: "2023-06-24T12:00:00Z",
-// //       sellerID: "seller123",
-// //       albumID: "album1",
-// //       price: 25.99,
-// //       currency: "USD",
-// //       condition: "Near Mint",
-// //       weight: "standard",
-// //       format: "12''",
-// //       speed: "33RPM",
-// //       edition: ["colored", "limited edition"],
-// //       description:
-// //         "Limited edition colored vinyl in near mint condition. Comes with original sleeve.",
-// //     },
-// //     {
-// //       id: "listing2",
-// //       createdAt: "2023-06-25T09:30:00Z",
-// //       updatedAt: "2023-06-25T09:30:00Z",
-// //       sellerID: "seller123",
-// //       albumID: "album2",
-// //       price: 19.99,
-// //       currency: "USD",
-// //       condition: "Excellent",
-// //       weight: "standard",
-// //       format: "7''",
-// //       speed: "45RPM",
-// //       edition: [],
-// //       description: "Classic 7'' vinyl single in excellent condition.",
-// //     },
-// //   ],
-// // };
-
-// // const [currentListing, setCurrentListing] = useState<Listing | undefined>();
-
-// // const [listings, setListings] = useState<Listing[] | undefined>([]);
-// // const [currentAlbum, setCurrentAlbum] = useState<Album | undefined>(
-// //   albumQueryData
-// // );
-
-// // useEffect(() => {
-// //   if (albumQuery.status === "success") {
-// //     setAlbum(albumQuery.data);
-// //   }
-// // }, [albumQuery]);
-
-// // useEffect(() => {
-// //   if (listingQuery.status === "success") {
-// //     setListings(listingQuery.data);
-// //   }
-// // }, [listingQuery]);
-
-// // if (albumQuery.error) {
-// //   return (
-// //     <NextError
-// //       title={albumQuery.error.message}
-// //       statusCode={albumQuery.error.data?.httpStatus ?? 500}
-// //     />
-// //   );
-// // }
-
-// // if (listingQuery.error) {
-// //   return (
-// //     <NextError
-// //       title={listingQuery.error.message}
-// //       statusCode={listingQuery.error.data?.httpStatus ?? 500}
-// //     />
-// //   );
-// // }
-// // if (albumQuery.status !== "success" || listingQuery.status !== "success") {
-// //   return (
-// //     <Layout>
-// //       <div className="flex flex-col md:flex-row">
-// //         <div className="container  m-2 h-96 w-full animate-pulse rounded-lg border border-[#333333] bg-zinc-900/70 p-6 md:order-2 md:w-2/3"></div>
-// //         <div className="container m-2  h-96 w-full animate-pulse rounded-lg border border-[#333333] bg-zinc-900/70 p-6 md:order-1 md:w-1/3"></div>
-// //       </div>
-// //     </Layout>
-// //   );
-// // }  *}
