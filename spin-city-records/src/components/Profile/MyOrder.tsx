@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 
-function MyAlbums() {
+function MyOrders() {
   const albumQuery = api.albums.getAll.useQuery();
   const albums = albumQuery.data;
 
@@ -22,4 +22,4 @@ function MyAlbums() {
   );
 }
 
-export default MyAlbums;
+export default MyOrders;
