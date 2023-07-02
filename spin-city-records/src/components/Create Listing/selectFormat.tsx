@@ -14,7 +14,7 @@ type selectFormatProps = {
     condition: string;
     speed: string;
     albumId: string;
-    editions: string;
+    editions: {value: string}[];
   }, "format">
 }
 

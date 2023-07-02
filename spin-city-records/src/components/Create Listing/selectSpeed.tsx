@@ -14,7 +14,7 @@ type selectSpeedProps = {
     condition: string;
     speed: string;
     albumId: string;
-    editions: string;
+    editions: {value: string}[];
   }, "speed">
 }
 

@@ -15,8 +15,8 @@ type SelectEditionProps = {
     condition: string;
     speed: string;
     albumId: string;
-    editions: string;
-    }, "editions">
+    editions: {value: string}[];
+    }, `editions.${number}.value`>
 }
 
 const SelectEdition = React.forwardRef<HTMLButtonElement, SelectEditionProps>(

@@ -16,7 +16,7 @@ type SetForm = React.Dispatch<
     format: string;
     speed: string;
     description: string;
-    edition: { type: string }[];
+    edition: { value: string }[];
     condition: string;
     albumId: string;
   }>
@@ -32,8 +32,8 @@ type SearchAlbumsFormProps= {
     condition: string;
     speed: string;
     albumId: string;
-    editions: string;
-  }, "format">
+    editions: {value: string}[];
+  }, "albumId">
 }
 interface Album {
   id: string;
@@ -48,7 +48,7 @@ interface Album {
 
 const styles = {
   input:
-    "w-full h-12 border border-crystal-400 py-2 pl-5 pr-9 text-xl text-white outline-none rounded-md bg-black",
+    "w-full h-12 border border-crystal-400 py-2 pl-5 pr-9 text-xl text-white outline-none rounded-xl bg-black",
   inputFocus:
     "w-full h-12 border-x-0 border-t-0 border-b border-crystal-500 py-2 pl-5 pr-9 text-xl text-white outline-none sm:rounded-md sm:border bg-black",
   query: "text-white placeholder-oldsilver-400",
