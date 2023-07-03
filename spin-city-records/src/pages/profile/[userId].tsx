@@ -1,48 +1,87 @@
-import { useState } from "react";
-import Layout from "~/components/Layout/Layout";
-import MyAlbums from "~/components/Profile/MyAlbums";
-import Selling from "~/components/Profile/Selling";
-import Sidebar from "~/components/Profile/Sidebar";
-import WishList from "~/components/Profile/WishList";
-import { useRouter } from 'next/router'
-import CreateListingForm from "~/components/Create Listing/createListingForm";
-import OnboardingForm from "~/components/Profile/onboardingForm";
-function ProfilePage() {
-  const [activeView, setActiveView] = useState("MyAlbums");
+import { useState, useEffect } from "react";
+import { useUser } from "@clerk/clerk-react";
+import { useRouter } from "next/router";
+import Layout from "../../components/Layout/Layout";
+import MyOrders from "../../components/Profile/MyOrder";
+import Selling from "../../components/Profile/Selling";
+import WishList from "../../components/Profile/WishList";
+import CreateListingForm from "../../components/createListingForm";
+import OnboardingForm from "../../components/Profile/onboardingForm";
+import ProfilePageButton from "../../components/Profile/ProfilePageButton";
+import Messages from "../../components/Profile/Messages";
+import Settings from "../../components/Profile/Settings";
 
-  const getView = () => {
-    switch (activeView) {
-      case "MyAlbums":
-        return <MyAlbums />;
-      case "WishList":
-        return <WishList />;
-      case "Selling":
-        return <Selling />;
-      default:
-        return <MyAlbums />;
-      case "AddListing":
-        return <CreateListingForm/>;
-      case "OnboardingForm":
-        return <OnboardingForm/>;
+const profilePages = [
+  { label: "Wish List", page: "wishList" },
+  { label: "My Orders", page: "myOrders" },
+  { label: "Messages", page: "messages" },
+  { label: "Start Selling", page: "startSelling" },
+  { label: "Selling", page: "selling" },
+  { label: "Create Listing", page: "createListing" },
+  { label: "Settings", page: "settings" },
+];
+
+const pageComponents = {
+  wishList: WishList,
+  myOrders: MyOrders,
+  messages: Messages,
+  startSelling: OnboardingForm,
+  selling: Selling,
+  createListing: CreateListingForm,
+  settings: Settings,
+};
+
+type Page =
+  | "wishList"
+  | "myOrders"
+  | "messages"
+  | "startSelling"
+  | "selling"
+  | "createListing"
+  | "settings";
+
+const ProfilePage = () => {
+  const router = useRouter();
+  const { user } = useUser();
+  const currentUserId = user?.id;
+  const pathArray = router.asPath.split("/");
+  const page = pathArray[pathArray.length - 1];
+
+  const [currentPage, setCurrentPage] = useState<Page>(
+    (page as Page) || "wishList"
+  );
+
+  useEffect(() => {
+    if (page && typeof page === "string") {
+      setCurrentPage(page as Page);
     }
+  }, [page]);
+
+  const PageComponent = pageComponents[currentPage] || WishList;
+
+  const handleClick = (page: Page) => {
+    setCurrentPage(page);
+    router.push(`/profile/${currentUserId}/${page}`);
   };
 
-  // will be handy later
-  // const { data, error } = useUser(router.query.userId);
-  const router = useRouter()
-  // const user = useUser();
-  console.log(router.query.userId);
-  //simple example: <h1>Profile Page for User: {router.query.userId}</h1>
   return (
     <Layout>
-      <div className="flex">
-        <Sidebar setActiveView={setActiveView} />
-        <div className="m-10 flex h-[60rem] w-[80rem] flex-wrap justify-center rounded-xl bg-black text-white br" >
-          {getView()}
+      <div className="text-white">
+        <div className="mb-14 ml-28 w-96 border-b border-gray-200 text-gray-400 md:w-[790px]">
+          {profilePages.map(({ label, page }) => (
+            <ProfilePageButton
+              key={page}
+              label={label}
+              page={page}
+              currentPage={currentPage}
+              onClick={() => handleClick(page as Page)}
+            />
+          ))}
         </div>
+        <PageComponent />
       </div>
     </Layout>
   );
-}
+};
 
 export default ProfilePage;
