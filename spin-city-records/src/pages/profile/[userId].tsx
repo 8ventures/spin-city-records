@@ -5,7 +5,7 @@ import Layout from "../../components/Layout/Layout";
 import MyOrders from "../../components/Profile/MyOrder";
 import Selling from "../../components/Profile/Selling";
 import WishList from "../../components/Profile/WishList";
-import CreateListingForm from "../../components/createListingForm";
+import CreateListingForm from "../../components/Create Listing/createListingForm";
 import OnboardingForm from "../../components/Profile/onboardingForm";
 import ProfilePageButton from "../../components/Profile/ProfilePageButton";
 import Messages from "../../components/Profile/Messages";
@@ -67,7 +67,7 @@ const ProfilePage = () => {
   return (
     <Layout>
       <div className="text-white">
-        <div className="mb-14 ml-28 w-96 border-b border-gray-200 text-gray-400 md:w-[790px]">
+        <div className="mb-14 ml-28 w-96 text-gray-400 md:w-[790px]">
           {profilePages.map(({ label, page }) => (
             <ProfilePageButton
               key={page}
