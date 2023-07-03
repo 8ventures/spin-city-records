@@ -54,9 +54,9 @@ export default function AlbumPage() {
     albumQuerySuccess &&
     albumQueryData && (
       <Layout>
-        <div className="flex flex-1 flex-col text-white">
-          <div className="space-around m-16 flex flex-1 flex-col justify-center xl:flex-row">
-            <div className="w-400 h-400 aspect-w-1 aspect-h-1 xl:mx-6">
+        <div className="flex flex-col text-white ">
+          <div className="mx-auto my-16 flex flex-col items-center justify-center md:w-2/3 md:flex-row">
+            <div className="xl:mx-6">
               <Image
                 src={albumQueryData.artwork}
                 width={400}
@@ -66,13 +66,13 @@ export default function AlbumPage() {
             </div>
             <div className="flex flex-col">
               <div className="">
-                <span className="mx-6 my-2 block text-6xl">
+                <span className="mx-6 my-2 block text-center text-6xl md:text-left">
                   {albumQueryData.name}
                 </span>
-                <span className="mx-6 my-2  block text-4xl">
+                <span className="mx-6 my-2 block text-center text-4xl md:text-left">
                   {albumQueryData.artist.name}
                 </span>
-                <span className="mx-6 my-2  block text-2xl">
+                <span className="mx-6 my-2 block text-center text-2xl md:text-left">
                   {albumQueryData.year}, {albumQueryData.label}
                 </span>
               </div>
@@ -81,7 +81,7 @@ export default function AlbumPage() {
                 listingQueryData &&
                 listingQueryData.length !== 0 && (
                   <>
-                    <span className="mx-6 my-4 text-3xl">
+                    <span className="mx-6 my-2 block text-center text-3xl md:text-left">
                       Starting at{" "}
                       <span className="inline-block font-semibold">
                         {listingQueryData[0]?.price}{" "}
@@ -100,7 +100,7 @@ export default function AlbumPage() {
               {listingQueryData &&
                 listingQueryData.length !== 0 &&
                 currentListing && (
-                  <div className=" text-white">
+                  <div className="  text-white">
                     <span className="mx-6 my-4  block text-4xl font-semibold">
                       {listingQueryData[0]!.price}{" "}
                       {listingQueryData[0]!.currency}
@@ -143,7 +143,23 @@ export default function AlbumPage() {
                 )}
             </div>
           </div>
-          <div className="flex flex-col text-white">
+          <div className="mx-auto text-white">
+            {listingQueryData?.map((listing, index) => (
+              <div key={index}>
+                <ListingInfoCard
+                  listing={listingQueryData[index]}
+                  setCurrentListing={setCurrentListing}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </Layout>
+    )
+  );
+}
+{
+  /* <div className="flex flex-col text-white">
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>Filter By Price</DropdownMenu.Trigger>
 
@@ -169,19 +185,6 @@ export default function AlbumPage() {
               </DropdownMenu.Content>
             </DropdownMenu.Root>
 
-            <div className="text-white">
-              {listingQueryData?.map((listing, index) => (
-                <div key={index}>
-                  <ListingInfoCard
-                    listing={listingQueryData[index]}
-                    setCurrentListing={setCurrentListing}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Layout>
-    )
-  );
+
+          </div> */
 }
