@@ -34,16 +34,16 @@ export default function RatingStars({ rating }: RatingStarsProps) {
 
     for (let i = 0; i < 5; i++) {
       if (i < floorRating) {
-        stars.push(<div key={`star-${i}`}>{fullStar}</div>);
+        stars.push(<span key={`star-${i}`}>{fullStar}</span>);
       } else if (i === floorRating && decimalPart >= 0.25) {
-        stars.push(<div key={`star-${i}`}>{halfStar}</div>);
+        stars.push(<span key={`star-${i}`}>{halfStar}</span>);
       } else {
-        stars.push(<div key={`star-${i}`}>{emptyStar}</div>);
+        stars.push(<span key={`star-${i}`}>{emptyStar}</span>);
       }
     }
 
     return stars;
   };
 
-  return <div className="mt-1 flex items-center">{renderStars()}</div>;
+  return <span className="flex flex-row items-center">{renderStars()}</span>;
 }
