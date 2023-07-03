@@ -43,6 +43,8 @@ export type Listing = {
   condition: string;
   speed: string;
   edition: Edition[];
+  stripeProduct: string;
+  stripePrice: string
   seller: Seller;
   stripeId: string;
   album: Album;

@@ -66,6 +66,8 @@ export const listingsRouter = createTRPCRouter({
             description: input.description,
             condition: input.condition,
             speed: input.speed,
+            stripePrice: newPrice.id,
+            stripeProduct: newProduct.id,
             seller: {
               connect: {
                 stripeId: stripeId,
@@ -104,6 +106,28 @@ export const listingsRouter = createTRPCRouter({
           },
         });
         return listings;
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+
+    getById: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+      try {
+        const listing = await ctx.prisma.listing.findUnique({
+          where: { id },
+          include: {
+            edition: true,
+            seller: true,
+          },
+        });
+        return listing;
       } catch (e) {
         console.log(e);
       }
