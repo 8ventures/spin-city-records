@@ -56,6 +56,8 @@ model Listing {
   description String    @db.Text
   condition   String
   speed       String
+  stripeProduct String
+  stripePrice String
   edition     Edition[]
   seller      Seller    @relation(fields: [stripeId], references: [stripeId])
   stripeId    String

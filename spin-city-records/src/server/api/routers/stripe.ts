@@ -1,7 +1,17 @@
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
+import { z } from "zod";
 
 export const stripeRouter = createTRPCRouter({
   checkoutSession: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        price: z.string(),
+        currency: z.string(),
+        stripeProduct: z.string(),
+        stripePrice: z.string()
+      })
+    )
     .mutation(
       async ({ ctx }) => {
         try {
