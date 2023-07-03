@@ -3,6 +3,7 @@ import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { SelectItem } from '../../components/selectItem'
 import type { ControllerRenderProps } from 'react-hook-form/dist/types';
+import type { Album } from './SearchAlbumsForm';
 
 type selectCurrencyProps = {
   field: ControllerRenderProps<{
@@ -13,7 +14,7 @@ type selectCurrencyProps = {
     description: string;
     condition: string;
     speed: string;
-    albumId: string;
+    album: Album;
     editions: {value: string}[];
 }, "currency">
 }

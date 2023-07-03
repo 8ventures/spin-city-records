@@ -3,6 +3,7 @@ import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { SelectItem } from '../../components/selectItem'
 import type { ControllerRenderProps } from 'react-hook-form';
+import type { Album } from './SearchAlbumsForm';
 
 type SelectEditionProps = {
   editions: { id: number; type: string; }[],
@@ -14,7 +15,7 @@ type SelectEditionProps = {
     description: string;
     condition: string;
     speed: string;
-    albumId: string;
+    album: Album;
     editions: {value: string}[];
     }, `editions.${number}.value`>
 }

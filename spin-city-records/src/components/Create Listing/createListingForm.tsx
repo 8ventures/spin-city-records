@@ -16,7 +16,16 @@ import { useRouter } from "next/router";
 import Spinner from '../../components/spinner'
 
 const validationSchema = z.object({
-  albumId: z.string(),
+  album: z.object({
+    artistId: z.string(),
+    artwork: z.string(),
+    createdAt: z.date(),
+    id: z.string(),
+    label: z.string(),
+    name: z.string(),
+    updatedAt: z.date(),
+    year: z.number()
+  }),
   price: z.number(),
   currency: z.string(),
   speed: z.string(),
@@ -36,7 +45,7 @@ export default function CreateListingForm () {
   
   const router = useRouter();
 
-  const { mutate: createListing, isSuccess, isLoading: isListingLoading } = api.listings.create.useMutation();
+  const { mutate: createListing, isSuccess, isLoading: isListingLoading } = api.listings.createListing.useMutation();
   
   const { data: editions, isLoading: isEditionsLoading, isError } = api.editions.getAll.useQuery();
   
@@ -51,9 +60,9 @@ export default function CreateListingForm () {
       .catch((e) => console.log(e))
   }
   
-  const onSubmit = (e) => {
+  const onSubmit = (e: ValidationSchema) => {
     console.log(e)
-    // createListing(e)
+    createListing(e)
   }
 
   return (
@@ -67,7 +76,7 @@ export default function CreateListingForm () {
           <form className="flex flex-col p-4 rounded-xl" onSubmit={handleSubmit(onSubmit)}>
             <label className="my-2 text-xl text-white">Select Album</label>
             <Controller
-                name="albumId"
+                name="album"
                 control={control}
                 render={({ field }) => {
                   return <SearchAlbumsForm ref={field.ref} field={field} />;
@@ -79,7 +88,7 @@ export default function CreateListingForm () {
                 <input
                   type="number"
                   className="rounded-xl border border-gray-300 bg-inherit text-white py-2 px-4"
-                  {...register("price")}
+                  {...register("price", {valueAsNumber: true}) }
                 />
               </div>
               <Controller

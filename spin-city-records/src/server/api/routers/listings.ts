@@ -4,6 +4,7 @@ import {
   publicProcedure,
   privateProcedure,
 } from "~/server/api/trpc";
+import { api } from "~/utils/api";
 
 export const listingsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -25,17 +26,28 @@ export const listingsRouter = createTRPCRouter({
         description: z.string(),
         condition: z.string(),
         speed: z.string(),
-        albumId: z.string(),
-        edition: z.array(z.object({ value: z.string() })),
+        album: z.object({
+          artistId: z.string(),
+          artwork: z.string(),
+          createdAt: z.date(),
+          id: z.string(),
+          label: z.string(),
+          name: z.string(),
+          updatedAt: z.date(),
+          year: z.number()
+        }),
+        editions: z.array(z.object({ value: z.string() })),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const editionArray = input.edition.map<{id: number}>((form) => ({id: Number(form.value)}))
+      const editionArray = input.editions.map<{id: number}>((form) => ({id: Number(form.value)}))
       const stripeId = ctx.user.privateMetadata.stripeId as string
+      console.log(input)
       try{
         const newProduct = await ctx.stripe.products.create({
-          name: input.albumId,
-          description: 'Testing testing',
+          name: input.album.name,
+          description: input.description,
+          images: [input.album.artwork],
           metadata: {
             'sellerId': stripeId,
           }
@@ -64,7 +76,7 @@ export const listingsRouter = createTRPCRouter({
             },
             album: {
               connect: {
-                id: input.albumId,
+                id: input.album.id,
               },
             },
           },
