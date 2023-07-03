@@ -3,7 +3,12 @@ import logo from "../../../public/logo.svg";
 import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import SearchAlbumsHome from "~/components/SearchAlbumsHome";
 import { useRouter } from "next/router";
-import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
+import Dropdown from "./Dropdown";
+import {
+  ShoppingBagIcon,
+  UserIcon,
+  EnvelopeIcon,
+} from "@heroicons/react/24/solid";
 // import CurrencySelect from "./CurrencySelect";
 
 export default function Header() {
@@ -30,13 +35,22 @@ export default function Header() {
             onClick={() => router.push(`/profile/${currentUserId}`)}
             className=" justify-cent mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
           >
-            <UserIcon className="mb-3 h-10 w-10 text-white" />
+            <UserIcon className="mb-5 h-10 w-10 text-white" />
           </div>
           <div
             onClick={() => router.push("/cart")}
             className="justify-cent mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
           >
-            <ShoppingBagIcon className="mb-3 h-10 w-10 text-white" />
+            <ShoppingBagIcon className="mb-5 h-10 w-10 text-white" />
+          </div>
+          <div
+            onClick={() => router.push("/")}
+            className=" justify-cent mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
+          >
+            <EnvelopeIcon className="mb-3 h-10 w-10 text-white" />
+          </div>
+          <div>
+            <Dropdown />
           </div>
           <div className="mx-2 mb-3 w-10 text-white">
             {!user.isSignedIn && <SignInButton />}
