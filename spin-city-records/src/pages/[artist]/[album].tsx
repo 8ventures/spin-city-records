@@ -1,17 +1,18 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-
+import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import NextError from "next/error";
 import Image from "next/image";
 
 import { api } from "~/utils/api";
-import { Album, Listing } from "~/utils/types";
+import { Listing } from "~/utils/types";
+import { CartContext } from "~/components/GlobalContext/CartContext";
 
 import Layout from "~/components/Layout/Layout";
 import ListingInfoCard from "~/components/Album/ListingInfoCard";
 
 export default function AlbumPage() {
+  //Global Context
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
   //Data Fetching
   const router = useRouter();
   const id = router.query.id as string;
@@ -47,8 +48,7 @@ export default function AlbumPage() {
   }
 
   // State
-  const [currentListing, setCurrentListing] = useState<Listing | undefined>();
-  const [filterPrice, setFilterPrice] = useState("");
+  const [currentListing, setCurrentListing] = useState<Listing>();
 
   return (
     albumQuerySuccess &&
@@ -157,34 +157,4 @@ export default function AlbumPage() {
       </Layout>
     )
   );
-}
-{
-  /* <div className="flex flex-col text-white">
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger>Filter By Price</DropdownMenu.Trigger>
-
-              <DropdownMenu.Content>
-                <DropdownMenu.Label>Select a Price Range</DropdownMenu.Label>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("100")}>
-                  Less than $100
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("500")}>
-                  Less than $500
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("1000")}>
-                  Less than $1000
-                </DropdownMenu.Item>
-
-                <DropdownMenu.Separator />
-
-                <DropdownMenu.Item onSelect={() => setFilterPrice("")} disabled>
-                  Clear Filter
-                </DropdownMenu.Item>
-
-                <DropdownMenu.Arrow />
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-
-
-          </div> */
 }

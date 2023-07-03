@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Album, Listing } from "~/utils/types";
 import Image from "next/image";
 import Button from "../Button";
-import { CartContext } from "../CartContext";
+import { CartContext } from "../GlobalContext/CartContext";
 
 interface AlbumInfoCardProps {
   album: Album;
