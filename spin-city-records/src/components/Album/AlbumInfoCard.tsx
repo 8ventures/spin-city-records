@@ -1,8 +1,12 @@
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Album, Listing } from "../../utils/types";
+import convertToGlobalCurrency from "../../utils/currencyConversion";
 import { CartContext } from "../GlobalContext/CartContext";
 import { WishlistContext } from "../GlobalContext/WishListContext";
-import Button from "../Button";
+import { CurrencyContext } from "../GlobalContext/CurrencyContext";
+import RatingStars from "./RatingStars";
+import { HeartIcon as EmptyHeart } from "@heroicons/react/24/outline";
+import { HeartIcon as FilledHeart } from "@heroicons/react/24/solid";
 
 interface AlbumInfoCardProps {
   album: Album;
@@ -15,53 +19,104 @@ export default function AlbumInfoCard({
   listings,
   currentListing,
 }: AlbumInfoCardProps) {
+  //Global Context
   const { cart, addToCart, removeFromCart } = useContext(CartContext);
   const { wishlist, addToWishlist, removeFromWishlist } =
     useContext(WishlistContext);
+  const { currency } = useContext(CurrencyContext);
 
-  const isInCart = currentListing
-    ? cart.some((item) => item.id === currentListing.id)
-    : false;
+  //State
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
+  const [lowestPriceListing, setLowestPriceListing] = useState<Listing>();
 
-  const isInWishlist = album
-    ? wishlist.some((item) => item.id === album.id)
-    : false;
+  //Logic
 
-  const handleClickCart = () => {
-    if (currentListing) {
-      if (isInCart) {
-        removeFromCart(currentListing);
-      } else {
-        addToCart(currentListing);
+  function findLowestPriceListing(listings: Listing[], currency: string) {
+    let lowestPriceListing: Listing | undefined = undefined;
+    let lowestPrice = Infinity;
+
+    listings.forEach((listing) => {
+      const convertedPrice = convertToGlobalCurrency(
+        listing.price,
+        listing.currency,
+        currency
+      );
+      if (convertedPrice < lowestPrice) {
+        lowestPrice = convertedPrice;
+        lowestPriceListing = listing;
       }
-    }
-  };
+    });
+    return lowestPriceListing;
+  }
 
   const handleClickWishlist = () => {
     if (album) {
       if (isInWishlist) {
         removeFromWishlist(album);
+        setIsInWishlist(false);
       } else {
         addToWishlist(album);
+        setIsInWishlist(true);
       }
     }
   };
-  console.log(album);
+
+  const handleClickCart = () => {
+    if (currentListing) {
+      if (isInCart) {
+        removeFromCart(currentListing);
+        setIsInCart(false);
+      } else {
+        addToCart(currentListing);
+        setIsInCart(true);
+      }
+    }
+  };
+
+  //Effects
+  useEffect(() => {
+    if (album) {
+      if (wishlist.some((wishlistAlbum) => wishlistAlbum.id === album.id)) {
+        setIsInWishlist(true);
+      } else {
+        setIsInWishlist(false);
+      }
+    }
+  }, [wishlist, album]);
+
+  useEffect(() => {
+    if (currentListing) {
+      if (cart.some((cartListing) => cartListing.id === currentListing.id)) {
+        setIsInCart(true);
+      } else {
+        setIsInCart(false);
+      }
+    }
+  }, [cart, currentListing]);
+
+  useEffect(() => {
+    if (listings.length !== 0) {
+      setLowestPriceListing(findLowestPriceListing(listings, currency));
+    }
+  }, [listings, currency]);
 
   return (
     <>
-      <div className="flex flex-col justify-center  text-white sm:flex-row">
-        <img
-          src={album.artwork}
-          alt={`Artwork for ${album.name} by ${album.artist.name}`}
-          className="mx-auto mb-2 mt-8 h-auto w-64 rounded-xl sm:mx-0 md:w-80 lg:w-96"
-        />
+      <div className="h-128 flex  flex-col justify-center text-white sm:flex-row">
+        <div className="mx-auto mb-10 mt-8 h-64 w-64 overflow-hidden rounded-xl sm:mx-0 md:h-96 md:w-96">
+          <img
+            src={album.artwork}
+            alt={`Artwork for ${album.name} by ${album.artist.name}`}
+            className="h-full w-full object-cover"
+          />
+        </div>
         <div className="my-4 flex flex-col text-center sm:my-8 sm:ml-8">
           <span className="text-2xl sm:text-left md:text-3xl xl:text-4xl">
             {album.name}
           </span>
           <span className="text-xl sm:text-left md:text-2xl xl:text-3xl">
-            <span className="text-[#FF5500]">by </span>{" "}
+            <span className="text-[#A1A1A1]">by </span>{" "}
             <a className="cursor-pointer hover:underline">
               {" "}
               {album.artist.name}
@@ -70,130 +125,113 @@ export default function AlbumInfoCard({
           <span className="text-md sm:text-left md:text-lg xl:text-xl">
             {album.year}, {album.label}
           </span>
-
-          {!currentListing && listings.length !== 0 && (
-            <div className="my-4 text-xl sm:my-8 sm:text-left md:text-2xl xl:text-3xl">
+          {!currentListing && listings.length !== 0 && lowestPriceListing && (
+            <div className="my-4 text-lg sm:my-8 sm:text-left md:text-xl xl:text-2xl">
               Starting at{" "}
-              <span className=" text-[#FF5500]">
-                {listings[0]?.price}
-                {listings[0]?.currency}
+              <span className="text-2xl font-semibold text-[#FF5500] ">
+                {convertToGlobalCurrency(
+                  lowestPriceListing.price,
+                  lowestPriceListing.currency,
+                  currency
+                )}{" "}
+                {currency}
               </span>
             </div>
           )}
-
           {!currentListing && listings.length === 0 && (
             <div className="text-md my-4 sm:my-8 sm:text-left md:text-lg xl:text-xl">
-              <div className="">Album not available</div>
+              <div className="">No available listings</div>
               <span className="cursor-pointer text-lg font-semibold text-[#FF5500] hover:underline sm:text-left md:text-xl xl:text-2xl">
-                Start a listing
+                Create a listing
               </span>
             </div>
           )}
-
-          {isInCart ? (
-            <Button
-              variant="removeBasket"
-              className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-              onClick={handleClickCart}
-            />
-          ) : (
-            <Button
-              variant="addBasket"
-              className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-              onClick={handleClickCart}
-            />
+          {currentListing && (
+            <div className="text-md my-2 md:text-lg xl:text-xl ">
+              <div className="my-2 block text-center font-semibold sm:text-left">
+                <span className="text-2xl text-[#FF5500] ">
+                  {convertToGlobalCurrency(
+                    currentListing.price,
+                    currentListing.currency,
+                    currency
+                  )}{" "}
+                  {currency}
+                </span>
+                <span className="text-2xl text-[#A1A1A1]"> + shipping</span>
+                <span className="mr-2 block text-center  text-sm text-[#A1A1A1] sm:text-left">
+                  Sold by:{" "}
+                  <span className="text-white">
+                    {" "}
+                    {currentListing.seller.name},{" "}
+                    {currentListing.seller.location}
+                  </span>
+                  <span className="ml-0 mt-2 flex items-center justify-center text-white sm:ml-2 sm:mt-0 sm:inline-flex">
+                    {currentListing.seller.rating ? (
+                      <RatingStars rating={currentListing.seller.rating} />
+                    ) : (
+                      "(0 reviews)"
+                    )}
+                  </span>{" "}
+                </span>
+              </div>
+              <div className="block text-center text-lg sm:text-left">
+                <span className="mr-2 font-semibold text-[#A1A1A1]">
+                  Condition:
+                </span>
+                <span className="text-white">{currentListing.condition}</span>
+              </div>
+              <div className="block text-center text-lg sm:text-left">
+                <span className="mr-2 font-semibold text-[#A1A1A1]">
+                  Format:
+                </span>
+                <span className="text-white">{currentListing.format}</span>
+              </div>
+              <div className="block text-center text-lg sm:text-left">
+                <span className="mr-2 font-semibold text-[#A1A1A1]">
+                  Weight:
+                </span>
+                <span className="text-white">{currentListing.weight}</span>
+              </div>
+              <div className="block text-center text-lg sm:text-left">
+                <span className="mr-2 font-semibold text-[#A1A1A1]">
+                  Speed:
+                </span>
+                <span className="text-white">{currentListing.speed}</span>
+              </div>
+              {currentListing.edition && (
+                <div className="block text-center text-lg sm:text-left">
+                  <span className="mr-2 font-semibold text-[#A1A1A1]">
+                    Edition:
+                  </span>
+                  {currentListing.edition.map((edition, index) => (
+                    <span key={index} className="text-white">
+                      {index > 0 && ", "} {edition.type}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div className="mt-4 flex flex-row justify-center sm:justify-start">
+                <button
+                  onClick={handleClickWishlist}
+                  className="h-9 w-9 text-red-500"
+                >
+                  {isInWishlist ? <FilledHeart /> : <EmptyHeart />}
+                </button>
+                <button
+                  onClick={handleClickCart}
+                  className={`ml-4 w-48 justify-center rounded-xl px-4 py-2 text-base font-semibold ${
+                    isInCart
+                      ? "border border-white bg-white text-black hover:bg-[white] hover:text-black"
+                      : " border border-[#A1A1A1] bg-black text-white"
+                  }`}
+                >
+                  {isInCart ? "Remove from cart" : "Add to cart"}
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </div>
     </>
   );
 }
-
-//   return (
-//     <div className="flex">
-//       <div className="mr-6">
-//         <Image
-//           src={album.artwork}
-//           width={500}
-//           height={500}
-//           alt="Album Artwork"
-//           className="rounded-lg border border-[#ffffff]"
-//         />
-//       </div>
-
-//       <div className="m-4">
-//         <div>
-//           <h1 className="mb-2 text-5xl font-bold text-white">{album.name}</h1>
-//           <h1 className="mb-2 text-2xl font-bold text-white ">
-//             {album.artist.name}
-//           </h1>
-//           <h2 className="text-xl text-[#A1A1A1]">
-//             {album.year}, {album.label}
-//           </h2>
-//         </div>
-//         <div className="m-4">
-//           {currentListing ? (
-//             <div>
-//               <div className="flex flex-row">
-//                 <span className="text-md mr-4 text-[#A1A1A1]">Price:</span>
-//                 <span className="text-md font-semibold text-white">
-//                   {currentListing.price} {currentListing.currency}
-//                 </span>
-//               </div>
-//               <div className="flex flex-row">
-//                 <span className="text-md ml-4 text-[#A1A1A1]">Condition:</span>
-//                 <span className="text-md font-semibold text-white">
-//                   {currentListing.condition}
-//                 </span>
-//               </div>
-//               <div className="flex flex-row">
-//                 <span className="text-md ml-4 text-[#A1A1A1]">Format:</span>
-//                 <span className="text-md font-semibold text-white">
-//                   {currentListing.format}
-//                 </span>
-//               </div>
-//               <div className="flex flex-row">
-//                 <span className="text-md ml-4 text-[#A1A1A1]">Speed:</span>
-//                 <span className="text-md font-semibold text-white">
-//                   {currentListing.speed}
-//                 </span>
-//               </div>
-//               <div className="flex flex-row">
-//                 <span className="text-md ml-4 text-[#A1A1A1]">Weight:</span>
-//                 <span className="text-md font-semibold text-white">
-//                   {currentListing.weight}
-//                 </span>
-//               </div>
-//               <div>
-//                 {isInCart ? (
-//                   <Button
-//                     variant="removeBasket"
-//                     className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-//                     onClick={handleClick}
-//                   />
-//                 ) : (
-//                   <Button
-//                     variant="addBasket"
-//                     className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-//                     onClick={handleClick}
-//                   />
-//                 )}
-
-//                 <Button
-//                   variant="wishlist"
-//                   className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-//                 />
-//                 <Button
-//                   variant="collection"
-//                   className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-//                 />
-//               </div>
-//             </div>
-//           ) : (
-//             <div className="text-white">Not available</div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }

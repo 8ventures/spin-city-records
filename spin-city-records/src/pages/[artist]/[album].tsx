@@ -8,6 +8,7 @@ import { Album, Listing } from "~/utils/types";
 import Layout from "~/components/Layout/Layout";
 import ListingInfoCard from "~/components/Album/ListingInfoCard";
 import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 
 export default function AlbumPage() {
   //Data Fetching
@@ -56,122 +57,43 @@ export default function AlbumPage() {
     listings && (
       <>
         <Layout>
-          <AlbumInfoCard
-            album={album}
-            listings={listings}
-            currentListing={listings[0]}
-          />
+          <div className="mx-auto max-w-4xl">
+            {" "}
+            <AlbumInfoCard
+              album={album}
+              listings={listings}
+              currentListing={currentListing}
+            />
+            <div className="flex justify-between">
+              <div className="my-4 ml-6 inline text-lg text-white sm:ml-14">
+                Available Listings
+              </div>
+              <div className="my-4 mr-6 inline text-lg text-white sm:mr-14">
+                Sort by{" "}
+                <ChevronDownIcon className="inline-block h-5 w-5 text-white" />
+              </div>
+            </div>
+            {listings && listings.length !== 0 && (
+              <div>
+                {listings.map((listing, index) => (
+                  <div key={index}>
+                    <ListingInfoCard
+                      album={album}
+                      listing={listing}
+                      currentListing={currentListing}
+                      setCurrentListing={setCurrentListing}
+                    />
+                    {index !== listings.length - 1 &&
+                      index !== listings.length - 1 && (
+                        <div className="mx-12 my-4 justify-center border-t border-[#A1A1A1]"></div>
+                      )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </Layout>
       </>
     )
   );
 }
-
-//   return (
-//     albumQuerySuccess &&
-//     albumQueryData && (
-//       <Layout>
-//         <div className="flex flex-col text-white ">
-//           <div className="mx-auto my-16 flex flex-col items-center justify-center md:w-2/3 md:flex-row">
-//             <div className="xl:mx-6">
-//               <Image
-//                 src={albumQueryData.artwork}
-//                 width={400}
-//                 height={400}
-//                 alt={`Artwork for ${albumQueryData.name} by ${albumQueryData.artist.name}`}
-//               />
-//             </div>
-//             <div className="flex flex-col">
-//               <div className="">
-//                 <span className="mx-6 my-2 block text-center text-6xl md:text-left">
-//                   {albumQueryData.name}
-//                 </span>
-//                 <span className="mx-6 my-2 block text-center text-4xl md:text-left">
-//                   {albumQueryData.artist.name}
-//                 </span>
-//                 <span className="mx-6 my-2 block text-center text-2xl md:text-left">
-//                   {albumQueryData.year}, {albumQueryData.label}
-//                 </span>
-//               </div>
-
-//               {!currentListing &&
-//                 listingQueryData &&
-//                 listingQueryData.length !== 0 && (
-//                   <>
-//                     <span className="mx-6 my-2 block text-center text-3xl md:text-left">
-//                       Starting at{" "}
-//                       <span className="inline-block font-semibold">
-//                         {listingQueryData[0]?.price}{" "}
-//                         {listingQueryData[0]?.currency}
-//                       </span>
-//                     </span>
-//                   </>
-//                 )}
-
-//               {listingQueryData && listingQueryData.length === 0 && (
-//                 <>
-//                   <span className="mx-6 my-4 text-2xl">Not available</span>
-//                 </>
-//               )}
-
-//               {listingQueryData &&
-//                 listingQueryData.length !== 0 &&
-//                 currentListing && (
-//                   <div className="  text-white">
-//                     <span className="mx-6 my-4  block text-4xl font-semibold">
-//                       {listingQueryData[0]!.price}{" "}
-//                       {listingQueryData[0]!.currency}
-//                     </span>
-//                     <span className="mx-6 my-2 block">
-//                       <span className="font-semibold">Condition: </span>
-//                       {listingQueryData[0]!.condition}
-//                     </span>
-//                     <span className="mx-6 my-2 block">
-//                       <span className="font-semibold">Weight : </span>{" "}
-//                       {listingQueryData[0]!.weight}
-//                     </span>
-//                     <span className="mx-6 my-2 block">
-//                       <span className="font-semibold">Format : </span>{" "}
-//                       {listingQueryData[0]!.format}
-//                     </span>
-//                     <span className="mx-6 my-2 block">
-//                       <span className="font-semibold">Speed : </span>{" "}
-//                       {listingQueryData[0]!.speed}
-//                     </span>
-
-//                     {listingQueryData[0]?.edition &&
-//                       listingQueryData[0].edition.length > 0 && (
-//                         <>
-//                           <span className="mx-6 my-2 block">
-//                             <span className="text-yellow font-semibold">
-//                               Edition :{" "}
-//                             </span>{" "}
-//                             {listingQueryData[0].edition.map(
-//                               (edition, index) => (
-//                                 <span key={index}>
-//                                   {index > 0 && ", "} {edition.type}
-//                                 </span>
-//                               )
-//                             )}
-//                           </span>
-//                         </>
-//                       )}
-//                   </div>
-//                 )}
-//             </div>
-//           </div>
-//           <div className="mx-auto text-white">
-//             {listingQueryData?.map((listing, index) => (
-//               <div key={index}>
-//                 <ListingInfoCard
-//                   listing={listingQueryData[index]}
-//                   setCurrentListing={setCurrentListing}
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </Layout>
-//     )
-//   );
-// }
