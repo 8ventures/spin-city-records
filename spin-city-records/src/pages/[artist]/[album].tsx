@@ -106,33 +106,35 @@ export default function AlbumPage() {
               listings={listings}
               currentListing={currentListing}
             />
-            <div className="flex justify-between">
-              <div className="my-4 ml-6 inline text-lg text-white sm:ml-14">
-                Available Listings
-              </div>
-              <SortBy
-                sortOption={sortOption}
-                setSortOption={setSortOption}
-                handleSortOption={handleSortOption}
-                clearSort={clearSort}
-              />
-            </div>
             {listings && listings.length !== 0 && (
-              <div>
-                {(sortedListings || listings).map((listing, index) => (
-                  <div key={index}>
-                    <ListingInfoCard
-                      album={album}
-                      listing={listing}
-                      currentListing={currentListing}
-                      setCurrentListing={setCurrentListing}
-                    />
-                    {index !== listings.length - 1 && (
-                      <div className="mx-12 my-4 justify-center border-t border-[#A1A1A1]"></div>
-                    )}
+              <>
+                <div className="flex justify-between">
+                  <div className="my-4 ml-6 inline text-lg text-white sm:ml-14">
+                    Available Listings
                   </div>
-                ))}
-              </div>
+                  <SortBy
+                    sortOption={sortOption}
+                    setSortOption={setSortOption}
+                    handleSortOption={handleSortOption}
+                    clearSort={clearSort}
+                  />
+                </div>
+                <div>
+                  {(sortedListings || listings).map((listing, index) => (
+                    <div key={index}>
+                      <ListingInfoCard
+                        album={album}
+                        listing={listing}
+                        currentListing={currentListing}
+                        setCurrentListing={setCurrentListing}
+                      />
+                      {index !== listings.length - 1 && (
+                        <div className="mx-12 my-4 justify-center border-t border-[#A1A1A1]"></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </Layout>
