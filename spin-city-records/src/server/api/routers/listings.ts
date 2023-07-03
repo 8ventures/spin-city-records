@@ -133,13 +133,13 @@ export const listingsRouter = createTRPCRouter({
       }
     }),
 
-  getByUserId: publicProcedure
-    .input(z.string())
-    .query(async ({ ctx, input }) => {
+  getByUserId: privateProcedure
+
+    .query(async ({ ctx }) => {
       try {
         const listings = await ctx.prisma.listing.findMany({
           where: {
-            stripeId: input,
+            stripeId: ctx.user?.privateMetadata.stripeId as string,
           },
         });
         return listings;

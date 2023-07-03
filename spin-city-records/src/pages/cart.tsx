@@ -4,22 +4,21 @@ import { useContext } from "react";
 import { CartContext } from "~/components/GlobalContext/CartContext";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { api } from "~/utils/api";
+import { useRouter } from "next/router";
 
 function Cart() {
   const { cart } = useContext(CartContext);
-
+  const router = useRouter()
 
   const { mutate: checkout } = api.stripe.checkoutSession.useMutation()
 
   const checkoutItem = (listing: Listing): void => {
     console.log(listing)
-    checkout(listing)
+    router.push({
+      pathname: '/checkout',
+      query: {id: listing.id}
+    }).catch((e)=>(console.log(e)))
   }
-
-  const handleCheckout = () => {
-    console.log("here");
-  };
-
 
   return (
     <Layout>
@@ -50,7 +49,7 @@ function Cart() {
               </div>
               <div>
                 <button onClick={() => checkoutItem(listing)}>
-                  Checkout
+                  Checkout Album
                 </button>
               </div>
 
@@ -62,10 +61,10 @@ function Cart() {
       </div>
 
             {/* <button className=" text-2xl text-white " onClick={handleCheckout}>Checkout</button> */}
-
+{/* 
       <button className=" text-2xl text-white " onClick={handleCheckout}>
         Checkout
-      </button>
+      </button> */}
 
     </Layout>
   );
