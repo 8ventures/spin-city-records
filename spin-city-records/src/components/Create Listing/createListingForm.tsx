@@ -89,6 +89,7 @@ export default function CreateListingForm () {
                   type="number"
                   className="rounded-xl border border-gray-300 bg-inherit text-white py-2 px-4"
                   {...register("price", {valueAsNumber: true}) }
+                  step={0.01}
                 />
               </div>
               <Controller
