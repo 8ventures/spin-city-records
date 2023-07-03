@@ -77,21 +77,23 @@ export default function AlbumPage() {
                 </span>
               </div>
 
-              {!currentListing && listingQueryData && (
-                <>
-                  <span className="mx-6 my-4 text-3xl">
-                    Starting from{" "}
-                    <span className="inline-block font-semibold">
-                      {listingQueryData[0]?.price}{" "}
-                      {listingQueryData[0]?.currency}
+              {!currentListing &&
+                listingQueryData &&
+                listingQueryData.length !== 0 && (
+                  <>
+                    <span className="mx-6 my-4 text-3xl">
+                      Starting at{" "}
+                      <span className="inline-block font-semibold">
+                        {listingQueryData[0]?.price}{" "}
+                        {listingQueryData[0]?.currency}
+                      </span>
                     </span>
-                  </span>
-                </>
-              )}
+                  </>
+                )}
 
               {listingQueryData && listingQueryData.length === 0 && (
                 <>
-                  <span className="mx-6 my-4 text-3xl">Not available</span>
+                  <span className="mx-6 my-4 text-2xl">Not available</span>
                 </>
               )}
 
