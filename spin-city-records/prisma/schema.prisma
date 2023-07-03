@@ -1,5 +1,5 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -20,17 +20,18 @@ model Album {
   artistId   String
   listings   Listing[]
   Collection Collection[]
+
   @@index([artistId])
 }
 
 model Artist {
-  id            String   @id @default(cuid())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  name          String
-  bio           String   @db.Text
-  artwork       String
-  albums        Album[]
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  bio       String   @db.Text
+  artwork   String
+  albums    Album[]
 }
 
 model Review {
@@ -40,35 +41,50 @@ model Review {
   rating    Float
   comment   String
   userId    String
+
   @@index([userId])
 }
 
 model Listing {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  price     Float
-  currency  String
-  weight    String
-  format    String
-  description String @db.Text
-  condition String
-  speed     String
-  edition  Edition[]
-  seller    Seller @relation(fields: [stripeId], references: [stripeId])
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  price       Float
+  currency    String
+  weight      String
+  format      String
+  description String    @db.Text
+  condition   String
+  speed       String
+  edition     Edition[]
+  seller      Seller    @relation(fields: [stripeId], references: [stripeId])
   stripeId    String
-  album     Album    @relation(fields: [albumId], references: [id])
-  albumId   String
+  album       Album     @relation(fields: [albumId], references: [id])
+  albumId     String
+  order       Order?    @relation(fields: [orderId], references: [id])
+  orderId     String?
+
   @@index([stripeId])
   @@index([albumId])
+  @@index([orderId])
 }
 
 model Collection {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  userId    String?
   name      String
   albums    Album[]
+}
+
+model Order {
+  id        String    @id @default(cuid())
+  userId    String
+  sellerId  String
+  status    String
+  Listings  Listing[]
+  completed Boolean
 }
 
 model ChatMesssage {
@@ -78,25 +94,26 @@ model ChatMesssage {
   message    String
   senderId   String
   receiverId String
+
   @@index([senderId])
   @@index([receiverId])
 }
 
 model Edition {
-  id Int @id @default(autoincrement())
-  type String
+  id       Int       @id @default(autoincrement())
+  type     String
   listings Listing[]
 }
 
 model Seller {
-  id String @id @default(cuid())
-  stripeId String @unique
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  rating Float
-  name String
-  bio String
-  email String?
-  location String
-  listings Listing[]
+  id        String    @id @default(cuid())
+  stripeId  String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  rating    Float
+  name      String
+  bio       String
+  email     String?
+  location  String
+  listings  Listing[]
 }
