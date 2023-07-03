@@ -3,10 +3,10 @@ import { Listing } from "~/utils/types";
 import getSymbolFromCurrency from "currency-symbol-map";
 import Button from "../Button";
 import RatingStars from "./RatingStars";
-import { CartContext } from "../CartContext";
+import { CartContext } from "../GlobalContext/CartContext";
 
 interface ListingInfoCardProps {
-  listing: Listing;
+  listing: Listing | undefined;
   setCurrentListing: React.Dispatch<React.SetStateAction<Listing | undefined>>;
 }
 

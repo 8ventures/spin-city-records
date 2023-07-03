@@ -1,15 +1,13 @@
-import { useState, useEffect, createContext, useContext } from "react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-
+import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import NextError from "next/error";
-import Image from "next/image";
 
 import { api } from "~/utils/api";
 import { Album, Listing } from "~/utils/types";
 
 import Layout from "~/components/Layout/Layout";
 import ListingInfoCard from "~/components/Album/ListingInfoCard";
+import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
 
 export default function AlbumPage() {
   //Data Fetching
@@ -21,16 +19,19 @@ export default function AlbumPage() {
     isLoading: albumQueryLoading,
     isError: albumQueryIsError,
     isSuccess: albumQuerySuccess,
-  } = api.albums.getById.useQuery<Album | undefined>({ id: id });
+  } = api.albums.getById.useQuery({ id: id });
   const {
     data: listingQueryData,
     error: listingQueryError,
     isLoading: listingQueryLoading,
     isError: listingQueryIsError,
     isSuccess: listingQuerySuccess,
-  } = api.listings.getByAlbumId.useQuery<Listing[] | undefined>({
+  } = api.listings.getByAlbumId.useQuery({
     albumId: id,
   });
+
+  const album: Album = albumQueryData as Album;
+  const listings: Listing[] = listingQueryData as Listing[];
 
   // Error Handling
   if (albumQueryIsError || listingQueryIsError) {
@@ -47,144 +48,130 @@ export default function AlbumPage() {
   }
 
   // State
-  const [currentListing, setCurrentListing] = useState<Listing | undefined>();
-  const [filterPrice, setFilterPrice] = useState("");
+  const [currentListing, setCurrentListing] = useState<Listing>();
 
+  //TODO SKELETON LOADING ? ERROR FETCHING
   return (
-    albumQuerySuccess &&
-    albumQueryData && (
-      <Layout>
-        <div className="flex flex-col text-white ">
-          <div className="mx-auto my-16 flex flex-col items-center justify-center md:w-2/3 md:flex-row">
-            <div className="xl:mx-6">
-              <Image
-                src={albumQueryData.artwork}
-                width={400}
-                height={400}
-                alt={`Artwork for ${albumQueryData.name} by ${albumQueryData.artist.name}`}
-              />
-            </div>
-            <div className="flex flex-col">
-              <div className="">
-                <span className="mx-6 my-2 block text-center text-6xl md:text-left">
-                  {albumQueryData.name}
-                </span>
-                <span className="mx-6 my-2 block text-center text-4xl md:text-left">
-                  {albumQueryData.artist.name}
-                </span>
-                <span className="mx-6 my-2 block text-center text-2xl md:text-left">
-                  {albumQueryData.year}, {albumQueryData.label}
-                </span>
-              </div>
-
-              {!currentListing &&
-                listingQueryData &&
-                listingQueryData.length !== 0 && (
-                  <>
-                    <span className="mx-6 my-2 block text-center text-3xl md:text-left">
-                      Starting at{" "}
-                      <span className="inline-block font-semibold">
-                        {listingQueryData[0]?.price}{" "}
-                        {listingQueryData[0]?.currency}
-                      </span>
-                    </span>
-                  </>
-                )}
-
-              {listingQueryData && listingQueryData.length === 0 && (
-                <>
-                  <span className="mx-6 my-4 text-2xl">Not available</span>
-                </>
-              )}
-
-              {listingQueryData &&
-                listingQueryData.length !== 0 &&
-                currentListing && (
-                  <div className="  text-white">
-                    <span className="mx-6 my-4  block text-4xl font-semibold">
-                      {listingQueryData[0]!.price}{" "}
-                      {listingQueryData[0]!.currency}
-                    </span>
-                    <span className="mx-6 my-2 block">
-                      <span className="font-semibold">Condition: </span>
-                      {listingQueryData[0]!.condition}
-                    </span>
-                    <span className="mx-6 my-2 block">
-                      <span className="font-semibold">Weight : </span>{" "}
-                      {listingQueryData[0]!.weight}
-                    </span>
-                    <span className="mx-6 my-2 block">
-                      <span className="font-semibold">Format : </span>{" "}
-                      {listingQueryData[0]!.format}
-                    </span>
-                    <span className="mx-6 my-2 block">
-                      <span className="font-semibold">Speed : </span>{" "}
-                      {listingQueryData[0]!.speed}
-                    </span>
-
-                    {listingQueryData[0]?.edition &&
-                      listingQueryData[0].edition.length > 0 && (
-                        <>
-                          <span className="mx-6 my-2 block">
-                            <span className="text-yellow font-semibold">
-                              Edition :{" "}
-                            </span>{" "}
-                            {listingQueryData[0].edition.map(
-                              (edition, index) => (
-                                <span key={index}>
-                                  {index > 0 && ", "} {edition.type}
-                                </span>
-                              )
-                            )}
-                          </span>
-                        </>
-                      )}
-                  </div>
-                )}
-            </div>
-          </div>
-          <div className="mx-auto text-white">
-            {listingQueryData?.map((listing, index) => (
-              <div key={index}>
-                <ListingInfoCard
-                  listing={listingQueryData[index]}
-                  setCurrentListing={setCurrentListing}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </Layout>
+    album &&
+    listings && (
+      <>
+        <Layout>
+          <AlbumInfoCard
+            album={album}
+            listings={listings}
+            currentListing={currentListing}
+          />
+        </Layout>
+      </>
     )
   );
 }
-{
-  /* <div className="flex flex-col text-white">
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger>Filter By Price</DropdownMenu.Trigger>
 
-              <DropdownMenu.Content>
-                <DropdownMenu.Label>Select a Price Range</DropdownMenu.Label>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("100")}>
-                  Less than $100
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("500")}>
-                  Less than $500
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("1000")}>
-                  Less than $1000
-                </DropdownMenu.Item>
+//   return (
+//     albumQuerySuccess &&
+//     albumQueryData && (
+//       <Layout>
+//         <div className="flex flex-col text-white ">
+//           <div className="mx-auto my-16 flex flex-col items-center justify-center md:w-2/3 md:flex-row">
+//             <div className="xl:mx-6">
+//               <Image
+//                 src={albumQueryData.artwork}
+//                 width={400}
+//                 height={400}
+//                 alt={`Artwork for ${albumQueryData.name} by ${albumQueryData.artist.name}`}
+//               />
+//             </div>
+//             <div className="flex flex-col">
+//               <div className="">
+//                 <span className="mx-6 my-2 block text-center text-6xl md:text-left">
+//                   {albumQueryData.name}
+//                 </span>
+//                 <span className="mx-6 my-2 block text-center text-4xl md:text-left">
+//                   {albumQueryData.artist.name}
+//                 </span>
+//                 <span className="mx-6 my-2 block text-center text-2xl md:text-left">
+//                   {albumQueryData.year}, {albumQueryData.label}
+//                 </span>
+//               </div>
 
-                <DropdownMenu.Separator />
+//               {!currentListing &&
+//                 listingQueryData &&
+//                 listingQueryData.length !== 0 && (
+//                   <>
+//                     <span className="mx-6 my-2 block text-center text-3xl md:text-left">
+//                       Starting at{" "}
+//                       <span className="inline-block font-semibold">
+//                         {listingQueryData[0]?.price}{" "}
+//                         {listingQueryData[0]?.currency}
+//                       </span>
+//                     </span>
+//                   </>
+//                 )}
 
-                <DropdownMenu.Item onSelect={() => setFilterPrice("")} disabled>
-                  Clear Filter
-                </DropdownMenu.Item>
+//               {listingQueryData && listingQueryData.length === 0 && (
+//                 <>
+//                   <span className="mx-6 my-4 text-2xl">Not available</span>
+//                 </>
+//               )}
 
-                <DropdownMenu.Arrow />
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
+//               {listingQueryData &&
+//                 listingQueryData.length !== 0 &&
+//                 currentListing && (
+//                   <div className="  text-white">
+//                     <span className="mx-6 my-4  block text-4xl font-semibold">
+//                       {listingQueryData[0]!.price}{" "}
+//                       {listingQueryData[0]!.currency}
+//                     </span>
+//                     <span className="mx-6 my-2 block">
+//                       <span className="font-semibold">Condition: </span>
+//                       {listingQueryData[0]!.condition}
+//                     </span>
+//                     <span className="mx-6 my-2 block">
+//                       <span className="font-semibold">Weight : </span>{" "}
+//                       {listingQueryData[0]!.weight}
+//                     </span>
+//                     <span className="mx-6 my-2 block">
+//                       <span className="font-semibold">Format : </span>{" "}
+//                       {listingQueryData[0]!.format}
+//                     </span>
+//                     <span className="mx-6 my-2 block">
+//                       <span className="font-semibold">Speed : </span>{" "}
+//                       {listingQueryData[0]!.speed}
+//                     </span>
 
-
-          </div> */
-}
+//                     {listingQueryData[0]?.edition &&
+//                       listingQueryData[0].edition.length > 0 && (
+//                         <>
+//                           <span className="mx-6 my-2 block">
+//                             <span className="text-yellow font-semibold">
+//                               Edition :{" "}
+//                             </span>{" "}
+//                             {listingQueryData[0].edition.map(
+//                               (edition, index) => (
+//                                 <span key={index}>
+//                                   {index > 0 && ", "} {edition.type}
+//                                 </span>
+//                               )
+//                             )}
+//                           </span>
+//                         </>
+//                       )}
+//                   </div>
+//                 )}
+//             </div>
+//           </div>
+//           <div className="mx-auto text-white">
+//             {listingQueryData?.map((listing, index) => (
+//               <div key={index}>
+//                 <ListingInfoCard
+//                   listing={listingQueryData[index]}
+//                   setCurrentListing={setCurrentListing}
+//                 />
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       </Layout>
+//     )
+//   );
+// }

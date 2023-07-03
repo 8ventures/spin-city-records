@@ -3,31 +3,24 @@ import * as Select from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { SelectItem } from '../../components/selectItem'
 import type { ControllerRenderProps } from 'react-hook-form/dist/types';
-import type { Album } from './SearchAlbumsForm';
 
-type selectCurrencyProps = {
+type selectLocationProps = {
   field: ControllerRenderProps<{
-    price: number;
-    currency: string;
-    weight: string;
-    format: string;
-    description: string;
-    condition: string;
-    speed: string;
-    album: Album;
-    editions: {value: string}[];
-}, "currency">
+    name: string;
+    bio: string;
+    location: string;
+}, "location">
 }
-const SelectCurrency  = React.forwardRef<HTMLButtonElement, selectCurrencyProps>(
+const SelectLocation  = React.forwardRef<HTMLButtonElement, selectLocationProps>(
   ({field}, forwardedRef) => {
     return (
       <Select.Root onValueChange={field.onChange} name={field.name} value={field.value}>
         <Select.Trigger
           className="inline-flex bg-white text-black items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
-          aria-label="Condition"
+          aria-label="Location"
           ref={forwardedRef}
         >
-          <Select.Value placeholder="Select Currency" />
+          <Select.Value placeholder="Select Location" />
           <Select.Icon className="">
             <ChevronDownIcon />
           </Select.Icon>
@@ -36,9 +29,9 @@ const SelectCurrency  = React.forwardRef<HTMLButtonElement, selectCurrencyProps>
           <Select.Content className="overflow-hidden bg-white rounded-xl">
             <Select.Viewport className="p-[5px]">
               <Select.Group>
-                <SelectItem value="gbp">GBP</SelectItem>
-                <SelectItem value="eur">EUR</SelectItem>
-                <SelectItem value="usd">USD</SelectItem>
+                <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                <SelectItem value="United States">United States</SelectItem>
+                <SelectItem value="Europe">Europe</SelectItem>
               </Select.Group>
             </Select.Viewport>
           </Select.Content>
@@ -47,6 +40,6 @@ const SelectCurrency  = React.forwardRef<HTMLButtonElement, selectCurrencyProps>
     )
   }
 )
-SelectCurrency.displayName = 'SelectCurrency';
+SelectLocation.displayName = 'SelectLocation';
 
-export default SelectCurrency;
+export default SelectLocation;

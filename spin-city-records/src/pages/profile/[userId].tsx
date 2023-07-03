@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import Layout from "../../components/Layout/Layout";
 import MyOrders from "../../components/Profile/MyOrder";
 import Selling from "../../components/Profile/Selling";
-import WishList from "../../components/Profile/WishList";
 import CreateListingForm from "../../components/Create Listing/createListingForm";
 import OnboardingForm from "../../components/Profile/onboardingForm";
 import ProfilePageButton from "../../components/Profile/ProfilePageButton";

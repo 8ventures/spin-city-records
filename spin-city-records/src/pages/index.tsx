@@ -10,24 +10,24 @@ import Layout from "~/components/Layout/Layout";
 export default function Home() {
   const [recentlyAdded, setRecentlyAdded] = useState<any>([]); //TODO map function to Album[]
 
-  // const recentlyAddedQuery = api.collections.getById.useQuery({
-  //   id: "cljgvs5rg00001yjyvjeygbbp",
-  // });
+  const recentlyAddedQuery = api.collections.getById.useQuery({
+    id: "cljmn93e800001yr6c3171qnw",
+  });
 
-  // useEffect(() => {
-  //   if (!recentlyAddedQuery.isLoading && !recentlyAddedQuery.error) {
-  //     setRecentlyAdded(recentlyAddedQuery.data);
-  //   }
-  // }, [recentlyAddedQuery.isLoading, recentlyAddedQuery.error]);
+  useEffect(() => {
+    if (!recentlyAddedQuery.isLoading && !recentlyAddedQuery.error) {
+      setRecentlyAdded(recentlyAddedQuery.data);
+    }
+  }, [recentlyAddedQuery.isLoading, recentlyAddedQuery.error]);
 
-  // if (recentlyAddedQuery.error) {
-  //   return (
-  //     <NextError
-  //       title={recentlyAddedQuery.error.message}
-  //       statusCode={recentlyAddedQuery.error.data?.httpStatus ?? 500}
-  //     />
-  //   );
-  // }
+  if (recentlyAddedQuery.error) {
+    return (
+      <NextError
+        title={recentlyAddedQuery.error.message}
+        statusCode={recentlyAddedQuery.error.data?.httpStatus ?? 500}
+      />
+    );
+  }
 
   //TODO PLACEHOLDER SKELETON
   // if (recentlyAddedQuery.isLoading) {
@@ -40,7 +40,7 @@ export default function Home() {
         <h1 className="mt-8 text-center text-3xl font-bold text-white">
           SHOP MUSIC
         </h1>
-        {/* <MusicSection title="Recently Added" collection={recentlyAdded} /> */}
+        <MusicSection title="Recently Added" collection={recentlyAdded} />
         {/* <MusicSection title="BEST SELLERS" items={newReleases} />
           <MusicSection title="GENRE" items={newReleases} /> */}
       </section>
