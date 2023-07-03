@@ -49,7 +49,7 @@ const SearchAlbumsHome = () => {
 
   useEffect(() => {
     if (selectedItem && selectedItem.id) {
-      router.push(`/album/${selectedItem.id}`);
+      router.push(`/album/${selectedItem.id}`).catch((e) => console.log(e));
     }
   }, [selectedItem]);
 
@@ -98,7 +98,7 @@ const SearchAlbumsHome = () => {
 
     return (
       <div
-        className="flex cursor-pointer items-center space-x-2 rounded p-2 hover:bg-gray-100"
+        className="flex cursor-pointer items-center space-x-2 rounded-xl p-2 hover:bg-gray-100"
         onClick={() => handleSelect(item, item.name, index)}
       >
         {img()}
