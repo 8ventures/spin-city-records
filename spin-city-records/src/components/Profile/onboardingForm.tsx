@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
-import Image, { type StaticImageData } from "next/image"
-import circle from '../../../public/circle.svg'
-import stripe from '../../../public/stripe-ar21.svg'
+import Image, { type StaticImageData } from "next/image";
+import circle from "../../../public/circle.svg";
+import stripe from "../../../public/stripe-ar21.svg";
 import { Separator } from "@radix-ui/react-separator";
 import Spinner from "../spinner";
 
