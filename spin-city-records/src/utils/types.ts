@@ -1,23 +1,4 @@
-export interface Review {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  rating: number;
-  comment: string;
-  userId: string;
-}
-
-export interface Artist {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  name: string;
-  bio: string;
-  artistPicture: string;
-  albums: Album[];
-}
-
-export interface Album {
+export type Album = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -29,9 +10,28 @@ export interface Album {
   artistId: string;
   listings: Listing[];
   Collection: Collection[];
-}
+};
 
-export interface Listing {
+export type Artist = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  bio: string;
+  artwork: string;
+  albums: Album[];
+};
+
+export type Review = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  rating: number;
+  comment: string;
+  userId: string;
+};
+
+export type Listing = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -47,40 +47,52 @@ export interface Listing {
   stripeId: string;
   album: Album;
   albumId: string;
-}
+  order: Order | null;
+  orderId: string | null;
+};
 
-export interface Edition {
-  id: number;
-  type: string;
-  listings: Listing[];
-}
-
-export interface Seller {
+export type Collection = {
   id: string;
-  stripeId: string;
   createdAt: Date;
   updatedAt: Date;
-  rating: number;
-  bio: string;
+  userId: string | null;
   name: string;
-  email?: string;
-  location?: string;
-  listings: Listing[];
-}
+  albums: Album[];
+};
 
-export interface ChatMesssage {
+export type Order = {
+  id: string;
+  userId: string;
+  sellerId: string;
+  status: string;
+  Listings: Listing[];
+  completed: boolean;
+};
+
+export type ChatMesssage = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
   message: string;
   senderId: string;
   receiverId: string;
-}
+};
 
-export interface Collection {
+export type Edition = {
+  id: number;
+  type: string;
+  listings: Listing[];
+};
+
+export type Seller = {
   id: string;
+  stripeId: string;
   createdAt: Date;
   updatedAt: Date;
+  rating: number;
   name: string;
-  albums: Album[];
-}
+  bio: string;
+  email: string | null;
+  location: string;
+  listings: Listing[];
+};
