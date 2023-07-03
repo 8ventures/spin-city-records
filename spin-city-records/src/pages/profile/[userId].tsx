@@ -67,7 +67,7 @@ const ProfilePage = () => {
   return (
     <Layout>
       <div className="text-white">
-        <div className="ml-28 w-full border-b border-gray-200 text-gray-400">
+        <div className="mb-14 ml-28 w-96 border-b border-gray-200 text-gray-400 md:w-[790px]">
           {profilePages.map(({ label, page }) => (
             <ProfilePageButton
               key={page}

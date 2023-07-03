@@ -31,7 +31,6 @@ const ProfilePageButton: FC<ProfileButtonProps> = ({
       {currentPage === page && (
         <div
           style={{
-            content: "",
             position: "absolute",
             left: "0",
             bottom: "-11px",
