@@ -4,11 +4,13 @@ import NextError from "next/error";
 
 import { api } from "~/utils/api";
 import { Album, Listing } from "~/utils/types";
+import convertToGlobalCurrency from "~/utils/currencyConversion";
 
+import { CurrencyContext } from "~/components/GlobalContext/CurrencyContext";
 import Layout from "~/components/Layout/Layout";
 import ListingInfoCard from "~/components/Album/ListingInfoCard";
 import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import SortBy from "~/components/Album/SortComponent";
 
 export default function AlbumPage() {
   //Data Fetching
@@ -48,8 +50,48 @@ export default function AlbumPage() {
     );
   }
 
+  //Global Context
+  const { currency } = useContext(CurrencyContext);
+
   // State
   const [currentListing, setCurrentListing] = useState<Listing>();
+  const [sortOption, setSortOption] = useState<string | undefined>(undefined);
+  const [sortedListings, setSortedListings] = useState<Listing[] | undefined>(
+    undefined
+  );
+
+  //Logic
+  const handleSortOption = (option: string) => {
+    console.log(option);
+
+    setSortOption(option);
+    if (option === "lowToHigh") {
+      setSortedListings(
+        [...listings].sort((a, b) => {
+          return (
+            convertToGlobalCurrency(a.price, a.currency, currency) -
+            convertToGlobalCurrency(b.price, b.currency, currency)
+          );
+        })
+      );
+      console.log(sortedListings);
+    } else if (option === "highToLow") {
+      setSortedListings(
+        [...listings].sort((a, b) => {
+          return (
+            convertToGlobalCurrency(b.price, b.currency, currency) -
+            convertToGlobalCurrency(a.price, a.currency, currency)
+          );
+        })
+      );
+      console.log(sortedListings);
+    }
+  };
+
+  const clearSort = () => {
+    setSortOption(undefined);
+    setSortedListings(undefined);
+  };
 
   //TODO SKELETON LOADING ? ERROR FETCHING
   return (
@@ -64,32 +106,35 @@ export default function AlbumPage() {
               listings={listings}
               currentListing={currentListing}
             />
-            <div className="flex justify-between">
-              <div className="my-4 ml-6 inline text-lg text-white sm:ml-14">
-                Available Listings
-              </div>
-              <div className="my-4 mr-6 inline text-lg text-white sm:mr-14">
-                Sort by{" "}
-                <ChevronDownIcon className="inline-block h-5 w-5 text-white" />
-              </div>
-            </div>
             {listings && listings.length !== 0 && (
-              <div>
-                {listings.map((listing, index) => (
-                  <div key={index}>
-                    <ListingInfoCard
-                      album={album}
-                      listing={listing}
-                      currentListing={currentListing}
-                      setCurrentListing={setCurrentListing}
-                    />
-                    {index !== listings.length - 1 &&
-                      index !== listings.length - 1 && (
+              <>
+                <div className="flex justify-between">
+                  <div className="my-4 ml-6 inline text-lg text-white sm:ml-14">
+                    Available Listings
+                  </div>
+                  <SortBy
+                    sortOption={sortOption}
+                    setSortOption={setSortOption}
+                    handleSortOption={handleSortOption}
+                    clearSort={clearSort}
+                  />
+                </div>
+                <div>
+                  {(sortedListings || listings).map((listing, index) => (
+                    <div key={index}>
+                      <ListingInfoCard
+                        album={album}
+                        listing={listing}
+                        currentListing={currentListing}
+                        setCurrentListing={setCurrentListing}
+                      />
+                      {index !== listings.length - 1 && (
                         <div className="mx-12 my-4 justify-center border-t border-[#A1A1A1]"></div>
                       )}
-                  </div>
-                ))}
-              </div>
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </Layout>
