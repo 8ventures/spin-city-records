@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Album, Listing } from "../../utils/types";
 import { CartContext } from "../GlobalContext/CartContext";
 import { WishlistContext } from "../GlobalContext/WishListContext";
+import Button from "../Button";
 
 interface AlbumInfoCardProps {
   album: Album;
@@ -60,14 +61,18 @@ export default function AlbumInfoCard({
             {album.name}
           </span>
           <span className="text-xl sm:text-left md:text-2xl xl:text-3xl">
-            <span className="text-[#FF5500]">by </span> {album.artist.name}
+            <span className="text-[#FF5500]">by </span>{" "}
+            <a className="cursor-pointer hover:underline">
+              {" "}
+              {album.artist.name}
+            </a>
           </span>
           <span className="text-md sm:text-left md:text-lg xl:text-xl">
             {album.year}, {album.label}
           </span>
 
           {!currentListing && listings.length !== 0 && (
-            <div className="my-8 text-xl sm:text-left md:text-2xl xl:text-3xl">
+            <div className="my-4 text-xl sm:my-8 sm:text-left md:text-2xl xl:text-3xl">
               Starting at{" "}
               <span className=" text-[#FF5500]">
                 {listings[0]?.price}
@@ -77,12 +82,26 @@ export default function AlbumInfoCard({
           )}
 
           {!currentListing && listings.length === 0 && (
-            <div className="my-8 text-xl sm:text-left md:text-2xl xl:text-3xl">
-              Not available
-              <span className=" text-[#FF5500]">
-                Start a listing for this album
+            <div className="text-md my-4 sm:my-8 sm:text-left md:text-lg xl:text-xl">
+              <div className="">Album not available</div>
+              <span className="cursor-pointer text-lg font-semibold text-[#FF5500] hover:underline sm:text-left md:text-xl xl:text-2xl">
+                Start a listing
               </span>
             </div>
+          )}
+
+          {isInCart ? (
+            <Button
+              variant="removeBasket"
+              className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+              onClick={handleClickCart}
+            />
+          ) : (
+            <Button
+              variant="addBasket"
+              className="m-4 flex justify-center rounded-lg border border-[#333333] bg-[#000000] px-4 py-2 text-base font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
+              onClick={handleClickCart}
+            />
           )}
         </div>
       </div>

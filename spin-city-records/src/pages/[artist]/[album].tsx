@@ -59,7 +59,7 @@ export default function AlbumPage() {
           <AlbumInfoCard
             album={album}
             listings={listings}
-            currentListing={currentListing}
+            currentListing={listings[0]}
           />
         </Layout>
       </>
