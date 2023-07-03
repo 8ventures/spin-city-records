@@ -50,6 +50,7 @@ export default function ListingInfoCard({
     }
   };
 
+  //Effects
   useEffect(() => {
     if (listing) {
       if (cart.some((cartItem) => cartItem.id === listing.id)) {

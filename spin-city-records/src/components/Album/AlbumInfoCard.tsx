@@ -198,16 +198,27 @@ export default function AlbumInfoCard({
                 </span>
                 <span className="text-white">{currentListing.speed}</span>
               </div>
-              {currentListing.edition && (
+              {currentListing.edition &&
+                currentListing.edition.length !== 0 && (
+                  <div className="block text-center text-lg sm:text-left">
+                    <span className="mr-2 font-semibold text-[#A1A1A1]">
+                      Edition:
+                    </span>
+                    {currentListing.edition.map((edition, index) => (
+                      <span key={index} className="text-white">
+                        {index > 0 && ", "} {edition.type}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              {currentListing.description && (
                 <div className="block text-center text-lg sm:text-left">
                   <span className="mr-2 font-semibold text-[#A1A1A1]">
-                    Edition:
+                    Description:
                   </span>
-                  {currentListing.edition.map((edition, index) => (
-                    <span key={index} className="text-white">
-                      {index > 0 && ", "} {edition.type}
-                    </span>
-                  ))}
+                  <span className="text-white">
+                    {currentListing.description}
+                  </span>
                 </div>
               )}
               <div className="mt-4 flex flex-row justify-center sm:justify-start">
