@@ -29,7 +29,7 @@ model Artist {
   updatedAt     DateTime @updatedAt
   name          String
   bio           String   @db.Text
-  artistPicture String
+  artwork       String
   albums        Album[]
 }
 
@@ -55,11 +55,11 @@ model Listing {
   condition String
   speed     String
   edition  Edition[]
-  seller    Seller @relation(fields: [sellerId], references: [sellerId])
-  sellerId    String
+  seller    Seller @relation(fields: [stripeId], references: [stripeId])
+  stripeId    String
   album     Album    @relation(fields: [albumId], references: [id])
   albumId   String
-  @@index([sellerId])
+  @@index([stripeId])
   @@index([albumId])
 }
 
@@ -90,10 +90,13 @@ model Edition {
 
 model Seller {
   id String @id @default(cuid())
-  sellerId String @unique
+  stripeId String @unique
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  rating Float
+  name String
+  bio String
   email String?
-  location String?
+  location String
   listings Listing[]
 }

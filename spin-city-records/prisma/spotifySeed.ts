@@ -332,7 +332,7 @@ export const getArtistInfo = async (spotifyId: string, discogsId: string) => {
       const discogsResponse = await getArtistDesc(discogsId);
       if( discogsResponse){
         const profile =  discogsResponse.profile
-        const artist = { name: artistInfo?.name, bio: profile, artistPicture: artistInfo.images[0]!.url };
+        const artist = { name: artistInfo?.name, bio: profile, artwork: artistInfo.images[0]!.url };
     
         return { artist, albums };
       }
