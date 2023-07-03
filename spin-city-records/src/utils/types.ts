@@ -44,7 +44,7 @@ export interface Listing {
   speed: string;
   edition: Edition[];
   seller: Seller;
-  sellerId: string;
+  stripeId: string;
   album: Album;
   albumId: string;
 }
@@ -57,9 +57,12 @@ export interface Edition {
 
 export interface Seller {
   id: string;
-  sellerId: string;
+  stripeId: string;
   createdAt: Date;
   updatedAt: Date;
+  rating: string
+  bio: string;
+  name: string;
   email: string;
   location: string;
   listings: Listing[];
