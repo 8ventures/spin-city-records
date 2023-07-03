@@ -30,17 +30,14 @@ export const listingsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.user.id;
       const editionArray = input.edition.map<{id: number}>((form) => ({id: Number(form.value)}))
-      const stripeId = ctx.user.privateMetadata.stripeId
+      const stripeId = ctx.user.privateMetadata.stripeId as string
       try{
         const newProduct = await ctx.stripe.products.create({
           name: input.albumId,
           description: 'Testing testing',
           metadata: {
-            'sellerId': stripeId as string,
-
-
+            'sellerId': stripeId,
           }
         })
         const newPrice = await ctx.stripe.prices.create({
@@ -59,7 +56,7 @@ export const listingsRouter = createTRPCRouter({
             speed: input.speed,
             seller: {
               connect: {
-                sellerId: userId,
+                stripeId: stripeId,
               },
             },
             edition: {
@@ -106,7 +103,7 @@ export const listingsRouter = createTRPCRouter({
       try {
         const listings = await ctx.prisma.listing.findMany({
           where: {
-            sellerId: input,
+            stripeId: input,
           },
         });
         return listings;

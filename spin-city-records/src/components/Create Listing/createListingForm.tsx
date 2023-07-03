@@ -51,7 +51,6 @@ export default function CreateListingForm () {
       .catch((e) => console.log(e))
   }
   
-  
   const onSubmit = (e) => {
     console.log(e)
     // createListing(e)
@@ -162,7 +161,7 @@ export default function CreateListingForm () {
             <label className="my-2 text-xl text-white">Add Description</label>
             <input
               type="text"
-              placeholder="e.g. Looking for a new home!"
+              placeholder="e.g. Plays great!"
               className="rounded-xl text-xl border border-gray-300 bg-inherit text-white py-2 px-4"
               {...register("description")}
             />
