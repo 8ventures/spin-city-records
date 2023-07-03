@@ -33,8 +33,8 @@ export interface Album {
 
 export interface Listing {
   id: string;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt: Date;
   price: number;
   currency: string;
   weight: string;
@@ -50,7 +50,7 @@ export interface Listing {
 }
 
 export interface Edition {
-  id: string;
+  id: number;
   type: string;
   listings: Listing[];
 }
