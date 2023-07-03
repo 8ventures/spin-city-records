@@ -1,10 +1,10 @@
 import React, { createContext, useState, useCallback } from "react";
-import { Listing } from "~/utils/types";
+import { Album } from "~/utils/types";
 
 interface WishlistContextType {
-  wishlist: Listing[];
-  addToWishlist: (item: Listing) => void;
-  removeFromWishlist: (item: Listing) => void;
+  wishlist: Album[];
+  addToWishlist: (item: Album) => void;
+  removeFromWishlist: (item: Album) => void;
 }
 
 interface WishlistProviderProps {
@@ -20,13 +20,13 @@ export const WishlistContext = createContext<WishlistContextType>({
 export const WishlistProvider: React.FC<WishlistProviderProps> = ({
   children,
 }) => {
-  const [wishlist, setWishlist] = useState<Listing[]>([]);
+  const [wishlist, setWishlist] = useState<Album[]>([]);
 
-  const addToWishlist = useCallback((item: Listing) => {
+  const addToWishlist = useCallback((item: Album) => {
     setWishlist((prevWishlist) => [...prevWishlist, item]);
   }, []);
 
-  const removeFromWishlist = useCallback((item: Listing) => {
+  const removeFromWishlist = useCallback((item: Album) => {
     setWishlist((prevWishlist) =>
       prevWishlist.filter((wishlistItem) => wishlistItem.id !== item.id)
     );
