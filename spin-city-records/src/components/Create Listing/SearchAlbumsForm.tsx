@@ -31,11 +31,11 @@ type SearchAlbumsFormProps= {
     description: string;
     condition: string;
     speed: string;
-    albumId: string;
+    album: Album;
     editions: {value: string}[];
-  }, "albumId">
+  }, "album">
 }
-interface Album {
+export interface Album {
   id: string;
   createdAt: Date;
   updatedAt: Date;
