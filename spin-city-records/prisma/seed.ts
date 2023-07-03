@@ -1,9 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-import { mockArtists } from './mockData/mockArtists';
-import { mockAlbums } from './mockData/mockAlbums';
-import { mockUsers } from './mockData/mockUsers'
-import { mockListings } from './mockData/mockListings';
-import { editions } from './mockData/editions'
+// import { mockArtists } from './mockData/mockArtists';
+// import { mockAlbums } from './mockData/mockAlbums';
+// import { mockUsers } from './mockData/mockUsers'
+// import { mockListings } from './mockData/mockListings';
+// import { editions } from './mockData/editions'
+import { getArtistInfo }  from './spotifySeed'
 
 const prisma = new PrismaClient();
 
@@ -12,10 +13,22 @@ async function main() {
     console.log('Removing existing data');
     // await prisma.album.deleteMany();
     // await prisma.artist.deleteMany();
-    await prisma.listing.deleteMany();
-    // await prisma.edition.deleteMany();
-    console.log('Data Removed')
-
+    // await prisma.listing.deleteMany();
+    // await prisma.edition.delete();
+    // console.log('Data Removed')
+    const artistInfo = await getArtistInfo('3PP6ghmOlDl2jaKaH0avUN', '6959133');
+    if(artistInfo) {
+      await prisma.artist.create({
+        data: {
+          ...artistInfo.artist,
+          albums: {
+            createMany: {
+              data: artistInfo.albums
+            }
+          }
+        }
+      })
+    }
     // for (const a of mockArtists) {
     //   const albumOfArtist = mockAlbums.filter((al) => (al.artist === a.name) )
     //   const albums = albumOfArtist.map((al) => {
@@ -42,28 +55,29 @@ async function main() {
     // }
     // console.log('editions added')
 
-    for (const l of mockListings) {
-      const {edition, sellerId, albumId, ...listing} = l
-      await prisma.listing.create({
-        data: {
-          ...listing,
-          edition: {
-            connect: edition
-          },
-          seller: {
-            connect: {
-              sellerId: sellerId
-            }
-          },
-          album: {
-            connect: {
-              id: albumId
-            }
-          }
-        }
-      })
-    }
-    console.log('Listings added')
+    // for (const l of mockListings) {
+    //   const {edition, sellerId, albumId, ...listing} = l
+    //   await prisma.listing.create({
+    //     data: {
+    //       ...listing,
+    //       edition: {
+    //         connect: edition
+    //       },
+    //       seller: {
+    //         connect: {
+    //           sellerId: sellerId
+    //         }
+    //       },
+    //       album: {
+    //         connect: {
+    //           id: albumId
+    //         }
+    //       }
+    //     }
+    //   })
+    // }
+    // console.log('Listings added')
+    console.log('Seeding success')
   } catch (e) {
     console.log(e)
   }
