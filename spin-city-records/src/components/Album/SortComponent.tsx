@@ -1,34 +1,22 @@
-import { useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-export default function SortBy() {}
-{
-  /* <div className="flex flex-col text-white">
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger>Filter By Price</DropdownMenu.Trigger>
+export default function SortBy() {
+  return (
+    <div className="flex flex-col text-white">
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>Sort By</DropdownMenu.Trigger>
 
-              <DropdownMenu.Content>
-                <DropdownMenu.Label>Select a Price Range</DropdownMenu.Label>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("100")}>
-                  Less than $100
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("500")}>
-                  Less than $500
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onSelect={() => setFilterPrice("1000")}>
-                  Less than $1000
-                </DropdownMenu.Item>
+        <DropdownMenu.Content>
+          <DropdownMenu.Label>Select a Sort Option</DropdownMenu.Label>
+          <DropdownMenu.Item>Price (Low to High)</DropdownMenu.Item>
+          <DropdownMenu.Item>Price (High to Low)</DropdownMenu.Item>
+          <DropdownMenu.Separator />
 
-                <DropdownMenu.Separator />
+          <DropdownMenu.Item>Clear Sort</DropdownMenu.Item>
 
-                <DropdownMenu.Item onSelect={() => setFilterPrice("")} disabled>
-                  Clear Filter
-                </DropdownMenu.Item>
-
-                <DropdownMenu.Arrow />
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-
-
-          </div> */
+          <DropdownMenu.Arrow />
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </div>
+  );
 }

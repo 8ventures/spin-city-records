@@ -1,108 +1,123 @@
-import { useContext } from "react";
-import { Listing } from "~/utils/types";
+import { useState, useEffect, useContext } from "react";
+import { Album, Listing } from "~/utils/types";
+import convertToGlobalCurrency from "../../utils/currencyConversion";
 import getSymbolFromCurrency from "currency-symbol-map";
-import Button from "../Button";
-import RatingStars from "./RatingStars";
 import { CartContext } from "../GlobalContext/CartContext";
+import { WishlistContext } from "../GlobalContext/WishListContext";
+import { CurrencyContext } from "../GlobalContext/CurrencyContext";
+import RatingStars from "./RatingStars";
+import { PlusIcon, MinusIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 interface ListingInfoCardProps {
+  album: Album;
   listing: Listing | undefined;
+  currentListing: Listing | undefined;
   setCurrentListing: React.Dispatch<React.SetStateAction<Listing | undefined>>;
 }
 
 export default function ListingInfoCard({
+  album,
   listing,
+  currentListing,
   setCurrentListing,
 }: ListingInfoCardProps) {
-  const { cart } = useContext(CartContext);
+  //Global Context
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
+  useContext(WishlistContext);
+  const { currency } = useContext(CurrencyContext);
 
-  const isInCart = cart.some((item) => item.id === listing.id);
+  //State
+  const [isInCart, setIsInCart] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+
+  //Logic
+  const handleClickSelectListing = () => {
+    if (listing) {
+      if (isSelected) {
+        setCurrentListing(undefined);
+        setIsSelected(false);
+      } else {
+        setCurrentListing(listing);
+        setIsSelected(true);
+      }
+    }
+  };
+
+  const handleClickCart = () => {
+    if (listing && isInCart) {
+      removeFromCart(listing);
+      setIsInCart(false);
+    }
+  };
+
+  useEffect(() => {
+    if (listing) {
+      if (cart.some((cartItem) => cartItem.id === listing.id)) {
+        setIsInCart(true);
+      } else {
+        setIsInCart(false);
+      }
+    }
+  }, [cart, listing]);
 
   return (
     <>
-      <div className="container my-4 flex h-24 flex-row justify-between rounded-lg border border-[#ffffff] p-4 text-white">
-        <div className=" mx-1 flex-col">
-          <div className="text-md font-bold">{sellerExample.name}</div>
-          <div className="text-xs">{sellerExample.location.country}</div>
-          <RatingStars rating={sellerExample.rating} />
+      {listing && (
+        <div className="items border-b-1 m-4 flex  items-center justify-around">
+          <div className="mr-2  flex-col items-center text-sm text-[#A1A1A1] sm:text-base">
+            Sold by: <div className="text-white">{listing.seller.name}</div>
+            {listing.seller.location && (
+              <div className="text-white ">{listing.seller.location}</div>
+            )}
+            <div className="w-18 flex items-center justify-start text-white sm:mt-0 sm:inline-flex">
+              {listing.seller.rating ? (
+                <RatingStars rating={listing.seller.rating} />
+              ) : (
+                "(0 reviews)"
+              )}
+            </div>
+          </div>
+          <div className="sm:text-md mr-2 flex-col items-center justify-center text-sm text-white">
+            <div>{listing.format}</div>
+            <div>{listing.weight}</div>
+            <div>{listing.speed}</div>
+            {listing.edition.map((edition, index) => (
+              <span key={index} className="text-white">
+                {index > 0 && ", "} {edition.type}
+              </span>
+            ))}
+          </div>
+          <div className="mr-2 flex-col  items-center justify-center text-sm sm:text-lg">
+            <div className="text-base font-semibold text-[#FF5500] sm:text-xl ">
+              {getSymbolFromCurrency(currency)}{" "}
+              {convertToGlobalCurrency(
+                listing.price,
+                listing.currency,
+                currency
+              )}
+            </div>
+            <div className="text-md text-white sm:text-lg ">
+              {listing.condition}
+            </div>
+          </div>
+          {isInCart && (
+            <button
+              onClick={handleClickCart}
+              className="mx-2 flex w-6 items-center justify-center rounded-xl text-base font-semibold text-white lg:w-6"
+            >
+              <TrashIcon />
+            </button>
+          )}
+          <button
+            onClick={handleClickSelectListing}
+            className={`mx-2 flex w-6 items-center justify-center rounded-xl text-base font-semibold lg:w-6 ${
+              isSelected ? " text-white " : " text-white  "
+            }`}
+          >
+            {isSelected ? <MinusIcon /> : <PlusIcon />}
+          </button>
         </div>
-        <div className="mx-1  flex-col">
-          <div className="text-xs font-semibold text-white">
-            {listing.weight === "standard" ? "SD" : "OW"}
-          </div>
-          <div className="text-xs font-semibold text-white">
-            {listing.format}
-          </div>
-        </div>
-        <div className="mx-1 flex-col">
-          <div className="text-xl font-bold">
-            {getSymbolFromCurrency(listing.currency)}
-            {listing.price}
-          </div>
-          <div className="text-sm">{listing.condition}</div>
-        </div>
-
-        <Button
-          variant="select"
-          className="m-2 flex rounded-lg border border-[#333333] bg-[#000000] px-2 py-2 text-sm font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black"
-          onClick={() => {
-            setCurrentListing(listing);
-          }}
-        />
-
-        {isInCart && (
-          <div className="m-2 flex rounded-lg border border-[#333333] bg-[#000000] px-2 py-2 text-sm font-semibold text-white hover:border-[#333333] hover:bg-white hover:text-black">
-            In Cart
-          </div>
-        )}
-      </div>
+      )}
     </>
   );
 }
-
-const sellerExample = {
-  id: "seller123",
-  name: "John Doe",
-  email: "johndoe@example.com",
-  location: {
-    city: "New York City",
-    state: "New York",
-    country: "United States",
-    address: "123 Main Street",
-    postalCode: "10001",
-  },
-  rating: 3.1,
-  listings: [
-    {
-      id: "listing1",
-      createdAt: "2023-06-24T12:00:00Z",
-      updatedAt: "2023-06-24T12:00:00Z",
-      sellerID: "seller123",
-      albumID: "album1",
-      price: 25.99,
-      currency: "USD",
-      condition: "Near Mint",
-      weight: "standard",
-      format: "12",
-      speed: "33RPM",
-      special: ["colored", "limited edition"],
-      description:
-        "Limited edition colored vinyl in near mint condition. Comes with original sleeve.",
-    },
-    {
-      id: "listing2",
-      createdAt: "2023-06-25T09:30:00Z",
-      updatedAt: "2023-06-25T09:30:00Z",
-      sellerID: "seller123",
-      albumID: "album2",
-      price: 19.99,
-      currency: "USD",
-      condition: "Excellent",
-      weight: "standard",
-      format: "7",
-      speed: "45RPM",
-      special: [],
-      description: "Classic 7'' vinyl single in excellent condition.",
-    },
-  ],
-};

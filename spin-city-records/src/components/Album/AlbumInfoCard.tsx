@@ -103,8 +103,8 @@ export default function AlbumInfoCard({
 
   return (
     <>
-      <div className="flex flex-col justify-center  text-white sm:flex-row">
-        <div className="mx-auto mb-2 mt-8 h-64 w-64 overflow-hidden rounded-xl sm:mx-0 md:h-96 md:w-96">
+      <div className="h-128 flex  flex-col justify-center text-white sm:flex-row">
+        <div className="mx-auto mb-10 mt-8 h-64 w-64 overflow-hidden rounded-xl sm:mx-0 md:h-96 md:w-96">
           <img
             src={album.artwork}
             alt={`Artwork for ${album.name} by ${album.artist.name}`}
@@ -140,7 +140,7 @@ export default function AlbumInfoCard({
           )}
           {!currentListing && listings.length === 0 && (
             <div className="text-md my-4 sm:my-8 sm:text-left md:text-lg xl:text-xl">
-              <div className="">Album not available</div>
+              <div className="">No available listings</div>
               <span className="cursor-pointer text-lg font-semibold text-[#FF5500] hover:underline sm:text-left md:text-xl xl:text-2xl">
                 Create a listing
               </span>
@@ -165,8 +165,12 @@ export default function AlbumInfoCard({
                     {currentListing.seller.name},{" "}
                     {currentListing.seller.location}
                   </span>
-                  <span className="ml-0 mt-2 flex items-center justify-center sm:ml-2 sm:mt-0 sm:inline-flex">
-                    <RatingStars rating={currentListing.seller.rating} />
+                  <span className="ml-0 mt-2 flex items-center justify-center text-white sm:ml-2 sm:mt-0 sm:inline-flex">
+                    {currentListing.seller.rating ? (
+                      <RatingStars rating={currentListing.seller.rating} />
+                    ) : (
+                      "(0 reviews)"
+                    )}
                   </span>{" "}
                 </span>
               </div>
@@ -217,11 +221,11 @@ export default function AlbumInfoCard({
                   onClick={handleClickCart}
                   className={`ml-4 w-48 justify-center rounded-xl px-4 py-2 text-base font-semibold ${
                     isInCart
-                      ? " border border-[#A1A1A1] bg-black text-white"
-                      : "border border-white bg-white text-black hover:bg-[white] hover:text-black"
+                      ? "border border-white bg-white text-black hover:bg-[white] hover:text-black"
+                      : " border border-[#A1A1A1] bg-black text-white"
                   }`}
                 >
-                  {isInCart ? "Add to cart" : "Remove from cart"}
+                  {isInCart ? "Remove from cart" : "Add to cart"}
                 </button>
               </div>
             </div>
