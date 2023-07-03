@@ -25,15 +25,29 @@ export const listingsRouter = createTRPCRouter({
         description: z.string(),
         condition: z.string(),
         speed: z.string(),
-        // sellerId: z.string(),
         albumId: z.string(),
-        edition: z.array(z.object({ type: z.string() })),
+        edition: z.array(z.object({ value: z.string() })),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      //const albumId = "cljeh2c3k0004uasgpnlhofu7";
-      try {
+      const editionArray = input.edition.map<{id: number}>((form) => ({id: Number(form.value)}))
+      const stripeId = ctx.user.privateMetadata.stripeId
+      try{
+        const newProduct = await ctx.stripe.products.create({
+          name: input.albumId,
+          description: 'Testing testing',
+          metadata: {
+            'sellerId': stripeId as string,
+
+
+          }
+        })
+        const newPrice = await ctx.stripe.prices.create({
+          unit_amount: input.price * 100,
+          currency: input.currency.toLowerCase(),
+          product: newProduct.id
+        })
         const listing = await ctx.prisma.listing.create({
           data: {
             price: input.price,
@@ -49,7 +63,7 @@ export const listingsRouter = createTRPCRouter({
               },
             },
             edition: {
-              create: input.edition,
+              connect: editionArray
             },
             album: {
               connect: {
@@ -58,7 +72,7 @@ export const listingsRouter = createTRPCRouter({
             },
           },
         });
-        return listing;
+      return listing;
       } catch (e) {
         console.log(e);
       }
@@ -100,29 +114,30 @@ export const listingsRouter = createTRPCRouter({
         console.log(e);
       }
     }),
-
-  createListingStripe: privateProcedure.mutation(async ({ ctx }) => {
-    const stripeId = ctx.user.privateMetadata.stripeId;
-    try {
-      const newProduct = await ctx.stripe.products.create({
-        name: "Thriller",
-        description: "Testing testing",
-        metadata: {
-          sellerId: stripeId as string,
-        },
-      });
-      //TODO Add new product to db
-      const newPrice = await ctx.stripe.prices.create({
-        unit_amount: 2000,
-        currency: "gbp",
-        product: newProduct.id,
-      });
-      return { newProduct, newPrice };
-    } catch (e) {
-      console.log(e);
-    }
-  }),
 });
+
+//   createListingStripe: privateProcedure.mutation(async ({ ctx }) => {
+//     const stripeId = ctx.user.privateMetadata.stripeId;
+//     try {
+//       const newProduct = await ctx.stripe.products.create({
+//         name: "Thriller",
+//         description: "Testing testing",
+//         metadata: {
+//           sellerId: stripeId as string,
+//         },
+//       });
+//       //TODO Add new product to db
+//       const newPrice = await ctx.stripe.prices.create({
+//         unit_amount: 2000,
+//         currency: "gbp",
+//         product: newProduct.id,
+//       });
+//       return { newProduct, newPrice };
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   }),
+// });
 
 // create: privateProcedure
 //   .input(

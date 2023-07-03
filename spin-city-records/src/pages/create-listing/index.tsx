@@ -2,7 +2,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { RouterOutputs, api } from "~/utils/api";
-import SearchAlbumsForm from "~/components/SearchAlbumsForm";
+import SearchAlbumsForm from "~/components/Create Listing/SearchAlbumsForm";
 import Layout from "~/components/Layout/Layout";
 const CreateListingPage = () => {
   const { user } = useUser();
