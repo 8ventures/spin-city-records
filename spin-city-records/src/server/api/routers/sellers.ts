@@ -12,13 +12,14 @@ export const sellersRouter = createTRPCRouter({
             email: ctx.user.emailAddresses[0]?.emailAddress as unknown as string,
             business_type: 'individual'
           }) 
-          // Add account to DB
+
           const {url} = await ctx.stripe.accountLinks.create({
             account: account?.id,
             refresh_url: 'http://localhost:3000/profile/' + ctx.user.id,
             return_url: 'http://localhost:3000/profile/' + ctx.user.id,
             type: 'account_onboarding'
           })
+          // Add account to DB
           await ctx.prisma.seller.create({
             data: {
               sellerId: account.id

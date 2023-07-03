@@ -1,4 +1,8 @@
-export const editions = [
+export type SeedEdition = {
+  type: string
+}
+
+export const editions: SeedEdition[]= [
   {type: 'Remastered'},
   {type: 'Test Pressing'},
   {type: 'Pictured'},
