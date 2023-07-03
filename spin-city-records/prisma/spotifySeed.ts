@@ -221,28 +221,32 @@ interface AlbumResponse {
 }
 
 const getAccessToken = async (): Promise<TokenResponse | undefined>  => {
-  const clientId = '8e1b8ed775444382b7ce0bc9534eaba4';
-  const clientSecret = '2d91681dbc964d56947a0b8e05f20820';
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
-  const formData = new URLSearchParams();
-  formData.append('grant_type', 'client_credentials');
-  formData.append('client_id', clientId);
-  formData.append('client_secret', clientSecret);
+  if (clientId && clientSecret) {
 
-  try {
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Cookie': '__Host-device_id=AQA-ceUsgq1DXsAKxnUfJcBFGoCFAQ38-J4ROOpbOG7uCmzKFkjThZM09R7bcjGB4eHFMu48veRd8RsWeOso8KobTRvDoZNcM7o; sp_tr=false'
-      },
-      body: formData
-    });
-    const res = await response.json() as TokenResponse
-    return res;
-  } catch (e) {
-    console.log(e);
+    const formData = new URLSearchParams();
+    formData.append('grant_type', 'client_credentials');
+    formData.append('client_id', clientId);
+    formData.append('client_secret', clientSecret);
+  
+    try {
+      const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Cookie': '__Host-device_id=AQA-ceUsgq1DXsAKxnUfJcBFGoCFAQ38-J4ROOpbOG7uCmzKFkjThZM09R7bcjGB4eHFMu48veRd8RsWeOso8KobTRvDoZNcM7o; sp_tr=false'
+        },
+        body: formData
+      });
+      const res = await response.json() as TokenResponse
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
   }
+
 };
 
 const getArtistAlbums = async (accessToken: string, id: string) => {
@@ -328,7 +332,7 @@ export const getArtistInfo = async (spotifyId: string, discogsId: string) => {
       const discogsResponse = await getArtistDesc(discogsId);
       if( discogsResponse){
         const profile =  discogsResponse.profile
-        const artist = { name: artistInfo?.name, bio: profile, artwork: artistInfo.images[0]!.url };
+        const artist = { name: artistInfo?.name, bio: profile, artistPicture: artistInfo.images[0]!.url };
     
         return { artist, albums };
       }
