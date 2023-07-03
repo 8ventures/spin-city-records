@@ -1,37 +1,74 @@
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 
+const checkoutInput = z.object({
+  id: z.string(),
+  price: z.number(),
+  currency: z.string(),
+  stripeProduct: z.string(),
+  stripePrice: z.string(),
+  stripeId: z.string()
+})
+
+type CheckoutInput = z.infer<typeof checkoutInput>;
+
+const calcOrderAmount = (items: CheckoutInput[] ) => {
+  return items.reduce((total, item) => total + item.price,0 )
+}
 export const stripeRouter = createTRPCRouter({
   checkoutSession: privateProcedure
     .input(
-      z.object({
-        id: z.string(),
-        price: z.string(),
-        currency: z.string(),
-        stripeProduct: z.string(),
-        stripePrice: z.string()
-      })
+     checkoutInput.array()
     )
     .mutation(
-      async ({ ctx }) => {
+      async ({ ctx, input }) => {
         try {
-          const session = await ctx.stripe.checkout.sessions.create({
-            line_items: [
-              {
-                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                price: 'price_1NOVBHLS7dhrxjRDDc15h5D7',
-                quantity: 1,
+          if(input[0]) {
+            const paymentIntent = await ctx.stripe.paymentIntents.create({
+              amount: calcOrderAmount(input),
+              currency: input[0].currency,
+              automatic_payment_methods: {
+                enabled: true,
               },
-            ],
-            mode: 'payment',
-            success_url: 'http://localhost:3000/PaymentSuccess',
-            cancel_url: 'http://localhost:3000/fail',
-            automatic_tax: {enabled: true},
-          });
-          return session.url
+              application_fee_amount: 500,
+              transfer_data: {
+                destination: input[0].stripeId
+              }
+            })
+            return paymentIntent.client_secret
+          }
         } catch (e) {
           console.log(e)
         }
       }
     )
 })
+
+//     async ({ ctx, input }) => {
+//       try {
+//         const session = await ctx.stripe.checkout.sessions.create({
+//           line_items: [
+//             {
+//               price: input.stripePrice,
+//               quantity: 1,
+//             },
+//           ],
+//           payment_intent_data: {
+//             application_fee_amount: 500,
+//             transfer_data: {
+//               destination: input.stripeId
+//             }
+//           },
+//           mode: 'payment',
+//           success_url: 'http://localhost:3000/PaymentSuccess',
+//           cancel_url: 'http://localhost:3000/fail',
+//           automatic_tax: {enabled: true},
+//         });
+//         console.log(session)
+//         return session.url
+//       } catch (e) {
+//         console.log(e)
+//       }
+//     }
+//   )
+// })

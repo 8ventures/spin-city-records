@@ -9,6 +9,7 @@ import OnboardingForm from "../../components/Profile/onboardingForm";
 import ProfilePageButton from "../../components/Profile/ProfilePageButton";
 import Messages from "../../components/Profile/Messages";
 import Settings from "../../components/Profile/Settings";
+import WishList from "~/components/Profile/WishList";
 
 const profilePages = [
   { label: "Wish List", page: "wishList" },

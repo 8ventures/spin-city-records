@@ -11,7 +11,7 @@ export default function Home() {
   const [recentlyAdded, setRecentlyAdded] = useState<any>([]); //TODO map function to Album[]
 
   const recentlyAddedQuery = api.collections.getById.useQuery({
-    id: "cljmn93e800001yr6c3171qnw",
+    id: "cljmx6n8c0000ua3czgt95ysp",
   });
 
   useEffect(() => {
