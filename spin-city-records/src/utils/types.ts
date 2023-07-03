@@ -60,11 +60,11 @@ export interface Seller {
   stripeId: string;
   createdAt: Date;
   updatedAt: Date;
-  rating: string
+  rating: number;
   bio: string;
   name: string;
-  email: string;
-  location: string;
+  email?: string;
+  location?: string;
   listings: Listing[];
 }
 

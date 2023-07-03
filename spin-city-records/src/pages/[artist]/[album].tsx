@@ -21,14 +21,14 @@ export default function AlbumPage() {
     isLoading: albumQueryLoading,
     isError: albumQueryIsError,
     isSuccess: albumQuerySuccess,
-  } = api.albums.getById.useQuery<Album | undefined>({ id: id });
+  } = api.albums.getById.useQuery({ id: id });
   const {
     data: listingQueryData,
     error: listingQueryError,
     isLoading: listingQueryLoading,
     isError: listingQueryIsError,
     isSuccess: listingQuerySuccess,
-  } = api.listings.getByAlbumId.useQuery<Listing[] | undefined>({
+  } = api.listings.getByAlbumId.useQuery({
     albumId: id,
   });
 
