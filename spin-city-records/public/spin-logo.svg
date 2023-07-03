@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200" viewBox="-100 -100 200 200">
+  <defs>
+    <path id="textPath" d="M0 -70 A70 70 0 1 1 -0.01 -70" />
+  </defs>
+  <rect width="200" height="200" fill="#000" />
+  <g>
+    <circle cx="0" cy="0" r="95" fill="#990000" />
+    <text fill="#fff" font-family="'Arial', sans-serif" font-size="22" text-anchor="middle" alignment-baseline="middle">
+      <textPath xlink:href="#textPath" startOffset="50%">Spin City Records</textPath>
+    </text>
+    <circle cx="0" cy="0" r="35" fill="#fff" />
+    <circle cx="0" cy="0" r="10" fill="#000" />
+    <animateTransform 
+      attributeName="transform" 
+      attributeType="XML" 
+      type="rotate" 
+      from="0 0 0" 
+      to="360 0 0" 
+      dur="5s" 
+      repeatCount="indefinite"/>
+  </g>
+</svg>

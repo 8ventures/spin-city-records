@@ -6,8 +6,8 @@
     </filter>
   </defs>
   <rect width="240" height="80" rx="10" fill="#000" />
-  <text x="30" y="50" fill="#fff" font-family="Arial, sans-serif" font-size="30" font-weight="bold" filter="url(#f1)">Spin City</text>
-  <text x="30" y="80" fill="#fff" font-family="Arial, sans-serif" font-size="30" font-weight="bold" filter="url(#f1)">Records</text>
+  <text x="30" y="50" fill="#fff" font-family="DM Serif Display" font-size="30" font-weight="bold" filter="url(#f1)">Spin City</text>
+  <text x="30" y="80" fill="#fff" font-family="DM Serif Display" font-size="30" font-weight="bold" filter="url(#f1)">Records</text>
   <circle cx="200" cy="50" r="30" fill="#FF5500" />
 </svg>
 
