@@ -1,12 +1,13 @@
 import Layout from "~/components/Layout/Layout";
 import { Listing } from "~/utils/types";
 import { useContext } from "react";
-import { CartContext } from "~/components/CartContext";
+import { CartContext } from "~/components/GlobalContext/CartContext";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { api } from "~/utils/api";
 
 function Cart() {
   const { cart } = useContext(CartContext);
+
 
   const { mutate: checkout } = api.stripe.checkoutSession.useMutation()
 
@@ -14,6 +15,11 @@ function Cart() {
     console.log(listing)
     checkout(listing)
   }
+
+  const handleCheckout = () => {
+    console.log("here");
+  };
+
 
   return (
     <Layout>
@@ -50,11 +56,17 @@ function Cart() {
 
             </div>
           ))
-          ) : (
-            <div>Your cart is empty.</div>
-            )}
+        ) : (
+          <div>Your cart is empty.</div>
+        )}
       </div>
+
             {/* <button className=" text-2xl text-white " onClick={handleCheckout}>Checkout</button> */}
+
+      <button className=" text-2xl text-white " onClick={handleCheckout}>
+        Checkout
+      </button>
+
     </Layout>
   );
 }
