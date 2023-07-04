@@ -1,20 +1,20 @@
 import {useState, useEffect} from 'react';
-import {useStripe} from '@stripe/react-stripe-js';
+import { useStripe } from '@stripe/react-stripe-js';
 import { useRouter } from 'next/router';
 import Layout from '~/components/Layout/Layout';
+import { stripe } from '../../utils/getStripe'
 
 
 export default function OrderStatus() {
-  const stripe = useStripe();
+  
   const [message, setMessage] = useState('');
 
   const router = useRouter();
   const clientSecret = router.query.payment_intent_client_secret
   
   const getPaymentIntent = async (clientSecret: string) => {
-    const paymentIntentResult = await stripe?.retrievePaymentIntent(clientSecret)
-    if ( paymentIntentResult?.paymentIntent) {
-      const paymentIntent = paymentIntentResult?.paymentIntent
+    const paymentIntent = await stripe.paymentIntents.retrieve(clientSecret)
+    if ( paymentIntent) {
       switch (paymentIntent.status) {
         case 'succeeded':
           // redirect to order conformation

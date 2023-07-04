@@ -5,6 +5,9 @@ import type Stripe from 'stripe';
 import { stripe } from '../../utils/getStripe'
 import type { RequestHandler } from 'micro';
 import { api } from '~/utils/api';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import type { AppRouter } from '../../server/api/root'
+import SuperJSON from 'superjson';
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SIGNING_SECRET as string;
 
@@ -20,10 +23,17 @@ const cors = Cors({
 
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
-  const { mutate: changeOrderStatus } = api.orders.changeStatus.useMutation() 
+  const client = createTRPCProxyClient<AppRouter>({
+    links: [
+      httpBatchLink({
+        url: 'http://localhost:3000/api/trpc'
+      })
+    ],
+    transformer: SuperJSON
+  });
 
-  console.log('Running webook')
   console.log(webhookSecret)
+  console.log('Running webook')
   if (req.method === 'POST') {
     const buf = await buffer(req);
     const signature = req.headers['stripe-signature'];
@@ -34,11 +44,11 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         buf.toString(),
         signature!,
         webhookSecret
-      );
+      )
     } catch (err ) {
       console.log(`Error message: ${(err as Error).message}`);
-      res.status(400).send(`Webhook Error: ${(err as Error).message}`);
-      return;
+      res.status(400).send(`Webhook Error: ${(err as Error).message}`)
+      return
     }
 
     console.log('Success:', event.id);
@@ -49,7 +59,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         console.log(`PaymentIntent status: ${paymentIntent.status}`);
         const orderId = paymentIntent.metadata?.orderId
         if (orderId) {
-          changeOrderStatus({orderId, status: 'Awaiting Shipment'})
+          client.orders.changeStatus.mutate({
+            orderId,
+            status: 'Awaiting Shipment'
+          }).catch((e) => console.log(e))
         }
         break;
       }
@@ -70,7 +83,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         break;
       }
     }
-
     res.json({ received: true });
   } else {
     res.setHeader('Allow', 'POST');
