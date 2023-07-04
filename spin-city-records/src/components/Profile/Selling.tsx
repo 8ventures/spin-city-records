@@ -7,10 +7,11 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 const options = [
   { value: "All", label: "All" },
-  { value: "awaiting shipment", label: "Awaiting Shipment" },
-  { value: "shipped", label: "Shipped" },
-  { value: "complete", label: "Complete" },
-  { value: "No order", label: "No Order" },
+  { value: "Awaiting Payment", label: "Awaiting Payment" },
+  { value: "Awaiting Shipment", label: "Awaiting Shipment" },
+  { value: "Shipped", label: "Shipped" },
+  { value: "Complete", label: "Complete" },
+  { value: "No Order", label: "No Order" },
 ];
 
 function Selling() {
@@ -81,7 +82,7 @@ function Selling() {
 
   function getOrderStatus(listingId: string | null) {
     if (listingId === null) {
-      return "No order";
+      return "No Order";
     }
     const order = orders?.find((order) => order.id === listingId);
     return order ? order.status : "No Order";
@@ -91,7 +92,7 @@ function Selling() {
     return statusFilter === "All"
       ? listings
       : listings.filter(
-          (listing) => getOrderStatus(listing.orderId) === statusFilter
+          (listing) => getOrderStatus(listing.orderId || null) === statusFilter
         );
   };
 
@@ -163,7 +164,9 @@ function Selling() {
                   <td className="p-3">{listing.description}</td>
                   <td className="p-3">{listing.price}</td>
                   <td className="p-3">{listing.currency.toUpperCase()}</td>
-                  <td className="p-3">{getOrderStatus(listing.orderId)}</td>
+                  <td className="p-3">
+                    {getOrderStatus(listing.orderId || null)}
+                  </td>
                   <td>
                     <div className="m-2 flex h-9 w-9 items-center">
                       <TrashIcon
