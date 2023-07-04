@@ -28,25 +28,22 @@ export default function ListingInfoCard({
 
   //State
   const [isInCart, setIsInCart] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
+  const [isCurrentListing, setIsCurrentListing] = useState(false);
 
   //Logic
-  const handleClickSelectListing = () => {
-    if (listing) {
-      if (isSelected) {
-        setCurrentListing(undefined);
-        setIsSelected(false);
-      } else {
-        setCurrentListing(listing);
-        setIsSelected(true);
-      }
-    }
-  };
 
   const handleClickCart = () => {
     if (listing && isInCart) {
       removeFromCart(listing);
       setIsInCart(false);
+    }
+  };
+
+  const handleClickSelectListing = () => {
+    if (listing && listing === currentListing) {
+      setCurrentListing(undefined);
+    } else {
+      setCurrentListing(listing);
     }
   };
 
@@ -60,6 +57,14 @@ export default function ListingInfoCard({
       }
     }
   }, [cart, listing]);
+
+  useEffect(() => {
+    if (listing && currentListing) {
+      setIsCurrentListing(listing === currentListing);
+    } else {
+      setIsCurrentListing(false);
+    }
+  }, [listing, currentListing]);
 
   return (
     <>
@@ -111,11 +116,11 @@ export default function ListingInfoCard({
           )}
           <button
             onClick={handleClickSelectListing}
-            className={`mx-2 flex w-6 items-center justify-center rounded-xl text-base font-semibold lg:w-6 ${
-              isSelected ? " text-white " : " text-white  "
-            }`}
+            className={
+              "mx-2 flex w-6 items-center justify-center rounded-xl text-base font-semibold text-white lg:w-6"
+            }
           >
-            {isSelected ? <MinusIcon /> : <PlusIcon />}
+            {isCurrentListing ? <MinusIcon /> : <PlusIcon />}
           </button>
         </div>
       )}

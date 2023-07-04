@@ -9,7 +9,6 @@ import {
   UserIcon,
   EnvelopeIcon,
 } from "@heroicons/react/24/solid";
-// import CurrencySelect from "./CurrencySelect";
 
 export default function Header() {
   const router = useRouter();
@@ -61,7 +60,6 @@ export default function Header() {
             )}
           </div>
         </div>
-        {/* <CurrencySelect /> */}
       </nav>
     </header>
   );
