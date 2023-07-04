@@ -6,7 +6,9 @@ import { artistsRouter } from "./routers/artists";
 import { editionsRouter } from "./routers/editions";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { stripeRouter } from "./routers/stripe";
+
 import { ordersRouter } from "./routers/order";
+
 
 export const appRouter = createTRPCRouter({
   albums: albumsRouter,
