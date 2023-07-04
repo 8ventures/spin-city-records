@@ -49,8 +49,8 @@ export type Listing = {
   stripeId: string;
   album: Album;
   albumId: string;
-  order: Order | null;
-  orderId: string | null;
+  order?: Order | null;
+  orderId?: string | null;
 };
 
 export type Collection = {
@@ -83,7 +83,7 @@ export type ChatMesssage = {
 export type Edition = {
   id: number;
   type: string;
-  listings: Listing[];
+  listings?: Listing[];
 };
 
 export type Seller = {

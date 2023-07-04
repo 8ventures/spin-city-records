@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { api } from "~/utils/api";
 import SearchAlbumsForm from "~/components/Create Listing/SearchAlbumsForm";
 import SelectSpeed from "./selectSpeed";
@@ -9,8 +8,7 @@ import SelectCurrency from "./selectCurrency";
 import SelectEdition from "./selectEdition";
 import Skeleton from "../skeleton";
 import { z } from 'zod';
-import { SubmitHandler, useForm, Controller, useFormState, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm, Controller, useFieldArray } from "react-hook-form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import Spinner from '../../components/spinner'
