@@ -173,12 +173,12 @@ export default function AlbumInfoCard({
                   Sold by:{" "}
                   <span className="text-white">
                     {" "}
-                    {currentListing.seller.name},{" "}
-                    {currentListing.seller.location}
+                    {currentListing.seller!.name},{" "}
+                    {currentListing.seller!.location}
                   </span>
                   <span className="ml-0 mt-2 flex items-center justify-center text-white sm:ml-2 sm:mt-0 sm:inline-flex">
-                    {currentListing.seller.rating ? (
-                      <RatingStars rating={currentListing.seller.rating} />
+                    {currentListing.seller!.rating ? (
+                      <RatingStars rating={currentListing.seller!.rating} />
                     ) : (
                       "(0 reviews)"
                     )}
