@@ -4,7 +4,6 @@ import {
   publicProcedure,
   privateProcedure,
 } from "~/server/api/trpc";
-import { api } from "~/utils/api";
 
 export const listingsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -119,8 +118,8 @@ export const listingsRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const { id } = input;
       try {
+        const { id } = input;
         const listing = await ctx.prisma.listing.findUnique({
           where: { id },
           include: {

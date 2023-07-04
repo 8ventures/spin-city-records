@@ -61,7 +61,7 @@ const ProfilePage = () => {
 
   const handleClick = (page: Page) => {
     setCurrentPage(page);
-    router.push(`/profile/${currentUserId}/${page}`);
+    router.push(`/profile/${currentUserId}/${page}`).catch((e)=> console.log(e));
   };
 
   return (

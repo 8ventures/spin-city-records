@@ -50,7 +50,7 @@ export type Listing = {
   album?: Album;
   albumId: string;
   order?: Order | null;
-  orderId: string | null;
+  orderId?: string | null;
 };
 
 export type Collection = {
@@ -83,7 +83,7 @@ export type ChatMesssage = {
 export type Edition = {
   id: number;
   type: string;
-  listings: Listing[];
+  listings?: Listing[];
 };
 
 export type Seller = {

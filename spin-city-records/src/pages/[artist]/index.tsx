@@ -25,7 +25,7 @@ function ArtistPage() {
     router.push({
       pathname: `/${normalizedArtist}/${normalizedAlbum}`,
       query: { id: album.id },
-    });
+    }).catch((e)=> console.log(e));
   };
 
   return (
