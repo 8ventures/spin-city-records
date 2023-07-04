@@ -1,4 +1,3 @@
-import { BsCartX } from "react-icons/bs";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -59,7 +58,7 @@ export const ordersRouter = createTRPCRouter({
       try {
         const orders = await ctx.prisma.order.findMany({
           where: {
-            sellerId: ctx.user.id
+            sellerId: ctx.user.privateMetadata.stripeId as string
           }
         })
         return orders
