@@ -7,14 +7,15 @@ import {
 } from "@stripe/react-stripe-js";
 import { useForm, Controller } from "react-hook-form";
 
-
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
+ 
 
   const [payment, setPayment] = useState({ status: 'initial' })
   const [errorMessage, setErrorMessage] = useState('')
   const { handleSubmit, control,} = useForm();
+  
 
   const PaymentStatus = ({ status }: { status: string }) => {
     switch (status) {
@@ -50,12 +51,7 @@ export default function CheckoutForm() {
     const { error } = await stripe!.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/Order',
-        payment_method_data: {
-          billing_details: {
-            name: input.cardholderName,
-          },
-        },
+        return_url: 'http://localhost:3000/order/',
       },
     })
 

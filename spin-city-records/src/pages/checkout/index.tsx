@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import Layout from "~/components/Layout/Layout";
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from "@stripe/stripe-js";
@@ -14,10 +13,9 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
 export default function Checkout() {
 
   const router = useRouter()
+  const listingId = router.query.id;
+  const {data, isSuccess: isSession} = api.stripe.checkoutSession.useQuery({listingId}, {enabled: !!listingId})
   
-  const listingId = router.query.id as string;
-  const {data, isSuccess: isSession} = api.stripe.checkoutSession.useQuery({id: listingId}, {enabled: !!listingId})
-
   const clientSecret = data?.clientSecret
   const listing: Listing = data?.listing as Listing
 
@@ -32,8 +30,8 @@ export default function Checkout() {
   return (
     <Layout>
       <div className="flex">
-        {isSession && listing ? (
-          <CheckoutItems listing={listing}/>
+        {isSession && listing  ? (
+          <CheckoutItems listing={listing} />
         ) : (
           <Skeleton className=" h-96"/>
         )}
