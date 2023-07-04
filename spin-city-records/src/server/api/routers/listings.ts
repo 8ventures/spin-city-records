@@ -34,29 +34,30 @@ export const listingsRouter = createTRPCRouter({
           label: z.string(),
           name: z.string(),
           updatedAt: z.date(),
-          year: z.number()
+          year: z.number(),
         }),
         editions: z.array(z.object({ value: z.string() })),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const editionArray = input.editions.map<{id: number}>((form) => ({id: Number(form.value)}))
-      const stripeId = ctx.user.privateMetadata.stripeId as string
-      console.log(input)
-      try{
+      const editionArray = input.editions.map<{ id: number }>((form) => ({
+        id: Number(form.value),
+      }));
+      const stripeId = ctx.user.privateMetadata.stripeId as string;
+      try {
         const newProduct = await ctx.stripe.products.create({
           name: input.album.name,
           description: input.description,
           images: [input.album.artwork],
           metadata: {
-            'sellerId': stripeId,
-          }
-        })
+            sellerId: stripeId,
+          },
+        });
         const newPrice = await ctx.stripe.prices.create({
           unit_amount: input.price * 100,
           currency: input.currency.toLowerCase(),
-          product: newProduct.id
-        })
+          product: newProduct.id,
+        });
         const listing = await ctx.prisma.listing.create({
           data: {
             price: input.price,
@@ -74,7 +75,7 @@ export const listingsRouter = createTRPCRouter({
               },
             },
             edition: {
-              connect: editionArray
+              connect: editionArray,
             },
             album: {
               connect: {
@@ -83,7 +84,7 @@ export const listingsRouter = createTRPCRouter({
             },
           },
         });
-      return listing;
+        return listing;
       } catch (e) {
         console.log(e);
       }
@@ -111,7 +112,7 @@ export const listingsRouter = createTRPCRouter({
       }
     }),
 
-    getById: publicProcedure
+  getById: publicProcedure
     .input(
       z.object({
         id: z.string(),
@@ -134,12 +135,13 @@ export const listingsRouter = createTRPCRouter({
     }),
 
   getByUserId: privateProcedure
-
-    .query(async ({ ctx }) => {
+    .input(z.object({ stripeId: z.string().optional() }))
+    .query(async ({ ctx, input }) => {
+      const stripeId = input?.stripeId ?? ctx.user?.privateMetadata.stripeId;
       try {
         const listings = await ctx.prisma.listing.findMany({
           where: {
-            stripeId: ctx.user?.privateMetadata.stripeId as string,
+            stripeId: stripeId as string,
           },
         });
         return listings;
