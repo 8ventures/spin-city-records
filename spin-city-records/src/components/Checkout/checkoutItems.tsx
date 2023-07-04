@@ -6,7 +6,7 @@ import getSymbolFromCurrency from "currency-symbol-map";
 import { useContext } from "react";
 
 type CheckoutItemsProps = {
-  listing: Listing
+  listing: Listing,
 }
 
 export default function CheckoutItems({listing}: CheckoutItemsProps) {

@@ -52,12 +52,27 @@ export const stripeRouter = createTRPCRouter({
             })
             return { 
               clientSecret: paymentIntent.client_secret,
-              listing
+              listing,
             }
           }
         } catch (e) {
           console.log(e)
         }
       }
+    ),
+
+  retrivePaymentIntent: privateProcedure
+    .input(
+      z.object({
+      paymentIntentId: z.string()
+      })
     )
+    .query( async ({ctx, input}) => {
+      try{
+        const paymentIntent = await ctx.stripe.paymentIntents.retrieve(input.paymentIntentId);
+        return paymentIntent
+      } catch (e) {
+        console.log(e)
+      }
+    })
 })

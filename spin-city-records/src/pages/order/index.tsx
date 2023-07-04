@@ -1,49 +1,34 @@
-import {useState, useEffect} from 'react';
-import { useStripe } from '@stripe/react-stripe-js';
+import {useState} from 'react';
 import { useRouter } from 'next/router';
 import Layout from '~/components/Layout/Layout';
-import { stripe } from '../../utils/getStripe'
+import { api } from '~/utils/api';
 
-
-export default function OrderStatus() {
-  
+export default function OrderPage() {
   const [message, setMessage] = useState('');
-
   const router = useRouter();
-  const clientSecret = router.query.payment_intent_client_secret
-  
-  const getPaymentIntent = async (clientSecret: string) => {
-    const paymentIntent = await stripe.paymentIntents.retrieve(clientSecret)
-    if ( paymentIntent) {
-      switch (paymentIntent.status) {
-        case 'succeeded':
-          // redirect to order conformation
-          setMessage('Success! Payment received.');
-          break;
-        case 'processing':
-          setMessage("Payment processing. We'll update you when payment is received.");
-          break;
-        case 'requires_payment_method':
-          //add redirect button
-          setMessage('Payment failed. Please try another payment method.');
-          break;
-
-        default:
-          setMessage('Something went wrong.');
-          break;
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (typeof clientSecret === 'string') {
-      getPaymentIntent(clientSecret).catch((e) => console.log(e))
-    }
-  })
+  const { payment_intent: paymentIntentId } = router.query;
+  const { data: paymentIntent, isSuccess } = api.stripe.retrivePaymentIntent.useQuery(
+    {paymentIntentId},{enabled: !!paymentIntentId}) 
 
   return (
     <Layout>
-      {message};
+      {isSuccess && paymentIntent && paymentIntent.status === 'succeeded' ? (
+        <div className='text-white'>
+          Succeded
+        </div>
+      ) : isSuccess && paymentIntent && paymentIntent.status === 'processing' ? (
+        <div className='text-white'>
+          Processing
+        </div>
+      ) : isSuccess && paymentIntent && paymentIntent.status === 'requires_payment_method' ? (
+        <div className='text-white'>
+          Please Try another payment method
+        </div>
+      ) : (
+        <div className='text-white'>
+          Error
+        </div>
+      )}
     </Layout>
   )
 }

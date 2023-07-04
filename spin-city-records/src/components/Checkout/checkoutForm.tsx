@@ -7,8 +7,6 @@ import {
 } from "@stripe/react-stripe-js";
 import { useForm, Controller } from "react-hook-form";
 
-
-
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
