@@ -47,7 +47,7 @@ export default function Home() {
       <SplideCarousel />
       <section className="mx-auto flex w-full flex-col items-center justify-center overflow-hidden">
         <h1
-          className={`mt-4 w-full text-center text-2xl text-white sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl ${serif.className}`}
+          className={`mt-8 w-full text-center text-2xl text-white sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl ${serif.className}`}
         >
           SHOP MUSIC
         </h1>
