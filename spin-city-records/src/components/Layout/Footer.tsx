@@ -1,11 +1,20 @@
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
 import { useRouter } from "next/router";
+import { DM_Sans } from "@next/font/google";
+
+const sans = DM_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
 
 export default function Footer() {
   const router = useRouter();
   return (
-    <footer className="absolute bottom-0 mx-auto w-full  border-t border-[#A1A1A1] bg-black py-2 text-white">
+    <footer
+      className={`bottom-0 mx-auto flex w-full  border-t border-[#A1A1A1] bg-black p-4  text-white sm:p-0 ${sans.className}`}
+    >
       <div className="mx-auto flex flex-col items-center justify-center md:flex-row">
         <Image
           src={logo}

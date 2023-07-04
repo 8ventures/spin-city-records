@@ -1,11 +1,23 @@
-import { useContext } from "react";
 import NextError from "next/error";
 import { Collection } from "~/utils/types";
 import { api } from "~/utils/api";
-import { CurrencyContext } from "~/components/GlobalContext/CurrencyContext";
 import SplideCarousel from "~/components/Home/Splide";
 import MusicSection from "~/components/Home/MusicSection";
 import Layout from "~/components/Layout/Layout";
+import { DM_Sans } from "@next/font/google";
+import { DM_Serif_Display } from "@next/font/google";
+
+const sans = DM_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
+
+const serif = DM_Serif_Display({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
 
 export default function Home() {
   //Data Fetching
@@ -30,20 +42,33 @@ export default function Home() {
     );
   }
 
-  //Global Context
-  const { currency } = useContext(CurrencyContext);
-
-  //TODO PLACEHOLDER SKELETON
-  // if (recentlyAddedQuery.isLoading) {
-  //   return <div>Loading...</div>;
-  // }
   return (
     <Layout>
       <SplideCarousel />
-      <section className="h-max bg-red-500">
-        <h1 className="mx-auto w-full items-center justify-center bg-white text-center text-3xl font-bold text-black">
+      <section className="mx-auto flex max-w-full flex-col items-center justify-center overflow-hidden">
+        <h1
+          className={`mt-4 w-full text-center text-2xl text-[#FF5500] sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl ${serif.className}`}
+        >
           SHOP MUSIC
         </h1>
+        <div className="my-2 w-5/6 border-b border-[#A1A1A1]" />
+        <MusicSection
+          title={"RECENTLY ADDED"}
+          collection={recentlyAdded}
+          loading={recentlyAddedQueryIsLoading}
+        />
+        <div className="my-2 w-5/6 border-b border-[#A1A1A1]" />
+        <MusicSection
+          title={"NEW RELEASES"}
+          collection={recentlyAdded}
+          loading={recentlyAddedQueryIsLoading}
+        />
+        <div className="my-2 w-5/6 border-b border-[#A1A1A1]" />
+        <MusicSection
+          title={"BEST SELLERS"}
+          collection={recentlyAdded}
+          loading={recentlyAddedQueryIsLoading}
+        />
       </section>
     </Layout>
   );

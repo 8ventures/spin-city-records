@@ -27,7 +27,7 @@ const SplideCarousel = () => {
   };
 
   const handleAboutClick = () => {
-    router.push("/about");
+    router.push("/");
   };
 
   return (
