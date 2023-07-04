@@ -20,50 +20,53 @@ function Cart() {
 
   return (
     <Layout>
-      <div className="h-screen text-white">
-        <h1 className="mb-4 text-4xl">Shopping Cart</h1>
-        {cart.length > 0 ? (
-          cart.map((listing) => (
-            <div
-              key={listing.id}
-              className="mb-4 rounded-lg border bg-white p-4 text-black"
-            >
-              <div>
-                <strong>Price:</strong>{" "}
-                {getSymbolFromCurrency(listing.currency)}
-                {listing.price}
-              </div>
-              <div>
-                <strong>Condition:</strong> {listing.condition}
-              </div>
-              <div>
-                <strong>Format:</strong> {listing.format}
-              </div>
-              <div>
-                <strong>Speed:</strong> {listing.speed}
-              </div>
-              <div>
-                <strong>Weight:</strong> {listing.weight}
-              </div>
-              <div>
-                <button onClick={() => checkoutItem(listing)}>
-                  Checkout Album
-                </button>
-              </div>
+      <div className="h-screen flex flex-col items-center text-white">
+        <div className=" w-5/6 mt-2">
+          <h1 className="mb-4 text-4xl">Shopping Cart</h1>
+            {cart.length > 0 ? (
+              cart.map((listing) => (
+                <div
+                  key={listing.id}
+                  className="mb-4 rounded-lg border bg-white p-4 text-black"
+                >
+                  <div className="h-4">
+                    <img
+                      src={listing.album.artwork}
+                      alt={`Artwork for ${listing.album.name} by ${listing.album.artist.name}`}
+                      className="h-full w-full object-cover"
+                    >
+                    </img>
+                  </div>
+                  <div>
+                    <strong>Price:</strong>{" "}
+                    {getSymbolFromCurrency(listing.currency)}
+                    {listing.price}
+                  </div>
+                  <div>
+                    <strong>Condition:</strong> {listing.condition}
+                  </div>
+                  <div>
+                    <strong>Format:</strong> {listing.format}
+                  </div>
+                  <div>
+                    <strong>Speed:</strong> {listing.speed}
+                  </div>
+                  <div>
+                    <strong>Weight:</strong> {listing.weight}
+                  </div>
+                  <div>
+                    <button onClick={() => checkoutItem(listing)}>
+                      Checkout Album
+                    </button>
+                  </div>
 
-            </div>
-          ))
-        ) : (
-          <div>Your cart is empty.</div>
-        )}
-      </div>
-
-            {/* <button className=" text-2xl text-white " onClick={handleCheckout}>Checkout</button> */}
-{/* 
-      <button className=" text-2xl text-white " onClick={handleCheckout}>
-        Checkout
-      </button> */}
-
+                </div>
+              ))
+            ) : (
+              <div>Your cart is empty.</div>
+            )}
+          </div>
+        </div>
     </Layout>
   );
 }

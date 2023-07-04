@@ -103,6 +103,11 @@ export const listingsRouter = createTRPCRouter({
           include: {
             edition: true,
             seller: true,
+            album: {
+              include: {
+                artist: true
+              }
+            }
           },
         });
         return listings;
