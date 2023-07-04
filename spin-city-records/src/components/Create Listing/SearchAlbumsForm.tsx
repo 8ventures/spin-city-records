@@ -48,22 +48,23 @@ export interface Album {
 
 const styles = {
   input:
-    "w-full h-12 border border-crystal-400 py-2 pl-5 pr-9 text-xl text-white outline-none rounded-xl bg-black",
+    "h-12 w-full bg-transparent pl-12 text-xl text-white outline-none rounded-xl border",
   inputFocus:
-    "w-full h-12 border-x-0 border-t-0 border-b border-crystal-500 py-2 pl-5 pr-9 text-xl text-white outline-none sm:rounded-md sm:border bg-black",
-  query: "text-white placeholder-oldsilver-400",
-  typeahead: "text-white border-white",
-  cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-white inline-flex sm:hidden`,
+    "h-12 w-full bg-transparent pl-12 text-xl text-white outline-none rounded-xl border-2 border-cyan-200 shadow-lg shadow-cyan-500/50",
+  query: "text-oldsilver-800 placeholder-oldsilver-400",
+  typeahead: "text-slate-500",
+  cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-crystal-600 inline-flex sm:hidden`,
   clearButton:
-    "absolute inset-y-0 right-0 w-10 inline-flex items-center justify-center text-white hover:text-hotpink-300",
+    "absolute inset-y-0 text-3xl text-custom-orange right-0 w-10 inline-flex items-center justify-center bg-netural-700 hover:text-red-300",
+    groupHeading:
+    "cursor-default mt-2 mb-0.5 px-1.5 uppercase text-sm text-cyan-500",
   listbox:
-    "w-full bg-black sm:border sm:border-crystal-500 sm:rounded-md text-left sm:mt-2 p-2 sm:drop-shadow-xl",
-  groupHeading:
-    "cursor-default mt-2 mb-0.5 px-1.5 uppercase text-sm text-hotpink-500",
-  item: "cursor-pointer p-1.5 text-lg whitespace-nowrap text-ellipsis overflow-hidden text-white",
+    "w-full bg-black text-sm text-white sm:rounded-md text-left sm:mt-2 p-2 sm:drop-shadow-xl",
+  match: "font-bold",
+  item: "cursor-pointer p-1 text-lg whitespace-nowrap text-ellipsis overflow-hidden text-white",
   highlightedItem:
-    "cursor-pointer p-1.5 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-white rounded-md bg-gradient-to-t from-crystal-100 to-white",
-  noItems: "cursor-default text-center my-20 text-white",
+    "cursor-pointer p-1.5 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-oldsilver-900 rounded-md bg-gradient-to-t from-crystal-100 to-white",
+  noItems: "cursor-default text-center my-20",
 };
 
 
@@ -75,7 +76,7 @@ const SearchAlbumsForm = React.forwardRef<HTMLButtonElement, SearchAlbumsFormPro
     console.log(albums);
 
     const albumsData = albums;
-    const defaultListBox = albumsData;
+    // const defaultListBox = albumsData;
     const [selectedItem, setSelectedItem] = useState<Album | null>(null);
 
     useEffect(() => {
@@ -105,12 +106,13 @@ const SearchAlbumsForm = React.forwardRef<HTMLButtonElement, SearchAlbumsFormPro
       const { index, item, query } = props;
       const img = () => {
         return (
-          <div className="h-12 w-12">
-            <Image
+          <div className="flex cursor-pointer items-center px-2 py-2">
+            <img
+              width={60}
+              height={60}
               src={item.artwork}
               alt={item.name}
-              width={48}
-              height={48}
+              className="mr-2 rounded-full object-cover"
             />
           </div>
         );
@@ -125,12 +127,6 @@ const SearchAlbumsForm = React.forwardRef<HTMLButtonElement, SearchAlbumsFormPro
             caseSensitiveMatch={false}
             caseSensitiveSplit={false}
             separator=","
-            MatchComponent={({ children }: SplitMatchProps) => (
-              <span className="font-semibold text-gray-800">{children}</span>
-            )}
-            SplitComponent={({ children }: SplitMatchProps) => (
-              <span>{children}</span>
-            )}
           >
             {item.name}
           </SplitMatch>
@@ -139,7 +135,7 @@ const SearchAlbumsForm = React.forwardRef<HTMLButtonElement, SearchAlbumsFormPro
 
       return (
         <div
-          className="flex cursor-pointer items-center space-x-2 rounded p-2 hover:bg-gray-100"
+          className="flex cursor-pointer items-center space-x-2 rounded-xl p-2 hover:bg-gray-800"
           onClick={() => handleSelect(item, item.name, index)}
         >
           {img()}
@@ -160,18 +156,20 @@ const SearchAlbumsForm = React.forwardRef<HTMLButtonElement, SearchAlbumsFormPro
     return (
       <Turnstone
         Item={ItemContents}
-        autoFocus={true}
+        autoFocus={false}
         cancelButton={true}
         clearButton={true}
-        defaultListbox={defaultListBox}
+        debounceWait={250}
+        maxItems={5}
+
         defaultListboxIsImmutable={false}
         id="album"
-        noItemsMessage="no results"
+        noItemsMessage="We couldn't find an album that matches your search...please provide another one"
         listbox={listbox}
         matchText={true}
         styles={styles}
         onSelect={field.onChange}
-        placeholder="Search Albums..."
+        placeholder="Choose an album..."
         ref={forwardedRef}
       />
     );

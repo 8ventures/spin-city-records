@@ -7,6 +7,7 @@ import { CurrencyContext } from "../GlobalContext/CurrencyContext";
 import RatingStars from "./RatingStars";
 import { HeartIcon as EmptyHeart } from "@heroicons/react/24/outline";
 import { HeartIcon as FilledHeart } from "@heroicons/react/24/solid";
+import { useRouter } from "next/router";
 
 interface AlbumInfoCardProps {
   album: Album;
@@ -61,7 +62,14 @@ export default function AlbumInfoCard({
       }
     }
   };
-
+  const router = useRouter();
+  const handleClickArtist = (album: Album) => {
+    const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
+    router.push({
+      pathname: `/${normalizedArtist}/`,
+      query: { id: album.artist.id },
+    });
+  };
   const handleClickCart = () => {
     if (currentListing) {
       if (isInCart) {
@@ -117,7 +125,7 @@ export default function AlbumInfoCard({
           </span>
           <span className="text-xl sm:text-left md:text-2xl xl:text-3xl">
             <span className="text-[#A1A1A1]">by </span>{" "}
-            <a className="cursor-pointer hover:underline">
+            <a className="cursor-pointer hover:underline" onClick={() => handleClickArtist(album)}>
               {" "}
               {album.artist.name}
             </a>
