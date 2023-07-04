@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Turnstone from "turnstone";
+import recentSearchesPlugin from "turnstone-recent-searches";
 import { api } from "~/utils/api";
 import SplitMatch from "split-match";
 import { useRouter } from "next/router";
@@ -20,56 +21,105 @@ interface Album {
   artistId: string;
 }
 
+interface Artist {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  bio: string;
+  artwork: string;
+}
+
 const styles = {
   input:
-    "h-12 w-full bg-transparent pl-12 text-white outline-none rounded-xl border",
+    "h-12 w-full bg-transparent pl-12 text-xl text-white outline-none rounded-xl border",
   inputFocus:
-    "h-12 w-full bg-transparent pl-12 text-white outline-none rounded-xl border-2 border-cyan-200 shadow-lg shadow-cyan-500/50",
-  query: "text-white placeholder-oldsilver-400",
-  typeahead: "text-white border-white",
-  cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-white inline-flex sm:hidden`,
+    "h-12 w-full bg-transparent pl-12 text-xl text-white outline-none rounded-xl border-2 border-cyan-200 shadow-lg shadow-cyan-500/50",
+  query: "text-oldsilver-800 placeholder-oldsilver-400",
+  typeahead: "text-slate-500",
+  cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-crystal-600 inline-flex sm:hidden`,
   clearButton:
-    "absolute inset-y-0 right-0 w-10 inline-flex items-center justify-center text-white hover:text-hotpink-300",
+    "absolute inset-y-0 text-3xl text-custom-orange right-0 w-10 inline-flex items-center justify-center bg-netural-700 hover:text-red-300",
   listbox:
-    "w-full bg-black sm:border sm:border-crystal-500 sm:rounded-md text-left sm:mt-2 p-2 sm:drop-shadow-xl text-white",
+    "w-full bg-black text-sm text-white sm:rounded-md text-left sm:mt-2 p-2 sm:drop-shadow-xl",
   groupHeading:
-    "cursor-default mt-2 mb-0.5 px-1.5 uppercase text-sm text-hotpink-500",
-  item: "cursor-pointer p-1.5 text-lg whitespace-nowrap text-ellipsis overflow-hidden text-white",
+    "cursor-default mt-2 mb-0.5 px-1.5 uppercase text-sm text-center text-custom-orange",
+  match: "font-bold",
+  item: "cursor-pointer p-1 text-lg whitespace-nowrap text-ellipsis overflow-hidden text-white",
   highlightedItem:
-    "cursor-pointer p-1.5 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-white rounded-md bg-gradient-to-t from-crystal-100 to-white",
-  noItems: "cursor-default text-center my-20 text-white",
+    "cursor-pointer p-1.5 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-oldsilver-900 rounded-md bg-gradient-to-t from-crystal-100 to-white",
+  noItems: "cursor-default text-center my-20",
 };
 
 const SearchAlbumsHome = () => {
   const { data: albums } = api.albums.getAll.useQuery();
+  const { data: artists } = api.artists.getAll.useQuery();
+
   const router = useRouter();
   const albumsData = albums;
-  const defaultListBox = albumsData;
-  const [selectedItem, setSelectedItem] = useState<Album | null>(null);
+  const artistsData = artists;
+  const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+
+  // const fetchArtist = async (selectedAlbum:Album) => {
+  //   const { data: artist } = await api.artists.getById.useQuery({
+  //     id: selectedAlbum.artistId,
+  //   });
+  //   return artist;
+  // }
 
   useEffect(() => {
-    if (selectedItem && selectedItem.id) {
-      router.push(`/album/${selectedItem.id}`).catch((e) => console.log(e));
+    if (selectedAlbum && selectedAlbum.id && artistsData) {
+      // Get artist details from all artists using artistId of selectedAlbum
+      const artist = artistsData.find(a => a.id === selectedAlbum.artistId);
+      if (artist) {
+        const normalizedArtist = artist.name.replace(/\s+/g, "-");
+        const normalizedAlbum = selectedAlbum.name.replace(/\s+/g, "-");
+        router.push({
+          pathname: `/${normalizedArtist}/${normalizedAlbum}`,
+          query: { id: selectedAlbum.id },
+        }).catch((e) => console.error(e));
+      }
     }
-  }, [selectedItem]);
+}, [selectedAlbum]);
 
-  const handleSelect = (item: Album, name: string, index: number) => {
-    setSelectedItem(item);
+  useEffect(() => {
+    if (selectedArtist && selectedArtist.id) {
+      const normalizedArtist = selectedArtist.name.replace(/\s+/g, "-");
+      router.push({
+        pathname: `/${normalizedArtist}/`,
+        query: { id: selectedArtist.id },
+      });
+    }
+  }, [selectedArtist]);
+
+  function isAlbum(arg: any): arg is Album {
+    return arg !== undefined && arg.year !== undefined;
+  }
+
+  const handleSelect = (item: Album | Artist, name: string, index: number) => {
+    if (isAlbum(item)) {
+      setSelectedAlbum(item as Album); // typecast as Album
+    } else {
+      setSelectedArtist(item as Artist); // typecast as Artist
+    }
   };
 
   const ItemContents: React.FC<{
     index: number;
-    item: Album;
+    item: Album | Artist;
     query: string;
   }> = (props) => {
     const { index, item, query } = props;
     const img = () => {
       return (
-        <div className="h-12 w-12">
+        <div className="flex cursor-pointer items-center px-2 py-2">
           <img
+            width={60}
+            height={60}
             src={item.artwork}
             alt={item.name}
-            // className="h-full w-full rounded object-cover"
+            className="mr-2 rounded-full object-cover"
           />
         </div>
       );
@@ -84,12 +134,6 @@ const SearchAlbumsHome = () => {
           caseSensitiveMatch={false}
           caseSensitiveSplit={false}
           separator=","
-          MatchComponent={({ children }: SplitMatchProps) => (
-            <span className="font-semibold text-gray-800">{children}</span>
-          )}
-          SplitComponent={({ children }: SplitMatchProps) => (
-            <span>{children}</span>
-          )}
         >
           {item.name}
         </SplitMatch>
@@ -98,7 +142,7 @@ const SearchAlbumsHome = () => {
 
     return (
       <div
-        className="flex cursor-pointer items-center space-x-2 rounded-xl p-2 hover:bg-gray-100"
+        className="flex cursor-pointer items-center space-x-2 rounded-xl p-2 hover:bg-gray-800"
         onClick={() => handleSelect(item, item.name, index)}
       >
         {img()}
@@ -109,13 +153,32 @@ const SearchAlbumsHome = () => {
 
   const listbox = [
     {
-      name: "albums",
+      id: "albums",
+      name: "Albums",
       data: albumsData,
+      displayField: "name",
+      searchType: "contains",
+      ratio: 4,
+    },
+    {
+      id: "artists",
+      name: "Artists",
+      data: artistsData,
       searchType: "contains",
       displayField: "name",
+      ratio: 4,
     },
   ];
-
+  const plugins = [
+    [
+      recentSearchesPlugin,
+      {
+        id: "recent",
+        name: "Recent Searches",
+        ratio: 6,
+      },
+    ],
+  ];
   const [hasFocus, setHasFocus] = useState(false);
 
   const containerStyles = hasFocus
@@ -139,18 +202,20 @@ const SearchAlbumsHome = () => {
 
       <Turnstone
         Item={ItemContents}
-        autoFocus={true}
+        plugins={plugins}
         cancelButton={true}
+        typeahead={true}
+        debounceWait={250}
+        maxItems={8}
         clearButton={true}
-        defaultListbox={albums}
-        defaultListboxIsImmutable={false}
-        id="album"
-        noItemsMessage="no results"
-        listbox={listbox}
+        id="search"
+        name="search"
         matchText={true}
+        noItemsMessage="We couldn't find any album or artist that matches your search"
+        listbox={listbox}
         styles={styles}
         onSelect={handleSelect}
-        placeholder="Search..."
+        placeholder="Search for albums or artists.."
         onBlur={onBlur}
         onFocus={onFocus}
       />

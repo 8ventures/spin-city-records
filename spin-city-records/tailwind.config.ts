@@ -8,6 +8,9 @@ export default {
         DMSerif: ["DM Serif Display", "serif"],
         DMSans: ["DM Sans", "sans-serif"],
       },
+      colors: {
+        'custom-orange': '#FF5500',
+      }
     },
   },
   plugins: [],

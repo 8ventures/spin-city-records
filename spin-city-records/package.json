@@ -45,6 +45,7 @@
     "superjson": "1.12.2",
     "tailwind-merge": "^1.13.2",
     "turnstone": "^2.2.0",
+    "turnstone-recent-searches": "^0.5.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
