@@ -72,7 +72,7 @@ export default function MusicSection({
       {loading ? (
         <div className="mb-8  h-36 w-5/6 animate-pulse rounded-xl bg-gray-200 sm:h-40 md:h-44 lg:h-48 xl:h-64"></div>
       ) : (
-        <div className="mx-auto  mb-8 flex w-5/6 max-w-full flex-row overflow-y-hidden rounded-xl hover:overflow-x-auto ">
+        <div className="mx-auto  mb-2 flex w-5/6 max-w-full flex-row overflow-y-hidden rounded-xl hover:overflow-x-auto ">
           {collection.albums.map((album) => (
             <div
               key={album.id}
@@ -82,22 +82,22 @@ export default function MusicSection({
               <img
                 src={album.artwork}
                 alt={`Artwork for ${album.name}`}
-                className="h-36 w-36 rounded-xl object-cover sm:h-40  sm:w-40 md:h-44 md:w-44 lg:h-48  lg:w-48 xl:h-64 xl:w-64 "
+                className="h-36 w-36 rounded-xl object-cover sm:h-40  sm:w-40 md:h-44 md:w-44 lg:h-48  lg:w-48 xl:h-48 xl:w-48 "
               />
               <p
-                className={`mt-4 text-center text-white ${sans.className} text-sm sm:text-sm md:text-base lg:text-lg xl:text-xl`}
+                className={`mt-4 text-center text-white ${sans.className} text-sm sm:text-sm md:text-base xl:text-base`}
               >
                 {album.artist.name}
               </p>
               <p
-                className={`text-center text-white ${sans.className} text-sm sm:text-sm md:text-base lg:text-lg xl:text-xl`}
+                className={`text-center text-white ${sans.className} text-sm sm:text-sm md:text-base xl:text-base`}
               >
                 {album.name}
               </p>
 
               {album.listings.length > 0 ? (
                 <p
-                  className={`mb-4 text-center text-white ${sans.className} text-sm sm:text-sm md:text-base lg:text-lg xl:text-xl`}
+                  className={`mb-4 text-center text-white ${sans.className} text-sm sm:text-sm md:text-base  xl:text-base`}
                 >
                   Starting at{" "}
                   <span className=" text-[#FF5500]">
@@ -111,7 +111,7 @@ export default function MusicSection({
                 </p>
               ) : (
                 <p
-                  className={`mb-4 text-center text-[#A1A1A1] ${sans.className} text-sm sm:text-sm md:text-base lg:text-lg xl:text-xl`}
+                  className={`mb-4 text-center text-[#A1A1A1] ${sans.className} text-sm sm:text-sm md:text-base xl:text-base`}
                 >
                   No listings available
                 </p>
