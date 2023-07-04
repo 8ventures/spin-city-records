@@ -18,24 +18,38 @@ const calcOrderAmount = (items: CheckoutInput[] ) => {
 export const stripeRouter = createTRPCRouter({
   checkoutSession: privateProcedure
     .input(
-     checkoutInput.array()
+      z.object({
+        id: z.string(),
+      })
     )
     .query(
       async ({ ctx, input }) => {
+        const { id } = input
         try {
-          if(input[0]) {
+          const listing = await ctx.prisma.listing.findUnique({
+            where: { id },
+            include: {
+              edition: true,
+              seller: true,
+              album: true
+            },
+          });
+          if(listing) {
             const paymentIntent = await ctx.stripe.paymentIntents.create({
-              amount: calcOrderAmount(input),
-              currency: input[0].currency,
+              amount: listing.price * 100,
+              currency: listing.currency,
               automatic_payment_methods: {
                 enabled: true,
               },
               application_fee_amount: 500,
               transfer_data: {
-                destination: input[0].stripeId
+                destination: listing.stripeId
               }
             })
-            return paymentIntent.client_secret
+            return { 
+              clientSecret: paymentIntent.client_secret,
+              listing
+            }
           }
         } catch (e) {
           console.log(e)
@@ -43,32 +57,3 @@ export const stripeRouter = createTRPCRouter({
       }
     )
 })
-
-//     async ({ ctx, input }) => {
-//       try {
-//         const session = await ctx.stripe.checkout.sessions.create({
-//           line_items: [
-//             {
-//               price: input.stripePrice,
-//               quantity: 1,
-//             },
-//           ],
-//           payment_intent_data: {
-//             application_fee_amount: 500,
-//             transfer_data: {
-//               destination: input.stripeId
-//             }
-//           },
-//           mode: 'payment',
-//           success_url: 'http://localhost:3000/PaymentSuccess',
-//           cancel_url: 'http://localhost:3000/fail',
-//           automatic_tax: {enabled: true},
-//         });
-//         console.log(session)
-//         return session.url
-//       } catch (e) {
-//         console.log(e)
-//       }
-//     }
-//   )
-// })
