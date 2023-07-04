@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
+import { CurrencyContext } from "../GlobalContext/CurrencyContext";
 
 interface Currency {
   code: string;
@@ -14,37 +15,56 @@ const currencies: Currency[] = [
 
 const Dropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<
-    Currency | undefined
-  >(currencies[0]);
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency>();
+  const { currency, setCurrency } = useContext(CurrencyContext);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleSelectCurrency = (currency: Currency) => {
-    setSelectedCurrency(currency);
+  const handleSelectCurrency = (ccy: Currency) => {
+    setSelectedCurrency(ccy);
     setIsOpen(false);
-    // You can also perform other actions here based on the selected currency
+    setCurrency(ccy.code);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
   };
 
   useEffect(() => {
-    setSelectedCurrency(currencies[0]);
+    const matchingCurrency = currencies.find((ccy) => ccy.code === currency);
+    if (matchingCurrency) {
+      setSelectedCurrency(matchingCurrency);
+    }
+  }, [currency]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left" ref={dropdownRef}>
       <div>
         <button
           type="button"
-          className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 shadow-sm focus:outline-none"
+          className="inline-flex items-center justify-center rounded-xl  px-4 py-2 focus:outline-none"
           id="options-menu"
           aria-haspopup="true"
           aria-expanded="true"
           onClick={() => setIsOpen(!isOpen)}
         >
           {selectedCurrency && (
-            <div className="h-10 w-10">
+            <div className="h-10 w-10 rounded-xl">
               <img
                 src={selectedCurrency.flag}
                 alt={selectedCurrency.alt}
-                className="h-full w-full"
+                className="h-full w-full rounded-full"
               />
             </div>
           )}
@@ -52,26 +72,30 @@ const Dropdown: React.FC = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+        <div className="absolute right-0 z-50 mt-2 w-56 origin-top-right scale-100 transform rounded-md bg-white opacity-100 shadow-lg ring-1 ring-black ring-opacity-5 transition duration-100 ease-out">
           <div
             className="py-1"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="options-menu"
           >
-            {currencies.map((currency) => (
+            {currencies.map((ccy, index) => (
               <div
-                key={currency.code}
-                className="cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-300"
+                key={ccy.code}
+                className={`cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
+                  index < currencies.length - 1
+                    ? "border-b border-gray-200"
+                    : ""
+                }`}
                 role="menuitem"
-                onClick={() => handleSelectCurrency(currency)}
+                onClick={() => handleSelectCurrency(ccy)}
               >
                 <img
-                  src={currency.flag}
-                  alt={currency.alt}
-                  className="mr-2 inline h-6 w-6"
+                  src={ccy.flag}
+                  alt={ccy.alt}
+                  className="mr-2 inline h-5 w-5 rounded-lg"
                 />
-                {currency.code}
+                <span className="font-semibold">{ccy.code}</span>
               </div>
             ))}
           </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, use } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Album, Listing } from "~/utils/types";
 import convertToGlobalCurrency from "../../utils/currencyConversion";
 import getSymbolFromCurrency from "currency-symbol-map";

@@ -125,7 +125,10 @@ export default function AlbumInfoCard({
           </span>
           <span className="text-xl sm:text-left md:text-2xl xl:text-3xl">
             <span className="text-[#A1A1A1]">by </span>{" "}
-            <a className="cursor-pointer hover:underline" onClick={() => handleClickArtist(album)}>
+            <a
+              className="cursor-pointer hover:underline"
+              onClick={() => handleClickArtist(album)}
+            >
               {" "}
               {album.artist.name}
             </a>
