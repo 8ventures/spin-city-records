@@ -5,9 +5,7 @@ import type Stripe from 'stripe';
 import { stripe } from '../../utils/getStripe'
 import type { RequestHandler } from 'micro';
 
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, { apiVersion: '2022-11-15' });
-
-const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET as string;
+const webhookSecret: string = process.env.STRIPE_WEBHOOK_SIGNING_SECRET as string;
 
 export const config = {
   api: {
@@ -21,6 +19,7 @@ const cors = Cors({
 
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log('Running webook')
+  console.log(webhookSecret)
   if (req.method === 'POST') {
     const buf = await buffer(req);
     const signature = req.headers['stripe-signature'];

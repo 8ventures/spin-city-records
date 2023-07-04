@@ -5,6 +5,7 @@ export default authMiddleware({
     "/api/trpc/collections.getById",
     "/api/trpc/albums.getAll",
     "/api/trpc/collections.getById,albums.getAll",
+    "/api/webhook"
   ],
 });
 
