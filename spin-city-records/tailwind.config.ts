@@ -1,7 +1,4 @@
 import { type Config } from "tailwindcss";
-// import "@fontsource/dm-serif-display";
-// import "@fontsource/dm-sans";
-// import "@fontsource/ultra";
 
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
