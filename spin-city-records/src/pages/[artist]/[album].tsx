@@ -109,7 +109,7 @@ export default function AlbumPage() {
             {listings && listings.length !== 0 && (
               <>
                 <div className="flex justify-between">
-                  <div className="my-4 ml-6 inline text-lg text-white sm:ml-14">
+                  <div className="text-md my-4 ml-6 inline text-white sm:ml-14">
                     Available Listings
                   </div>
                   <SortBy

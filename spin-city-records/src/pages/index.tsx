@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Carousel from "~/components/Home/Carousel";
 import MusicSection from "~/components/Home/MusicSection";
 import Layout from "~/components/Layout/Layout";
+import SplideCarousel from "~/components/Home/Splide";
 
 export default function Home() {
   const [recentlyAdded, setRecentlyAdded] = useState<any>([]); //TODO map function to Album[]
@@ -35,7 +36,7 @@ export default function Home() {
   // }
   return (
     <Layout>
-      <Carousel />
+      <SplideCarousel />
       <section>
         <h1 className="mt-8 text-center text-3xl font-bold text-white">
           SHOP MUSIC

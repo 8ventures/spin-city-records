@@ -1,15 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
 
 html,
 body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
   background-color: black;
-  font-family: "DM Sans", sans-serif;
 }
 
 /*
