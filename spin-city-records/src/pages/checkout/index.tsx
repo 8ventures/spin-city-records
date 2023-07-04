@@ -15,7 +15,7 @@ export default function Checkout() {
   const router = useRouter()
   
   const listingId = router.query.id as string;
-  const {data, isSuccess: isSession} = api.stripe.checkoutSession.useQuery({id: listingId}, {enabled: !!listingId})
+  const {data, isSuccess: isSession} = api.stripe.checkoutSession.useQuery({listingId}, {enabled: !!listingId})
 
   const clientSecret = data?.clientSecret
   const listing: Listing = data?.listing as Listing

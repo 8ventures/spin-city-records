@@ -78,5 +78,27 @@ export const ordersRouter = createTRPCRouter({
       } catch (e) {
         console.log(e)
       }
+    }),
+  changeStatus: privateProcedure
+    .input(
+      z.object({
+        status: z.enum(['Awaiting Payment', 'Awaiting Shipment', 'Shipped', 'Complete']),
+        orderId: z.string()
+      })
+    )
+    .mutation( async ({ctx, input}) => {
+      try {
+        const updatedOrder = await ctx.prisma.order.update({
+          where: {
+            id: input.orderId
+          },
+          data: {
+            status: input.status
+          }
+        })
+        return updatedOrder
+      } catch (e) {
+        console.log(e)
+      }
     })
 })

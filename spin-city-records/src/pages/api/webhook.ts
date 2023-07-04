@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type Stripe from 'stripe';
 import { stripe } from '../../utils/getStripe'
 import type { RequestHandler } from 'micro';
+import { api } from '~/utils/api';
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SIGNING_SECRET as string;
 
@@ -18,6 +19,9 @@ const cors = Cors({
 });
 
 const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+
+  const { mutate: changeOrderStatus } = api.orders.changeStatus.useMutation() 
+
   console.log('Running webook')
   console.log(webhookSecret)
   if (req.method === 'POST') {
@@ -43,6 +47,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         console.log(`PaymentIntent status: ${paymentIntent.status}`);
+        const orderId = paymentIntent.metadata?.orderId
+        if (orderId) {
+          changeOrderStatus({orderId, status: 'Awaiting Shipment'})
+        }
         break;
       }
       case 'payment_intent.payment_failed': {
