@@ -13,7 +13,7 @@ import AlbumInfoCard from "~/components/Album/AlbumInfoCard";
 import SortBy from "~/components/Album/SortComponent";
 
 export default function AlbumPage() {
-  //Data Fetching
+  //Data Fetching2
   const router = useRouter();
   const id = router.query.id as string;
   const {
