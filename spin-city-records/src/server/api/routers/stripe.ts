@@ -13,14 +13,14 @@ const checkoutInput = z.object({
 type CheckoutInput = z.infer<typeof checkoutInput>;
 
 const calcOrderAmount = (items: CheckoutInput[] ) => {
-  return items.reduce((total, item) => total + item.price,0 )
+  return items.reduce((total, item) => total + item.price,0 ) * 100
 }
 export const stripeRouter = createTRPCRouter({
   checkoutSession: privateProcedure
     .input(
      checkoutInput.array()
     )
-    .mutation(
+    .query(
       async ({ ctx, input }) => {
         try {
           if(input[0]) {
