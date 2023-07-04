@@ -42,12 +42,12 @@ export type Listing = {
   description: string;
   condition: string;
   speed: string;
-  edition: Edition[];
+  edition?: Edition[];
   stripeProduct: string;
-  stripePrice: string
-  seller: Seller;
+  stripePrice: string;
+  seller?: Seller;
   stripeId: string;
-  album: Album;
+  album?: Album;
   albumId: string;
   order?: Order | null;
   orderId?: string | null;

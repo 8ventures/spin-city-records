@@ -40,6 +40,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.0",
     "react-icons": "^4.10.1",
+    "react-query": "^3.39.3",
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
     "split-match": "^0.2.2",

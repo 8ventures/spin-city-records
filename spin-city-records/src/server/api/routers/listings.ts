@@ -148,6 +148,23 @@ export const listingsRouter = createTRPCRouter({
         console.log(e);
       }
     }),
+
+  deleteListing: privateProcedure
+    .input(z.object({ listingId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.prisma.listing.delete({
+          where: {
+            id: input.listingId,
+          },
+        });
+        return true;
+      } catch (e) {
+        console.log(e);
+        console.log("Failed to delete the listing");
+        return false;
+      }
+    }),
 });
 
 //   createListingStripe: privateProcedure.mutation(async ({ ctx }) => {
