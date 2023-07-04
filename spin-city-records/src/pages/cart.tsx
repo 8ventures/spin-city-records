@@ -1,5 +1,5 @@
 import Layout from "~/components/Layout/Layout";
-import { Listing } from "~/utils/types";
+import type { Listing } from "~/utils/types";
 import { useContext } from "react";
 import { CartContext } from "~/components/GlobalContext/CartContext";
 import getSymbolFromCurrency from "currency-symbol-map";
@@ -9,8 +9,6 @@ import { useRouter } from "next/router";
 function Cart() {
   const { cart } = useContext(CartContext);
   const router = useRouter()
-
-  const { mutate: checkout } = api.stripe.checkoutSession.useMutation()
 
   const checkoutItem = (listing: Listing): void => {
     console.log(listing)
