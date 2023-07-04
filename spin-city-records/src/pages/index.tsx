@@ -1,34 +1,37 @@
-import { api } from "~/utils/api";
+import { useContext } from "react";
 import NextError from "next/error";
-import { useState, useEffect } from "react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Carousel from "~/components/Home/Carousel";
+import { Collection } from "~/utils/types";
+import { api } from "~/utils/api";
+import { CurrencyContext } from "~/components/GlobalContext/CurrencyContext";
+import SplideCarousel from "~/components/Home/Splide";
 import MusicSection from "~/components/Home/MusicSection";
 import Layout from "~/components/Layout/Layout";
-import SplideCarousel from "~/components/Home/Splide";
 
 export default function Home() {
-  const [recentlyAdded, setRecentlyAdded] = useState<any>([]); //TODO map function to Album[]
+  //Data Fetching
+  const recentlyAddedId = "cljmx6n8c0000ua3czgt95ysp";
+  const {
+    data: recentlyAddedQueryData,
+    error: recentlyAddedQueryError,
+    isLoading: recentlyAddedQueryIsLoading,
+    isError: recentlyAddedQueryIsError,
+    isSuccess: recentlyAddedQueryIsSuccess,
+  } = api.collections.getById.useQuery({ id: recentlyAddedId });
 
-  const recentlyAddedQuery = api.collections.getById.useQuery({
-    id: "cljmx6n8c0000ua3czgt95ysp",
-  });
+  const recentlyAdded: Collection = recentlyAddedQueryData as Collection;
 
-  useEffect(() => {
-    if (!recentlyAddedQuery.isLoading && !recentlyAddedQuery.error) {
-      setRecentlyAdded(recentlyAddedQuery.data);
-    }
-  }, [recentlyAddedQuery.isLoading, recentlyAddedQuery.error]);
-
-  if (recentlyAddedQuery.error) {
+  // Error Handling
+  if (recentlyAddedQueryIsError) {
     return (
       <NextError
-        title={recentlyAddedQuery.error.message}
-        statusCode={recentlyAddedQuery.error.data?.httpStatus ?? 500}
+        title={recentlyAddedQueryError?.message}
+        statusCode={recentlyAddedQueryError?.data?.httpStatus ?? 500}
       />
     );
   }
+
+  //Global Context
+  const { currency } = useContext(CurrencyContext);
 
   //TODO PLACEHOLDER SKELETON
   // if (recentlyAddedQuery.isLoading) {
@@ -37,13 +40,10 @@ export default function Home() {
   return (
     <Layout>
       <SplideCarousel />
-      <section>
-        <h1 className="mt-8 text-center text-3xl font-bold text-white">
+      <section className="h-max bg-red-500">
+        <h1 className="mx-auto w-full items-center justify-center bg-white text-center text-3xl font-bold text-black">
           SHOP MUSIC
         </h1>
-        <MusicSection title="Recently Added" collection={recentlyAdded} />
-        {/* <MusicSection title="BEST SELLERS" items={newReleases} />
-          <MusicSection title="GENRE" items={newReleases} /> */}
       </section>
     </Layout>
   );

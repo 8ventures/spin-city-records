@@ -5,43 +5,38 @@ import { useRouter } from "next/router";
 export default function Footer() {
   const router = useRouter();
   return (
-    <>
-      <footer className="flex min-w-full justify-center border-t border-[#A1A1A1] bg-black">
-        <hr className="h-px border-0 bg-gray-200"></hr>
-        <div className="flex justify-evenly bg-black text-white">
-          <div className="flex items-center">
-            <Image
-              src={logo}
-              alt="logo"
-              height={100}
-              priority
-              onClick={() => {
-                router.push("/");
-              }}
-              className="cursor-pointer"
-            />
-          </div>
-          <ul className="m-10">
-            <li>Shop With Us</li>
-            <li>Sell With Us</li>
-            <li>About Us</li>
-            <li>Follow Us</li>
+    <footer className="absolute bottom-0 mx-auto w-full  border-t border-[#A1A1A1] bg-black py-2 text-white">
+      <div className="mx-auto flex flex-col items-center justify-center md:flex-row">
+        <Image
+          src={logo}
+          alt="logo"
+          priority
+          onClick={() => {
+            router.push("/");
+          }}
+          className="m-2 w-40 cursor-pointer sm:w-60"
+        />
+        <div className="grid grid-cols-3 gap-4">
+          <ul className="md:text-md m-2 list-none p-0 text-center text-sm md:m-8 lg:text-base">
+            <li className="cursor-pointer hover:underline">Shop With Us</li>
+            <li className="cursor-pointer hover:underline">Sell With Us</li>
+            <li className="cursor-pointer hover:underline">About Us</li>
+            <li className="cursor-pointer hover:underline">Follow Us</li>
           </ul>
-          <ul className="m-10">
-            <li>Search</li>
-            <li>Browse Collection</li>
-            <li>My Account</li>
-            <li>My Orders</li>
-            <li>View Basket</li>
+          <ul className="md:text-md m-2 list-none p-0 text-center text-sm md:m-8 lg:text-base">
+            <li className="cursor-pointer hover:underline">Search</li>
+            <li className="cursor-pointer hover:underline">My Account</li>
+            <li className="cursor-pointer hover:underline">My Orders</li>
+            <li className="cursor-pointer hover:underline">View Basket</li>
           </ul>
-          <ul className="m-10">
-            <li>FAQ</li>
-            <li>Help</li>
-            <li>Contact Us</li>
-            <li>Legal Stuff</li>
+          <ul className="md:text-md m-2 list-none p-0 text-center text-sm md:m-8 lg:text-base">
+            <li className="cursor-pointer hover:underline">FAQ</li>
+            <li className="cursor-pointer hover:underline">Help</li>
+            <li className="cursor-pointer hover:underline">Contact Us</li>
+            <li className="cursor-pointer hover:underline">Legal Stuff</li>
           </ul>
         </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 }
