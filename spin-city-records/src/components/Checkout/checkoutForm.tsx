@@ -53,7 +53,7 @@ export default function CheckoutForm() {
         return_url: 'http://localhost:3000/Order',
         payment_method_data: {
           billing_details: {
-            name: input.cardholderName,
+            // name: input.cardholderName,
           },
         },
       },
