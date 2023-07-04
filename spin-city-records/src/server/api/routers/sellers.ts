@@ -64,4 +64,21 @@ export const sellersRouter = createTRPCRouter({
         console.log(`Failed to fetch Stripe ID`);
       }
     }),
+
+  deleteListing: privateProcedure
+    .input(z.object({ listingId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.prisma.listing.delete({
+          where: {
+            id: input.listingId,
+          },
+        });
+        return true;
+      } catch (e) {
+        console.log(e);
+        console.log("Failed to delete the listing");
+        return false;
+      }
+    }),
 });
