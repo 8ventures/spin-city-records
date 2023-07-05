@@ -11,13 +11,18 @@ import Messages from "../../components/Profile/Messages";
 import Settings from "../../components/Profile/Settings";
 import WishList from "~/components/Profile/WishList";
 
+const profilePagesisSeller = [
+  { label: "Wish List", page: "wishList" },
+  { label: "My Orders", page: "myOrders" },
+  { label: "My Listings", page: "selling" },
+  { label: "Create a Listing", page: "createListing" },
+  { label: "Settings", page: "settings" },
+];
+
 const profilePages = [
   { label: "Wish List", page: "wishList" },
   { label: "My Orders", page: "myOrders" },
-  { label: "My Messages", page: "messages" },
   { label: "Become A Seller", page: "startSelling" },
-  { label: "My Listings", page: "selling" },
-  { label: "Create a Listing", page: "createListing" },
   { label: "Settings", page: "settings" },
 ];
 
@@ -61,22 +66,34 @@ const ProfilePage = () => {
 
   const handleClick = (page: Page) => {
     setCurrentPage(page);
-    router.push(`/profile/${currentUserId}/${page}`).catch((e)=> console.log(e));
+    router.push(`/profile/${currentUserId!}/${page}`).catch((e)=> console.log(e));
   };
 
   return (
     <Layout>
       <div className="text-white">
         <div className="mb-10 ml-28  text-gray-400">
-          {profilePages.map(({ label, page }) => (
-            <ProfilePageButton
-              key={page}
-              label={label}
-              page={page}
-              currentPage={currentPage}
-              onClick={() => handleClick(page as Page)}
-            />
-          ))}
+          {user?.publicMetadata.stripeId ? (
+            profilePagesisSeller.map(({ label, page }) => (
+              <ProfilePageButton
+                key={page}
+                label={label}
+                page={page}
+                currentPage={currentPage}
+                onClick={() => handleClick(page as Page)}
+              />
+            ))
+          ) : (
+            profilePages.map(({ label, page }) => (
+              <ProfilePageButton
+                key={page}
+                label={label}
+                page={page}
+                currentPage={currentPage}
+                onClick={() => handleClick(page as Page)}
+              />
+            ))
+          )}
         </div>
         <PageComponent />
       </div>

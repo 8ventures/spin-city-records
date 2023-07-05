@@ -22,20 +22,28 @@ export const stripeRouter = createTRPCRouter({
               album: true
             },
           });
-          if(listing) {
+          if(listing && !listing.orderId) {
             const newOrder = await ctx.prisma.order.create({
               data: {
                 userId: ctx.user.id ,
                 sellerId: listing.seller.stripeId,
                 status: 'Awating Payment',
                 completed: false,
-                Listings: {
+              }
+            })
+            const uplisting = await ctx.prisma.listing.update({
+              where: {
+                id: listing.id
+              },
+              data: {
+                order: {
                   connect: {
-                    id: listing.id
+                    id: newOrder.id
                   }
                 }
               }
-            });
+            })
+            console.log(uplisting)
             const paymentIntent = await ctx.stripe.paymentIntents.create({
               amount: listing.price * 100,
               currency: listing.currency,

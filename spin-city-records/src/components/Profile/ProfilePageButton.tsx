@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { FC } from "react";
+import type { FC } from "react";
 
 interface ProfileButtonProps {
   label: string;
@@ -16,7 +16,7 @@ const ProfilePageButton: FC<ProfileButtonProps> = ({
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/profile/${page}`);
+    router.push(`/profile/${page}`).catch((e) => console.log(e));
   };
 
   return (
