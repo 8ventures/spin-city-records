@@ -39,7 +39,7 @@ export default function MusicSection({
     const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
     const normalizedAlbum = album.name.replace(/\s+/g, "-");
     router.push({
-      pathname: `/${normalizedArtist}/${normalizedAlbum}`,
+      pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
       query: { id: album.id },
     });
   };

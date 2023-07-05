@@ -52,7 +52,7 @@ export default function Header() {
             <Dropdown />
           </div>
           <div className="mx-2 mb-3 w-10 text-white">
-            {!user.isSignedIn && <SignInButton />}
+            {!user.isSignedIn && <SignInButton mode="modal"/>}
             {user.isSignedIn && (
               <div className="">
                 <UserButton afterSignOutUrl="/" />

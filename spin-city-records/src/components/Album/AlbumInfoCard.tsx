@@ -66,7 +66,7 @@ export default function AlbumInfoCard({
   const handleClickArtist = (album: Album) => {
     const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
     router.push({
-      pathname: `/${normalizedArtist}/`,
+      pathname: `/artist/${normalizedArtist}/`,
       query: { id: album.artist.id },
     });
   };

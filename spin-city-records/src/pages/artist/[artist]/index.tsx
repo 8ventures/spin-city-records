@@ -1,11 +1,11 @@
 import { api } from "~/utils/api";
 import Layout from "~/components/Layout/Layout";
-import { Album, Artist } from "../../utils/types";
+import { Album, Artist } from "../../../utils/types";
 import { useRouter } from "next/router";
 function ArtistPage() {
   const router = useRouter();
   const id = router.query.id as string;
-  
+
 
   const { data: artist, status } = api.artists.getById.useQuery({
     id: id,
@@ -23,7 +23,7 @@ function ArtistPage() {
     const normalizedArtist = artist.name.replace(/\s+/g, "-");
     const normalizedAlbum = album.name.replace(/\s+/g, "-");
     router.push({
-      pathname: `/${normalizedArtist}/${normalizedAlbum}`,
+      pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
       query: { id: album.id },
     }).catch((e)=> console.log(e));
   };
