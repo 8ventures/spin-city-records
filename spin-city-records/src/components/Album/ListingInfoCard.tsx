@@ -68,7 +68,7 @@ export default function ListingInfoCard({
 
   return (
     <>
-      {listing && (
+      {listing && listing.seller && (
         <div className="items border-b-1 m-4 flex  items-center justify-around">
           <div className="mr-2  flex-col items-center text-sm text-[#A1A1A1] sm:text-base">
             Sold by: <div className="text-white">{listing.seller.name}</div>
@@ -87,11 +87,15 @@ export default function ListingInfoCard({
             <div>{listing.format}</div>
             <div>{listing.weight}</div>
             <div>{listing.speed}</div>
-            {listing.edition.map((edition, index) => (
-              <span key={index} className="text-white">
-                {index > 0 && ", "} {edition.type}
-              </span>
-            ))}
+            {listing && listing.edition && (
+              <>
+                {listing.edition.map((edition, index) => (
+                  <span key={index} className="text-white">
+                    {index > 0 && ", "} {edition.type}
+                  </span>
+                ))}
+              </>
+            )}
           </div>
           <div className="mr-2 flex-col  items-center justify-center text-sm sm:text-lg">
             <div className="text-base font-semibold text-[#FF5500] sm:text-xl ">

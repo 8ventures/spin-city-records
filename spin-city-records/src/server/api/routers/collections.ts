@@ -9,7 +9,9 @@ export const collectionRouter = createTRPCRouter({
           albums: {
             include: {
               artist: true,
-              listings: true,
+              listings: {
+                where: { orderId: null },
+              },
               Collection: true,
             },
           },
@@ -36,7 +38,9 @@ export const collectionRouter = createTRPCRouter({
             albums: {
               include: {
                 artist: true,
-                listings: true,
+                listings: {
+                  where: { orderId: null },
+                },
                 Collection: true,
               },
             },
