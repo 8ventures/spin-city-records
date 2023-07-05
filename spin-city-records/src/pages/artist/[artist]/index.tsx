@@ -84,28 +84,3 @@ export default function ArtistPage() {
     )
   );
 }
-
-// <div className="m-5 flex flex-row justify-center">
-// <div className="m-5 flex flex-col items-center">
-
-//   <div className="mt-5 bg-black p-5 text-center text-lg text-white">
-//     <span className="text-3xl font-bold">{artist.name}</span>
-//     <br />
-//     <br />
-//     <span>{artist.bio.split(".")[0] + "."}</span>
-//   </div>
-// </div>
-// <div className="flex max-h-screen w-3/5 flex-wrap justify-start overflow-y-scroll">
-//   {artist.albums.map((album) => (
-//     <div
-//       className="m-2 w-2/3 flex-1 cursor-pointer bg-black p-5 text-center text-xl font-bold text-white"
-//       key={album.id}
-//       onClick={() => handleClick(artist, album)}
-//     >
-//       <img className="mb-5" src={album.artwork} alt={album.name} />
-
-//       {album.name}
-//     </div>
-//   ))}
-// </div>
-// </div>

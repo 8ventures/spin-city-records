@@ -70,12 +70,12 @@ const ProfilePage = () => {
   return (
     <Layout>
       {currentUserId && (
-        <div className="mx-auto  flex w-full flex-col  justify-center text-base text-[#A1A1A1] sm:flex-row md:text-lg">
+        <div className="md:text-md  mx-auto  flex w-full  flex-col justify-center text-base text-[#A1A1A1] sm:flex-row">
           {user?.publicMetadata.stripeId
             ? profilePagesisSeller.map(({ label, page }) => (
                 <button
                   onClick={() => handleClick(page as Page)}
-                  className={`m-4 rounded-xl p-4 ${
+                  className={` m-4 rounded-xl ${
                     currentPage === page
                       ? "text-white underline decoration-4 underline-offset-8"
                       : "hover:text-white"
@@ -87,7 +87,7 @@ const ProfilePage = () => {
             : profilePages.map(({ label, page }) => (
                 <button
                   onClick={() => handleClick(page as Page)}
-                  className={`m-4 rounded-xl p-4 ${
+                  className={`m-4 rounded-xl  ${
                     currentPage === page
                       ? "text-white underline decoration-4 underline-offset-8"
                       : "hover:text-white"
