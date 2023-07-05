@@ -43,6 +43,9 @@ export const sellersRouter = createTRPCRouter({
           privateMetadata: {
             stripeId: account.id,
           },
+          publicMetadata: {
+            stripeId: account.id,
+          },
         });
 
         return url;
@@ -51,7 +54,7 @@ export const sellersRouter = createTRPCRouter({
         console.log("Failed to create a Stripe account.");
       }
     }),
-
+  
   getStripeId: privateProcedure
     .input(z.object({ clerkId: z.string() }))
     .query(async ({ input }) => {

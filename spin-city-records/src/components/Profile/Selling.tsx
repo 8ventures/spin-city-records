@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
-import { TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { Listing } from "~/utils/types";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
@@ -12,6 +12,13 @@ const options = [
   { value: "Shipped", label: "Shipped" },
   { value: "Complete", label: "Complete" },
   { value: "No Order", label: "No Order" },
+];
+
+const statusOptions = [
+  { value: "Awaiting Payment", label: "Awaiting Payment" },
+  { value: "Awaiting Shipment", label: "Awaiting Shipment" },
+  { value: "Shipped", label: "Shipped" },
+  { value: "Complete", label: "Complete" },
 ];
 
 function Selling() {
@@ -35,17 +42,14 @@ function Selling() {
 
   const listingData = listingQuery.data;
   const [listings, setListings] = useState<Listing[]>([]);
-  console.log(listingData);
 
-  const orderQuery = api.orders.getAllOrders.useQuery();
-  const orders = orderQuery.data;
-  console.log(orders);
+  const changeStatus = api.orders.changeStatus.useMutation();
 
   useEffect(() => {
     if (listingData) {
       setListings(listingData);
     }
-  }, [listingQuery.data]);
+  }, [listingData]);
 
   const handleDeleteListing = async (listingId: string) => {
     if (confirm("Are you sure you want to delete this listing")) {
@@ -69,10 +73,6 @@ function Selling() {
     return <div>Error occurred while fetching stripe ID</div>;
   }
 
-  if (listingQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (listingQuery.isError) {
     return <div>Error occurred while fetching listings</div>;
   }
@@ -81,25 +81,37 @@ function Selling() {
     setStatusFilter(value);
   };
 
-  function getOrderStatus(listingId: string | null) {
-    if (listingId === null) {
-      return "No Order";
-    }
-    const order = orders?.find((order) => order.id === listingId);
-    return order ? order.status : "No Order";
-  }
-
   const applyStatusFilter = () => {
     return statusFilter === "All"
       ? listings
-      : listings.filter(
-          (listing) => getOrderStatus(listing.orderId || null) === statusFilter
-        );
+      : listings.filter((listing) => listing.order?.status === statusFilter);
+  };
+
+  const handleChangeStatus = async (orderId: string, status: string) => {
+    try {
+      await changeStatus.mutateAsync({
+        orderId,
+        status: status as
+          | "Awaiting Payment"
+          | "Awaiting Shipment"
+          | "Shipped"
+          | "Complete",
+      });
+      setListings(
+        listings.map((listing) =>
+          listing.order?.id === orderId
+            ? { ...listing, order: { ...listing.order, status } }
+            : listing
+        )
+      );
+    } catch (error) {
+      console.log("Error occurred while changing the order status.", error);
+    }
   };
 
   return (
     <>
-      <div className="flex justify-end lg:mr-20">
+      <div className="flex justify-end lg:mr-28">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
             Filter by Status: {""}
@@ -118,10 +130,10 @@ function Selling() {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div className="flex items-center justify-center">
-        <table className="m-10 table-auto space-y-6">
-          <thead className="bg-[#FF5500]">
-            <tr>
+      <div className="ml-40 mr-40 overflow-hidden rounded-lg shadow-md">
+        <table className="w-full border-collapse text-left">
+          <thead className=" bg-[#FF5500]">
+            <tr className="">
               <th className="p-3 text-left">Album</th>
               <th className="p-3 text-left">Details</th>
               <th className="p-3 text-left">Description</th>
@@ -131,7 +143,7 @@ function Selling() {
               <th className="p-3 text-left">Delete</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {applyStatusFilter()?.map((listing) => {
               const album = albums?.find(
                 (album) => album.id === listing.albumId
@@ -166,7 +178,29 @@ function Selling() {
                   <td className="p-3">{listing.price}</td>
                   <td className="p-3">{listing.currency.toUpperCase()}</td>
                   <td className="p-3">
-                    {getOrderStatus(listing.orderId || null)}
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
+                        {listing.order?.status || "No Order"}
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content className="text-md w-44 rounded-xl bg-white p-4 text-black">
+                        {statusOptions.map((option) => (
+                          <DropdownMenu.Item
+                            key={option.value}
+                            onSelect={() => {
+                              if (listing.order) {
+                                handleChangeStatus(
+                                  listing.order.id,
+                                  option.value
+                                );
+                              }
+                            }}
+                            className="cursor-pointer rounded text-center outline-none hover:bg-slate-400"
+                          >
+                            {option.label}
+                          </DropdownMenu.Item>
+                        ))}
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
                   </td>
                   <td>
                     <div className="m-2 flex h-9 w-9 items-center">

@@ -32,9 +32,9 @@ interface Artist {
 
 const styles = {
   input:
-    "h-12 w-full bg-transparent pl-12 text-xl text-white outline-none rounded-xl border",
+    "h-12 w-full bg-transparent pl-12 text-lg text-white outline-none rounded-xl border border-gray-500",
   inputFocus:
-    "h-12 w-full bg-transparent pl-12 text-xl text-white outline-none rounded-xl border-2 border-cyan-200 shadow-lg shadow-cyan-500/50",
+    "h-12 w-full bg-transparent pl-12 text-lg text-white outline-none rounded-xl border shadow-lg shadow-gray-500/10",
   query: "text-oldsilver-800 placeholder-oldsilver-400",
   typeahead: "text-slate-500",
   cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-crystal-600 inline-flex sm:hidden`,
@@ -45,9 +45,9 @@ const styles = {
   groupHeading:
     "cursor-default mt-2 mb-0.5 px-1.5 uppercase text-sm text-center text-custom-orange",
   match: "font-bold",
-  item: "cursor-pointer p-1 text-lg whitespace-nowrap text-ellipsis overflow-hidden text-white",
+  item: "cursor-pointer p-0 text-md whitespace-nowrap text-ellipsis overflow-hidden text-white",
   highlightedItem:
-    "cursor-pointer p-1.5 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-oldsilver-900 rounded-md bg-gradient-to-t from-crystal-100 to-white",
+    "cursor-pointer p-0 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-oldsilver-900 rounded-md bg-gradient-to-t from-crystal-100 to-white",
   noItems: "cursor-default text-center my-20",
 };
 
@@ -61,12 +61,7 @@ const SearchAlbumsHome = () => {
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
-  // const fetchArtist = async (selectedAlbum:Album) => {
-  //   const { data: artist } = await api.artists.getById.useQuery({
-  //     id: selectedAlbum.artistId,
-  //   });
-  //   return artist;
-  // }
+
 
   useEffect(() => {
     if (selectedAlbum && selectedAlbum.id && artistsData) {
@@ -115,11 +110,11 @@ const SearchAlbumsHome = () => {
       return (
         <div className="flex cursor-pointer items-center px-2 py-2">
           <img
-            width={60}
-            height={60}
+            width={70}
+            height={70}
             src={item.artwork}
             alt={item.name}
-            className="mr-2 rounded-full object-cover"
+            className="mr-1 rounded-full object-cover"
           />
         </div>
       );
@@ -197,13 +192,13 @@ const SearchAlbumsHome = () => {
       <span
         className={`absolute inset-y-0 left-2 z-10 h-12 w-10 items-center justify-center ${iconDisplayStyle}`}
       >
-        <MagnifyingGlassIcon className="h-6 w-6 text-gray-500" />
+        <MagnifyingGlassIcon className="h-6 w-6 text-gray-400" />
       </span>
 
       <Turnstone
         Item={ItemContents}
         plugins={plugins}
-        cancelButton={true}
+        cancelButton={false}
         typeahead={true}
         debounceWait={250}
         maxItems={8}

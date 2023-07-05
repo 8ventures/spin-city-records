@@ -44,10 +44,11 @@ export default function Checkout() {
       </h1>
       <div className="flex flex-col items-center mt-2">
         <div className="flex w-5/6 space-x-2 justify-center"> 
+
           {isSession && listing  ? (
             <CheckoutItems listing={listing} />
           ) : (
-            <Skeleton className=" h-96"/>
+            <Skeleton className=" w-52 h-96"/>
           )}
           {isSession && clientSecret ? (
             <Elements options={{
@@ -57,8 +58,8 @@ export default function Checkout() {
               <CheckoutForm listing={listing} />
             </Elements>
           ) : (
-            <Skeleton className=" h-96"/>
-            )}
+            <Skeleton className=" w-52 h-96 "/>
+            )}          
         </div>
       </div>
     </Layout>
