@@ -8,7 +8,7 @@ import SelectCurrency from "./selectCurrency";
 import SelectEdition from "./selectEdition";
 import Skeleton from "../skeleton";
 import { z } from 'zod';
-import { SubmitHandler, useForm, Controller, useFieldArray } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import Spinner from '../../components/spinner'
@@ -85,7 +85,7 @@ export default function CreateListingForm () {
       //console.log(e)
       createListing(e)
     } catch (error) {
-console.log(error)
+      console.log(error)
     }
   }
 
