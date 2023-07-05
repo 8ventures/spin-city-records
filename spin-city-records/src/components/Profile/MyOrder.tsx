@@ -44,7 +44,7 @@ function MyOrders() {
 
   return (
     <>
-      <div className="flex justify-end lg:mr-20">
+      <div className="flex justify-end lg:mr-28">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
             Filter by Status: {""}
@@ -63,8 +63,8 @@ function MyOrders() {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div className="flex items-center justify-center">
-        <table className="m-10 table-auto space-y-6">
+      <div className="ml-40 mr-40 overflow-hidden rounded-lg shadow-md">
+        <table className="w-full border-collapse text-left">
           <thead className="bg-[#FF5500]">
             <tr>
               <th className="p-3 text-left">Album</th>

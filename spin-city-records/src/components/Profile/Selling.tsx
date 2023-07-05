@@ -43,6 +43,8 @@ function Selling() {
   const listingData = listingQuery.data;
   const [listings, setListings] = useState<Listing[]>([]);
 
+  const changeStatus = api.orders.changeStatus.useMutation();
+
   useEffect(() => {
     if (listingData) {
       setListings(listingData);
@@ -85,8 +87,6 @@ function Selling() {
       : listings.filter((listing) => listing.order?.status === statusFilter);
   };
 
-  const changeStatus = api.orders.changeStatus.useMutation();
-
   const handleChangeStatus = async (orderId: string, status: string) => {
     try {
       await changeStatus.mutateAsync({
@@ -111,7 +111,7 @@ function Selling() {
 
   return (
     <>
-      <div className="flex justify-end lg:mr-20">
+      <div className="flex justify-end lg:mr-28">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
             Filter by Status: {""}
@@ -130,20 +130,20 @@ function Selling() {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div className="flex items-center justify-center">
-        <table className="m-10 table-auto space-y-6">
-          <thead className="bg-[#FF5500]">
-            <tr>
+      <div className="ml-40 mr-40 overflow-hidden rounded-lg shadow-md">
+        <table className="w-full border-collapse text-left">
+          <thead className=" bg-[#FF5500]">
+            <tr className="">
               <th className="p-3 text-left">Album</th>
               <th className="p-3 text-left">Details</th>
               <th className="p-3 text-left">Description</th>
               <th className="p-3 text-left">Price</th>
               <th className="p-3 text-left">Currency</th>
-              <th className="p-3 text-left">Change Status</th>
+              <th className="p-3 text-left">Status</th>
               <th className="p-3 text-left">Delete</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {applyStatusFilter()?.map((listing) => {
               const album = albums?.find(
                 (album) => album.id === listing.albumId
