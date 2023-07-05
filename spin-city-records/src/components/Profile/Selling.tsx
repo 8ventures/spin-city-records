@@ -4,6 +4,8 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { Listing } from "~/utils/types";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { serif, sans } from "../../utils/fonts";
+import { useRouter } from "next/router";
 
 const options = [
   { value: "All", label: "All" },
@@ -22,6 +24,7 @@ const statusOptions = [
 ];
 
 function Selling() {
+  const router = useRouter();
   const [statusFilter, setStatusFilter] = useState(options[0]?.value);
   const deleteListing = api.listings.deleteListing.useMutation();
   const changeStatus = api.orders.changeStatus.useMutation();
@@ -106,121 +109,182 @@ function Selling() {
     }
   };
 
-  return (
-    <>
-      <div className="flex justify-end text-white lg:mr-28">
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger className="my-4 mr-12 inline outline-none sm:mr-14">
-            Filter by Status: {""}
-            {options.find((option) => option.value === statusFilter)?.label}
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content className="w-44 rounded-xl bg-white p-4 font-sans text-black">
-            {options.map((option) => (
-              <DropdownMenu.Item
-                key={option.value}
-                onSelect={() => handleFilterChange(option.value)}
-                className="cursor-pointer rounded text-center font-sans outline-none hover:bg-slate-200"
-              >
-                {option.label}
-              </DropdownMenu.Item>
-            ))}
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </div>
-      <div className="ml-4 mr-4 rounded-lg text-white shadow-md sm:overflow-x-auto md:ml-40 md:mr-40">
-        <table className="w-full border-collapse text-left">
-          <thead className="bg-[#FF5500]">
-            <tr>
-              <th className="p-3 text-left font-serif">Album</th>
-              <th className="p-3 text-left font-serif">Details</th>
-              <th className="p-3 text-left font-serif">Description</th>
-              <th className="p-3 text-left font-serif">Price</th>
-              <th className="p-3 text-left font-serif">Status</th>
-              <th className="p-3 text-left font-serif">Delete</th>
-            </tr>
-          </thead>
-          <tbody className="">
-            {applyStatusFilter()?.map((listing) => {
-              return (
-                <tr key={listing.id} className="border-b border-gray-900">
-                  <td className="p-3">
-                    {listing.album ? (
-                      <>
-                        <img
-                          src={listing.album.artwork}
-                          alt={listing.album.name}
-                          className="h-12 w-12 rounded md:h-44 md:w-44"
-                        />
-                        <div className="mt-2 w-12 text-center font-sans md:w-44">
-                          {listing.album.name}
-                        </div>
-                      </>
-                    ) : (
-                      <div>No image available</div>
-                    )}
-                  </td>
-                  <td className="p-3 text-sm md:text-base">
-                    <b>Condition: </b>
-                    {listing.condition} <br />
-                    <b>Format: </b>
-                    {listing.format} <br />
-                    <b>Speed: </b>
-                    {listing.speed} <br />
-                    <b>Weight: </b>
-                    {listing.weight}
-                    <br />
-                  </td>
-                  <td className="p-3 font-sans text-sm md:text-base">
-                    {listing.description}
-                  </td>
-                  <td className="p-3 font-sans text-sm md:text-base">
-                    {listing.price} {listing.currency.toUpperCase()}
-                  </td>
-                  <td className="p-3 font-sans sm:text-sm md:text-base">
-                    {listing.order ? (
-                      <DropdownMenu.Root>
-                        <DropdownMenu.Trigger className="my-4 mr-12 inline text-left font-sans outline-none">
-                          {listing.order?.status || "No Order"}
-                        </DropdownMenu.Trigger>
-                        <DropdownMenu.Content className="w-44 rounded-xl bg-white p-4 font-sans text-black">
-                          {statusOptions.map((option) => (
-                            <DropdownMenu.Item
-                              key={option.value}
-                              onSelect={() => {
-                                if (listing.order) {
-                                  handleChangeStatus(
-                                    listing.order.id,
-                                    option.value
-                                  );
-                                }
-                              }}
-                              className="cursor-pointer rounded text-center outline-none hover:bg-slate-200"
-                            >
-                              {option.label}
-                            </DropdownMenu.Item>
-                          ))}
-                        </DropdownMenu.Content>
-                      </DropdownMenu.Root>
-                    ) : (
-                      "No Order"
-                    )}
-                  </td>
-                  <td className="p-3 font-sans text-sm md:text-base">
-                    <div className="flex h-8 w-8 items-center">
-                      <TrashIcon
-                        className="m-1 cursor-pointer"
-                        onClick={() => handleDeleteListing(listing.id)}
-                      />
-                    </div>
-                  </td>
+  //Render
+  if (listingData && listingData.length === 0) {
+    return (
+      <section className="mx-auto flex w-full flex-col items-center justify-center overflow-hidden">
+        <div className="mx-auto my-16 text-center align-middle text-xl text-white">
+          Couldn't find any listings.{" "}
+          {stripeId ? (
+            <span
+              className="block cursor-pointer text-[#FF5500] underline underline-offset-4"
+              onClick={() =>
+                router.push("/createListing").catch((err) => console.log(err))
+              }
+            >
+              Start selling
+            </span>
+          ) : (
+            <span
+              className="block cursor-pointer text-[#FF5500] underline underline-offset-4"
+              onClick={() =>
+                router.push("/startSelling").catch((err) => console.log(err))
+              }
+            >
+              Become a seller
+            </span>
+          )}
+        </div>
+      </section>
+    );
+  }
+  if (listingData && listingData.length !== 0) {
+    return (
+      <>
+        <div className="mx-2 flex flex-col text-white md:mx-auto md:w-2/3 ">
+          <div className="  flex justify-end text-white ">
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger className="text-md my-4 mr-12 inline outline-none md:text-lg">
+                Filter by Status: {""}
+                {options.find((option) => option.value === statusFilter)?.label}
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content className="w-44 rounded-xl bg-white p-4  text-sm text-black md:text-lg">
+                {options.map((option) => (
+                  <DropdownMenu.Item
+                    key={option.value}
+                    onSelect={() => handleFilterChange(option.value)}
+                    className="cursor-pointer rounded text-center  outline-none hover:bg-slate-200"
+                  >
+                    {option.label}
+                  </DropdownMenu.Item>
+                ))}
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          </div>
+          <div className=" mb-16 w-full   text-white">
+            <table className="w-full text-center">
+              <thead className="bg-[#FF5500]">
+                <tr>
+                  <th
+                    className={`p-3 text-center ${serif.className} text-xs md:text-lg lg:text-lg`}
+                  >
+                    Album
+                  </th>
+                  <th
+                    className={`p-3 text-center ${serif.className} text-xs md:text-lg lg:text-lg`}
+                  >
+                    {" "}
+                    Details
+                  </th>
+                  <th
+                    className={`p-3 text-center ${serif.className} text-xs md:text-lg lg:text-lg`}
+                  >
+                    {" "}
+                    Description
+                  </th>
+                  <th
+                    className={`p-3 text-center ${serif.className} text-xs md:text-lg lg:text-lg`}
+                  >
+                    {" "}
+                    Price
+                  </th>
+                  <th
+                    className={`p-3 text-center ${serif.className} text-xs md:text-lg lg:text-lg`}
+                  >
+                    {" "}
+                    Status
+                  </th>
+                  <th
+                    className={`p-3 text-center ${serif.className} text-xs md:text-lg lg:text-lg`}
+                  >
+                    Delete
+                  </th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
+              </thead>
+              <tbody className="">
+                {applyStatusFilter()?.map((listing) => {
+                  return (
+                    <tr key={listing.id} className="border-b border-gray-900">
+                      <td className="flex flex-col items-center justify-center p-3">
+                        {listing.album ? (
+                          <>
+                            <img
+                              src={listing.album.artwork}
+                              alt={listing.album.name}
+                              className="h-12 w-12 rounded object-cover"
+                            />
+                            <div className="ml-2 p-3  text-xs md:text-base">
+                              {listing.album.name}
+                            </div>
+                          </>
+                        ) : (
+                          <div>No image available</div>
+                        )}
+                      </td>
+                      <td className="ml-2 p-3  text-xs md:text-xs lg:text-base">
+                        <b>Condition: </b>
+                        {listing.condition} <br />
+                        <b>Format: </b>
+                        {listing.format} <br />
+                        <b>Speed: </b>
+                        {listing.speed} <br />
+                        <b>Weight: </b>
+                        {listing.weight}
+                        <br />
+                      </td>
+                      <td className="lg:text-md ml-2 p-3  text-xs md:text-base">
+                        {listing.description}
+                      </td>
+                      <td className="lg:text-md ml-2 p-3  text-xs md:text-base">
+                        {listing.price} {listing.currency.toUpperCase()}
+                      </td>
+                      <td className="lg:text-md ml-2 p-3  text-xs md:text-base">
+                        {listing.order ? (
+                          <DropdownMenu.Root>
+                            <DropdownMenu.Trigger className="inline text-center outline-none">
+                              {listing.order?.status || "No Order"}
+                            </DropdownMenu.Trigger>
+                            <DropdownMenu.Content className="w-44 rounded-xl bg-white p-4 text-center  text-black">
+                              {statusOptions.map((option) => (
+                                <DropdownMenu.Item
+                                  key={option.value}
+                                  onSelect={() => {
+                                    if (listing.order) {
+                                      handleChangeStatus(
+                                        listing.order.id,
+                                        option.value
+                                      );
+                                    }
+                                  }}
+                                  className="cursor-pointer rounded text-center outline-none hover:bg-slate-200"
+                                >
+                                  {option.label}
+                                </DropdownMenu.Item>
+                              ))}
+                            </DropdownMenu.Content>
+                          </DropdownMenu.Root>
+                        ) : (
+                          "No Order"
+                        )}
+                      </td>
+                      <td className="lg:text-md ml-2 p-3  text-xs md:text-base">
+                        <div className="flex h-8 w-8 items-center">
+                          <TrashIcon
+                            className="m-1 cursor-pointer"
+                            onClick={() => handleDeleteListing(listing.id)}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </>
+    );
+  }
 }
 
 export default Selling;
