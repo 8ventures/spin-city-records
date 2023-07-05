@@ -160,7 +160,7 @@ export default function AlbumInfoCard({
                   })
                 }
               >
-                Create a listing or become a seller
+                Create a listing
               </div>
             </div>
           )}
