@@ -11,7 +11,7 @@ export const stripeRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { listingId } = input;
       try {
-        const listing = await ctx.prisma.listing.findUnique({
+        let listing = await ctx.prisma.listing.findUnique({
           where: {
             id: listingId,
           },
@@ -23,14 +23,46 @@ export const stripeRouter = createTRPCRouter({
                 artist: true
               }
             },
+            order: true,
           },
         });
+        console.log('listing found')
+        if (listing?.orderId) {
+          console.log(listing.orderId)
+          const removeOrder = await ctx.prisma.order.delete({
+            where: {
+              id: listing.orderId
+            }
+          })
+          console.log('order removed')
+          const cleanListing = await ctx.prisma.listing.update({
+            where: {
+              id: listingId,
+            },
+            data: {
+              orderId: null
+            },
+            include: {
+              edition: true,
+              seller: true,
+              album: {
+                include: {
+                  artist: true
+                }
+              },
+              order: true
+            }
+          });
+          listing = cleanListing
+        }
+        console.log(listing);
         if (listing && !listing.orderId) {
+          console.log('Creating new order')
           const newOrder = await ctx.prisma.order.create({
             data: {
               userId: ctx.user.id,
               sellerId: listing.seller.stripeId,
-              status: "Awating Payment",
+              status: "Awaiting Payment",
               completed: false,
             },
           });
