@@ -34,7 +34,7 @@ const SelectCondition = React.forwardRef<HTMLButtonElement, selectConditionProps
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="overflow-hidden bg-black text-gray-300 rounded-xl">
+          <Select.Content className="cursor-pointer overflow-hidden bg-black text-gray-300 rounded-xl">
             <Select.Viewport className="p-[5px]">
               <Select.Group>
                 <SelectItem value="Mint">Mint</SelectItem>

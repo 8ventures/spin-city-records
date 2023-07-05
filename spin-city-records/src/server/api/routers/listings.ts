@@ -155,6 +155,7 @@ export const listingsRouter = createTRPCRouter({
             edition: true,
             seller: true,
             order: true,
+            album: true,
           },
         });
         return listings;

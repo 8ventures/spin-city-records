@@ -36,7 +36,7 @@ const SelectEdition = React.forwardRef<HTMLButtonElement, SelectEditionProps>(
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="overflow-hidden  bg-black text-gray-300 rounded-xl">
+          <Select.Content className="cursor-pointer overflow-hidden  bg-black text-gray-300 rounded-xl">
             <Select.Viewport className="p-[5px]">
               <Select.Group>
                 {editions.map((e, i) => (

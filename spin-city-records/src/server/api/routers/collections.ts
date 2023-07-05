@@ -1,4 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  privateProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { z } from "zod";
 
 export const collectionRouter = createTRPCRouter({
@@ -52,7 +56,7 @@ export const collectionRouter = createTRPCRouter({
       }
     }),
 
-  getWishListByUserId: publicProcedure
+  getByUserId: privateProcedure
     .input(
       z.object({
         userId: z.string(),
@@ -64,7 +68,6 @@ export const collectionRouter = createTRPCRouter({
         const collections = await ctx.prisma.collection.findMany({
           where: {
             userId,
-            name: "Wish List",
           },
           include: {
             albums: {
@@ -79,6 +82,80 @@ export const collectionRouter = createTRPCRouter({
           },
         });
         return collections;
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+
+  create: privateProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { name, userId } = input;
+      try {
+        const collection = await ctx.prisma.collection.create({
+          data: {
+            name: name,
+            userId: userId,
+          },
+        });
+        return collection;
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+
+  addAlbum: privateProcedure
+    .input(
+      z.object({
+        collectionId: z.string(),
+        albumId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { collectionId, albumId } = input;
+      try {
+        const collection = await ctx.prisma.collection.update({
+          where: { id: collectionId },
+          data: {
+            albums: {
+              connect: {
+                id: albumId,
+              },
+            },
+          },
+        });
+        return collection;
+      } catch (e) {
+        console.log(e);
+      }
+    }),
+
+  removeAlbum: privateProcedure
+    .input(
+      z.object({
+        collectionId: z.string(),
+        albumId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { collectionId, albumId } = input;
+      try {
+        const collection = await ctx.prisma.collection.update({
+          where: { id: collectionId },
+          data: {
+            albums: {
+              disconnect: {
+                id: albumId,
+              },
+            },
+          },
+        });
+        return collection;
       } catch (e) {
         console.log(e);
       }

@@ -82,19 +82,19 @@ h6 {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #333;
+  background: #000;
   border-radius: 5px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #777;
+  background: #000;
   border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
+  background: #000;
 }
 /* Styles for horizontal scrollbar */
 ::-webkit-scrollbar-horizontal {
@@ -102,7 +102,7 @@ h6 {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-  background-color: #777;
+  background-color: #000;
 }
 
 ::-webkit-scrollbar-thumb:hover:horizontal {

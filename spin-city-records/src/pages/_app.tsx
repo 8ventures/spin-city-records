@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { dark } from "@clerk/themes";
 import { CartProvider } from "~/components/GlobalContext/CartContext";
 import { CurrencyProvider } from "~/components/GlobalContext/CurrencyContext";
-import { WishlistProvider } from "~/components/GlobalContext/WishListContext";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,9 +22,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       >
         <CurrencyProvider>
           <CartProvider>
-            <WishlistProvider>
               <Component {...pageProps} />
-            </WishlistProvider>
           </CartProvider>
         </CurrencyProvider>
       </ClerkProvider>
