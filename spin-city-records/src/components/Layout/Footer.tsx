@@ -12,16 +12,14 @@ const sans = DM_Sans({
 export default function Footer() {
   const router = useRouter();
   return (
-    <footer
-      className={`bottom-0 mx-auto flex w-full  border-t border-[#A1A1A1] bg-black p-4  text-white sm:p-0 ${sans.className}`}
-    >
+    <footer className="bottom-0 mx-auto flex w-full border-t border-[#A1A1A1] bg-black p-4 text-white sm:p-0">
       <div className="mx-auto flex flex-col items-center justify-center md:flex-row">
         <Image
           src={logo as string}
           alt="logo"
           priority
           onClick={() => {
-            router.push("/").catch((e)=> console.log(e));
+            router.push("/").catch((e) => console.log(e));
           }}
           className="m-2 w-40 cursor-pointer sm:w-60"
         />

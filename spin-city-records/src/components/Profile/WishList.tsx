@@ -81,7 +81,7 @@ function WishList() {
     router.push({
       pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
       query: { id: album.id },
-    });
+    }).catch((err) => console.log(err));
   };
 
   function findLowestPriceListing(listings: Listing[], currency: string) {
@@ -110,7 +110,7 @@ function WishList() {
           No favorites yet,{" "}
           <span
             className="cursor-pointer text-[#FF5500] underline underline-offset-4"
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/").catch((err) => console.log(err))}
           >
             start exploring!
           </span>

@@ -9,7 +9,7 @@ import { HeartIcon as FilledHeart } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
-import NextError from "next/error";
+import { serif, sans } from "../../utils/fonts";
 
 interface AlbumInfoCardProps {
   album: Album;
@@ -68,14 +68,9 @@ export default function AlbumInfoCard({
     isError: removeAlbumFromCollectionIsError,
   } = api.collections.removeAlbum.useMutation();
 
-  //Error Handling
-  if (collectionsQueryIsError) {
-    return <NextError statusCode={500} />;
-  }
-
   //Side Effects
   useEffect(() => {
-    if (collectionsQuerySuccess && collectionsQueryData) {
+    if (user && collectionsQuerySuccess && collectionsQueryData) {
       setCollection(
         collections.find((collection) => collection.name === "Wishlist")
       );
@@ -143,10 +138,12 @@ export default function AlbumInfoCard({
 
   const handleClickArtist = (album: Album) => {
     const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
-    router.push({
-      pathname: `/artist/${normalizedArtist}/`,
-      query: { id: album.artist.id },
-    }).catch((e) => console.log(e));
+    router
+      .push({
+        pathname: `/artist/${normalizedArtist}/`,
+        query: { id: album.artist.id },
+      })
+      .catch((e) => console.log(e));
   };
 
   const handleClickCart = () => {
@@ -223,9 +220,11 @@ export default function AlbumInfoCard({
               <div
                 className="cursor-pointer text-lg font-semibold text-[#FF5500] hover:underline sm:text-left md:text-xl xl:text-2xl"
                 onClick={() =>
-                  router.push({
-                    pathname: "/profile/createListing",
-                  })
+                  router
+                    .push({
+                      pathname: "/profile/createListing",
+                    })
+                    .catch((e) => console.log(e))
                 }
               >
                 Create a listing
@@ -313,20 +312,16 @@ export default function AlbumInfoCard({
                   </span>
                 </div>
               )}
-              <div className="mt-4 flex flex-row justify-center sm:justify-start">
+              <div className="mt-4 flex flex-row items-center justify-center sm:justify-start">
                 <button
                   onClick={handleClickWishlist}
-                  className="h-9 w-9 text-red-500"
+                  className="mx-5 h-9 w-9 text-red-500"
                 >
                   {isInWishlist ? <FilledHeart /> : <EmptyHeart />}
                 </button>
                 <button
                   onClick={handleClickCart}
-                  className={`ml-4 w-48 justify-center rounded-xl px-4 py-2 text-base font-semibold ${
-                    isInCart
-                      ? "border border-white bg-white text-black hover:bg-[white] hover:text-black"
-                      : " border border-[#A1A1A1] bg-black text-white"
-                  }`}
+                  className={`mx-5 flex h-fit w-fit flex-col items-center bg-white p-2 text-black hover:bg-[#FF5500] hover:text-[white] sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
                 >
                   {isInCart ? "Remove from cart" : "Add to cart"}
                 </button>

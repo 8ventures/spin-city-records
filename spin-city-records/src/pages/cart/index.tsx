@@ -27,7 +27,7 @@ export default function Cart() {
   return (
     <Layout>
       <div
-        className={`flex h-screen flex-col items-center text-white ${sans.className}`}
+        className={`flex  flex-col items-center text-white ${sans.className}`}
       >
         <div className=" mt-2 w-5/6 xl:w-2/3">
           <h1
@@ -114,7 +114,7 @@ export default function Cart() {
                 Your cart is empty,{" "}
                 <span
                   className="cursor-pointer text-[#FF5500] underline underline-offset-4"
-                  onClick={() => router.push("/")}
+                  onClick={() => router.push("/").catch((e) => console.log(e))}
                 >
                   start exploring!
                 </span>

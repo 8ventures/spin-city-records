@@ -42,7 +42,7 @@ export default function Header() {
 
           </div>
           <div
-            onClick={() => router.push("/cart")}
+            onClick={() => router.push("/cart").catch((e) => console.log(e))}
             className="relative mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
           >
 
@@ -59,7 +59,7 @@ export default function Header() {
 
           {currentUserId && (
             <div
-              onClick={() => router.push(`/profile/${currentUserId}`)}
+              onClick={() => router.push(`/profile/${currentUserId}`).catch((e) => console.log(e))}
               className=" mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
             >
               <UserIcon className="mb-5 h-10 w-10 text-white" />
@@ -74,7 +74,7 @@ export default function Header() {
             )}
             {user.isSignedIn && (
 
-                <SignOutButton signOutCallback={()=>router.push("/")}>
+                <SignOutButton signOutCallback={()=>router.push("/").catch((e) => console.log(e))}>
                 <button className="py-1">Logout</button>
                 </SignOutButton>
 
