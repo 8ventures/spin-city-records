@@ -7,7 +7,7 @@ import convertToGlobalCurrency from '../../utils/currencyConversion'
 import { useRouter } from "next/router";
 import Skeleton from "../../components/skeleton";
 import {serif, sans} from '../../utils/fonts'
-import { BsXLg } from "react-icons/bs";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 export default function Cart() {
   const { cart, removeFromCart } = useContext(CartContext);
@@ -27,7 +27,7 @@ export default function Cart() {
       <div className={`h-screen flex flex-col items-center text-white ${sans.className}`}>
         <div className=" xl:w-2/3 w-5/6 mt-2">
           <h1
-            className={`text-black ${serif.className} mb-2 mt-2 w-5/6 px-4  text-lg sm:text-lg md:text-xl lg:text-xl xl:text-2xl`}
+            className={`text-black ${serif.className} mb-2 mt-6 w-5/6 px-4 text-lg sm:text-lg md:text-xl lg:text-xl xl:text-2xl`}
           >
             <span className="bg-white px-4">SHOPPING CART</span>
           </h1>
@@ -82,6 +82,12 @@ export default function Cart() {
                     </div>
                   </div>
                   <div className="flex items-center justify-around">
+                  <button 
+                      className="text-white  hover:text-black"
+                      onClick={() => removeFromCart(listing)}
+                    >
+                      <TrashIcon className="h-7 w-7 hover:bg-white"/>
+                    </button>
                     <button 
                       className={`sm:my-8 sm:text-left md:text-xl xl:text-2xl h-fit w-fit p-2 flex flex-col items-center bg-white text-black hover:text-[white] hover:bg-[#FF5500] ${serif.className}`}
                       onClick={() => checkoutItem(listing)}
@@ -96,12 +102,7 @@ export default function Cart() {
                         {currency}
                       </span>
                     </button>
-                    <button 
-                      className="text-white  hover:text-black"
-                      onClick={() => removeFromCart(listing)}
-                    >
-                      <BsXLg className='h-5 w-5 hover:bg-white'></BsXLg>
-                    </button>
+                    
                   </div>
                 </div>
               </>

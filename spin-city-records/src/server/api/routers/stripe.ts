@@ -19,7 +19,11 @@ export const stripeRouter = createTRPCRouter({
             include: {
               edition: true,
               seller: true,
-              album: true
+              album: {
+                include: {
+                  artist: true
+                }
+              }
             },
           });
           if(listing) {

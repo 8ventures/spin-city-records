@@ -7,14 +7,7 @@ import CheckoutForm from "~/components/Checkout/checkoutForm";
 import Skeleton from "~/components/skeleton";
 import CheckoutItems from "~/components/Checkout/checkoutItems";
 import type { Listing } from "~/utils/types";
-import { DM_Serif_Display } from "@next/font/google";
-
-
-const serif = DM_Serif_Display({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-});
+import { serif, sans } from "~/utils/fonts";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
 
@@ -37,28 +30,35 @@ export default function Checkout() {
 
   return (
     <Layout>
-        <h1
-            className={`text-black ${serif.className} mb-2 mt-2 w-5/6 px-4  text-lg sm:text-lg md:text-xl lg:text-xl xl:text-2xl`}
-        >
-        <span className="bg-white px-4">CHECKOUT</span>
-      </h1>
-      <div className="flex flex-col items-center mt-2">
-        <div className="flex w-5/6 space-x-2 justify-center"> 
-          {isSession && listing  ? (
-            <CheckoutItems listing={listing} />
-          ) : (
-            <Skeleton className=" h-96"/>
-          )}
-          {isSession && clientSecret ? (
-            <Elements options={{
-              appearance,
-              clientSecret
-            }} stripe={stripePromise}>
-              <CheckoutForm listing={listing} />
-            </Elements>
-          ) : (
-            <Skeleton className=" h-96"/>
-            )}
+      <div className={`h-fit flex flex-col items-center text-white ${sans.className}`}>
+        <div className=" xl:w-2/3 w-5/6 mt-2">
+          <h1
+              className={`text-black ${serif.className} mb-2 mt-6 w-5/6 px-4 text-lg sm:text-lg md:text-xl lg:text-xl xl:text-2xl`}
+          >
+            <span className="bg-white px-4">CHECKOUT</span>
+          </h1>
+          <div className="flex flex-col items-center mt-6">
+            <div className="flex w-5/6 justify-center space-x-10"> 
+              {isSession && listing  ? (
+                <CheckoutItems listing={listing} />
+              ) : (
+                <Skeleton className=" h-96 w-96 mb-10"/>
+              )}
+              {isSession && clientSecret ? (
+              <Elements 
+                options={{
+                  appearance,
+                  clientSecret
+                }} 
+                stripe={stripePromise}
+              >
+                <CheckoutForm listing={listing} />
+              </Elements>
+              ) : (
+                <Skeleton className=" h-96 w-96 mb-10"/>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
