@@ -11,10 +11,10 @@ const sans = DM_Sans({
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <main className={`${sans.className} `}>{children}</main>
+      <main className="flex-grow">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }
