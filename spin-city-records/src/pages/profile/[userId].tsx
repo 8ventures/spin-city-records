@@ -62,10 +62,9 @@ const ProfilePage = () => {
   const PageComponent = pageComponents[currentPage] || Settings;
 
   const handleClick = (page: Page) => {
-
     setCurrentPage(page);
-    if(currentUserId){
-      router.push(`/profile/${currentUserId}/${page}`).catch((e)=> console.log(e));
+    if (currentUserId) {
+      router.push(`/profile/${page}`).catch((e) => console.log(e));
     }
   };
 
