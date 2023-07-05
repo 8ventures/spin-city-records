@@ -1,11 +1,9 @@
 import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import NextError from "next/error";
-
 import { api } from "~/utils/api";
 import { Album, Listing } from "~/utils/types";
 import convertToGlobalCurrency from "~/utils/currencyConversion";
-
 import { CurrencyContext } from "~/components/GlobalContext/CurrencyContext";
 import Layout from "~/components/Layout/Layout";
 import ListingInfoCard from "~/components/Album/ListingInfoCard";

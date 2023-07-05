@@ -1,15 +1,16 @@
 import Layout from "../../components/Layout/Layout";
 import type { Listing } from "../..//utils/types";
 import { useContext } from "react";
-import { CartContext } from "../../components/GlobalContext/CartContext";
+import { CartContext,} from "../../components/GlobalContext/CartContext";
 import { CurrencyContext } from "../../components/GlobalContext/CurrencyContext";
 import convertToGlobalCurrency from '../../utils/currencyConversion'
 import { useRouter } from "next/router";
 import Skeleton from "../../components/skeleton";
 import {serif, sans} from '../../utils/fonts'
+import { BsXLg } from "react-icons/bs";
 
 export default function Cart() {
-  const { cart } = useContext(CartContext);
+  const { cart, removeFromCart } = useContext(CartContext);
   const { currency } = useContext(CurrencyContext);
   const router = useRouter()
 
@@ -20,7 +21,6 @@ export default function Cart() {
       query: {id: listing.id}
     }).catch((e)=>(console.log(e)))
   }
-
 
   return (
     <Layout>
@@ -33,12 +33,14 @@ export default function Cart() {
           </h1>
             {cart.length > 0 ? (
               cart.map((listing) => (
+                <>
+                <div className="my-8 w-full border-b border-[#A1A1A1]" />
                 <div
                   key={listing.id}
-                  className=" flex items-center justify-between h-max w-full mb-4"
+                  className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 h-max w-full mb-4 items-center"
                 >
                   {listing.album ? (
-                    <div className="h-fit w-fit m-4">
+                    <div className=" h-fit w-fit m-4">
                       <img
                         src={listing.album.artwork}
                         alt={`Artwork for ${listing.album.name}`}
@@ -48,7 +50,7 @@ export default function Cart() {
                   ) : (
                     <Skeleton className=" rounded-xl sm:h-40 sm:w-40 md:h-44 md:w-44 lg:h-48  lg:w-48 xl:h-48 xl:w-48 " />
                   )}
-                  <div className="hidden lg:flex flex-col ">
+                  <div className="col-span-2 hidden md:flex flex-col ">
                     <span className="text-2xl sm:text-left md:text-3xl xl:text-4xl">
                       {listing.album?.name}
                     </span>
@@ -56,7 +58,6 @@ export default function Cart() {
                       <span className="text-[#A1A1A1]">by </span>{" "}
                       <a
                         className="cursor-pointer hover:underline"
-                        // onClick={() => handleClickArtist(album)}
                       >
                         {" "}
                         {listing.album?.artist.name}
@@ -66,7 +67,7 @@ export default function Cart() {
                       {listing.album?.year}, {listing.album?.label}
                     </span>
                   </div>
-                  <div className="flex flex-col">
+                  <div className="hidden lg:flex flex-col">
                     <div>
                       <strong>Condition:</strong> {listing.condition}
                     </div>
@@ -80,21 +81,30 @@ export default function Cart() {
                       <strong>Weight:</strong> {listing.weight}
                     </div>
                   </div>
-                  <button 
-                    className={`sm:my-8 sm:text-left md:text-xl xl:text-2xl h-1/2 p-2 flex flex-col rounded-xl items-center bg-[#FF5500] ${sans.className}`}
-                    onClick={() => checkoutItem(listing)}
-                  >
-                    <h3 className="font-semibold ">Checkout for</h3>
-                    <span className="text-2xl font-semibold text-white ">
-                      {convertToGlobalCurrency(
-                        listing.price,
-                        listing.currency,
-                        currency
-                      )}{" "}
-                      {currency}
-                    </span>
-                  </button>
+                  <div className="flex items-center justify-around">
+                    <button 
+                      className={`sm:my-8 sm:text-left md:text-xl xl:text-2xl h-fit w-fit p-2 flex flex-col items-center bg-white text-black hover:text-[white] hover:bg-[#FF5500] ${serif.className}`}
+                      onClick={() => checkoutItem(listing)}
+                    >
+                      <h3 className="font-semibold ">CHECKOUT</h3>
+                      <span className="text-2xl font-semibold ">
+                        {convertToGlobalCurrency(
+                          listing.price,
+                          listing.currency,
+                          currency
+                        )}{" "}
+                        {currency}
+                      </span>
+                    </button>
+                    <button 
+                      className="text-white  hover:text-black"
+                      onClick={() => removeFromCart(listing)}
+                    >
+                      <BsXLg className='h-5 w-5 hover:bg-white'></BsXLg>
+                    </button>
+                  </div>
                 </div>
+              </>
               )
             )) : (
               <div>Your cart is empty.</div>

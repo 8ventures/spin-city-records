@@ -1,8 +1,7 @@
 import type { Listing } from "~/utils/types"
 import { CurrencyContext } from "../GlobalContext/CurrencyContext";
 import RatingStars from "../Album/RatingStars";
-import convertToGlobalCurrency from "../../utils/currencyConversion";
-import getSymbolFromCurrency from "currency-symbol-map";
+import Skeleton from "../skeleton";
 import { useContext } from "react";
 
 type CheckoutItemsProps = {
