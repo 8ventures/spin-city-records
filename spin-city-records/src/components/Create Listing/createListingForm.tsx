@@ -96,9 +96,9 @@ console.log(error)
       ) : isError ? (
         <div>Error Loading form</div>
       ) : (
-        <div className="flex flex-col rounded-xl">
+        <div className="flex justify-center items-center rounded-xl">
           <form className="flex flex-col p-4 rounded-xl" onSubmit={handleSubmit(onSubmit)}>
-            <label className="my-2 text-xl text-white">Select Album</label>
+            <label className="my-2 text-xl text-custom-orange">Select Album</label>
             <Controller
                 name="album"
                 control={control}
@@ -106,12 +106,12 @@ console.log(error)
                   return <SearchAlbumsForm ref={field.ref} field={field} />;
                 }}
               />
-            <label className="my-2 text-xl text-white mt-7">Set Price</label>
+            <label className="my-2 text-xl text-custom-orange mt-7">Set Price</label>
             <div className="flex space-x-10">
               <div className="flex flex-col">
                 <input
                   type="number"
-                  className="rounded-xl border border-gray-300 bg-inherit text-white py-2 px-4"
+                  className="rounded-xl border border-gray-600 bg-inherit text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
                   {...register("price", {valueAsNumber: true}) }
                   step={0.01}
                 />
@@ -124,7 +124,7 @@ console.log(error)
                 }}
               />
             </div>
-            <label className="my-2 text-xl text-white mt-7">Select Album Features</label>
+            <label className="my-2 text-xl text-custom-orange mt-7">Set Album Features</label>
             <div className="flex space-x-10">
               <Controller
                 name="speed"
@@ -156,7 +156,7 @@ console.log(error)
                 }}
               />
             </div>
-            <label className="my-2 text-xl text-white mt-7">Select Album Edition</label>
+            <label className="my-2 text-xl text-custom-orange mt-7">Set Album Editions</label>
             <div className="flex space-x-2">
             <Controller
               name={`editions.${0}.value`}
@@ -178,35 +178,38 @@ console.log(error)
             <button
               type="button"
               onClick={() => append({value: '1'})}
-              className="flex items-center justify-center h-9 w-9 bg-white rounded-xl "
+              className="flex items-center justify-center h-9 w-9 bg-black rounded-xl "
             >
-              <PlusIcon className=" text-black h-8 w-8"/>
+              <PlusIcon className="text-custom-orange h-5 w-5 ml-1"/>
             </button>
             {fields.length > 1 &&
             <button
               type="button"
               onClick={() => remove(fields.length -1 )}
-              className="flex items-center justify-center h-9 w-9 bg-white rounded-xl "
+              className="flex items-center justify-center h-9 w-9 bg-black rounded-xl "
             >
-              <MinusIcon className=" text-black h-8 w-8"/>
+              <MinusIcon className="text-custom-orange h-5 w-5 ml-1"/>
             </button>
             }
             </div>
-            <label className="my-2 text-xl text-white mt-7">Add Description</label>
+            <label className="my-2 text-xl text-custom-orange mt-7">Add Description</label>
             <input
               type="text"
               placeholder="e.g. Plays great!"
-              className="rounded-xl text-xl border border-gray-300 bg-inherit text-white py-2 px-4"
+              className="rounded-xl border border-gray-600 bg-inherit text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
               {...register("description")}
             />
+            <div className="flex justify-center align-middle">
+
             {isListingLoading || isSuccess? (
               <Spinner/>
                 ) : (
-                <button className="rounded-xl bg-custom-orange text-black text-xl py-2 px-4 mt-8" type="submit">
+                <button className="rounded-xl bg-custom-orange text-white text-xl py-2 px-4 mt-8 w-2/4" type="submit">
                   Create Listing
                 </button>
               )
             }
+            </div>
           </form>
         </div>
       )}

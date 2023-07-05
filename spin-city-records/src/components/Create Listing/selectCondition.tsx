@@ -24,17 +24,17 @@ const SelectCondition = React.forwardRef<HTMLButtonElement, selectConditionProps
     return (
       <Select.Root onValueChange={field.onChange} name={field.name} value={field.value}>
         <Select.Trigger
-          className="inline-flex bg-white text-black items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
+          className="inline-flex bg-black text-gray-300 items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
           aria-label="Condition"
           ref={forwardedRef}
         >
           <Select.Value placeholder="Select Condition" />
-          <Select.Icon className="">
+          <Select.Icon className="text-custom-orange">
             <ChevronDownIcon />
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="overflow-hidden bg-white rounded-xl">
+          <Select.Content className="overflow-hidden bg-black text-gray-300 rounded-xl">
             <Select.Viewport className="p-[5px]">
               <Select.Group>
                 <SelectItem value="Mint">Mint</SelectItem>

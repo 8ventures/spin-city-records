@@ -6,12 +6,14 @@ import MyOrders from "../../components/Profile/MyOrder";
 import Selling from "../../components/Profile/Selling";
 import CreateListingForm from "../../components/Create Listing/createListingForm";
 import OnboardingForm from "../../components/Profile/onboardingForm";
+import ProfilePageButton from "../../components/Profile/ProfilePageButton";
 import Settings from "../../components/Profile/Settings";
 import WishList from "~/components/Profile/WishList";
 
 const profilePagesisSeller = [
   { label: "Wish List", page: "wishList" },
   { label: "My Orders", page: "myOrders" },
+  { label: "Become A Seller", page: "startSelling" },
   { label: "My Listings", page: "selling" },
   { label: "Create a Listing", page: "createListing" },
   { label: "Settings", page: "settings" },
