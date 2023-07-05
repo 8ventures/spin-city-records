@@ -19,7 +19,7 @@ export const ordersRouter = createTRPCRouter({
           data: {
             userId: input.userId,
             sellerId: input.sellerId,
-            status: 'Awating Payment',
+            status: 'Awaiting Payment',
             completed: false,
             Listings: {
               connect: {
