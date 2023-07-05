@@ -1,16 +1,13 @@
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  privateProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
-export const ordersRouter = createTRPCRouter({
+export const orderRouter = createTRPCRouter({
   createOrder: privateProcedure
     .input(
       z.object({
         userId: z.string(),
         sellerId: z.string(),
-        listingId: z.string()
+        listingId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -19,14 +16,14 @@ export const ordersRouter = createTRPCRouter({
           data: {
             userId: input.userId,
             sellerId: input.sellerId,
-            status: 'Awating Payment',
+            status: "Awating Payment",
             completed: false,
             Listings: {
               connect: {
-                id: input.listingId
-              }
-            }
-          }
+                id: input.listingId,
+              },
+            },
+          },
         });
         return order;
       } catch (e) {
@@ -36,69 +33,72 @@ export const ordersRouter = createTRPCRouter({
   getById: privateProcedure
     .input(
       z.object({
-        id: z.string()
+        id: z.string(),
       })
     )
-    .query( async ({ ctx, input}) => {
-      const {id} = input;
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
       try {
         const order = await ctx.prisma.order.findUnique({
-          where: {id},
+          where: { id },
           include: {
-            Listings: true
-          }
-        })
-        return order
+            Listings: true,
+          },
+        });
+        return order;
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }),
-  getSellerOrders: privateProcedure
-    .query( async ({ctx}) => {
-      try {
-        const orders = await ctx.prisma.order.findMany({
-          where: {
-            sellerId: ctx.user.privateMetadata.stripeId as string
-          }
-        })
-        return orders
-      } catch (e) {
-        console.log(e)
-      }
-    }),
-  getBuyerOrders: privateProcedure
-    .query( async ({ctx}) => {
-      try {
-        const orders = await ctx.prisma.order.findMany({
-          where: {
-            userId: ctx.user.id
-          }
-        })
-        return orders
-      } catch (e) {
-        console.log(e)
-      }
-    }),
+  getSellerOrders: privateProcedure.query(async ({ ctx }) => {
+    try {
+      const orders = await ctx.prisma.order.findMany({
+        where: {
+          sellerId: ctx.user.privateMetadata.stripeId as string,
+        },
+      });
+      return orders;
+    } catch (e) {
+      console.log(e);
+    }
+  }),
+  getBuyerOrders: privateProcedure.query(async ({ ctx }) => {
+    try {
+      const orders = await ctx.prisma.order.findMany({
+        where: {
+          userId: ctx.user.id,
+        },
+      });
+      return orders;
+    } catch (e) {
+      console.log(e);
+    }
+  }),
   changeStatus: privateProcedure
     .input(
       z.object({
-        status: z.enum(['Awaiting Payment', 'Awaiting Shipment', 'Shipped', 'Complete']),
-        orderId: z.string()
+        status: z.enum([
+          "Awaiting Payment",
+          "Awaiting Shipment",
+          "Shipped",
+          "Complete",
+        ]),
+        orderId: z.string(),
       })
     )
-    .mutation( async ({ctx, input}) => {
+    .mutation(async ({ ctx, input }) => {
       try {
         const updatedOrder = await ctx.prisma.order.update({
           where: {
-            id: input.orderId
+            id: input.orderId,
           },
           data: {
-            status: input.status
-          }
-        })
-        return updatedOrder
+            status: input.status,
+          },
+        });
+        return updatedOrder;
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    })
-})
+    }),
+});
