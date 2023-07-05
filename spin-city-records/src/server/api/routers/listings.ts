@@ -8,7 +8,11 @@ import {
 export const listingsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     try {
-      const listings = await ctx.prisma.listing.findMany();
+      const listings = await ctx.prisma.listing.findMany({
+        where: {
+          orderId: null,
+        },
+      });
       return listings;
     } catch (e) {
       console.log(e);
@@ -105,9 +109,9 @@ export const listingsRouter = createTRPCRouter({
             seller: true,
             album: {
               include: {
-                artist: true
-              }
-            }
+                artist: true,
+              },
+            },
           },
         });
         return listings;
