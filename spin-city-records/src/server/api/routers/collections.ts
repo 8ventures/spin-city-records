@@ -51,4 +51,36 @@ export const collectionRouter = createTRPCRouter({
         console.log("here");
       }
     }),
+
+  getWishListByUserId: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { userId } = input;
+      try {
+        const collections = await ctx.prisma.collection.findMany({
+          where: {
+            userId,
+            name: "Wish List",
+          },
+          include: {
+            albums: {
+              include: {
+                artist: true,
+                listings: {
+                  where: { orderId: null },
+                },
+                Collection: true,
+              },
+            },
+          },
+        });
+        return collections;
+      } catch (e) {
+        console.log(e);
+      }
+    }),
 });
