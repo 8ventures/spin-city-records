@@ -1,7 +1,5 @@
 import { api } from "~/utils/api";
-import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
-import { Listing } from "~/utils/types";
+import { useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 const options = [
@@ -15,84 +13,38 @@ const options = [
 
 function MyOrders() {
   const [statusFilter, setStatusFilter] = useState(options[0]?.value);
-  const deleteListing = api.listings.deleteListing.useMutation();
+
+  const orderQuery = api.orders.getBuyerOrders.useQuery();
+  const orders = orderQuery.data;
 
   const albumQuery = api.albums.getAll.useQuery();
   const albums = albumQuery.data;
-
-  const user = useUser();
-  const currentUserId = user.user?.id;
-
-  const stripeIdQuery = api.sellers.getStripeId.useQuery({
-    clerkId: currentUserId || "",
-  });
-  const stripeId = stripeIdQuery.data as string | undefined;
-
-  const listingQuery = api.listings.getAll.useQuery();
-  const listingData = listingQuery.data;
-  console.log(listingData);
-
-  const orderQuery = api.orders.getAllOrders.useQuery();
-  const orders = orderQuery.data;
-  console.log(orders);
-
-  const [userOrders, setUserOrders] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (orders && listingData) {
-      const filteredOrders = orders.filter(
-        (order) => order.userId === currentUserId
-      );
-      const mappedOrders = filteredOrders.map((order) => {
-        const listing = listingData.find(
-          (listing) => listing.orderId === order.id
-        );
-        return {
-          ...order,
-          listing,
-        };
-      });
-      setUserOrders(mappedOrders);
-    }
-  }, [orders, listingData]);
-
-  if (!currentUserId || stripeIdQuery.isLoading || listingQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (stripeIdQuery.isError) {
-    return <div>Error occurred while fetching stripe ID</div>;
-  }
-
-  if (listingQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (listingQuery.isError) {
-    return <div>Error occurred while fetching listings</div>;
-  }
 
   const handleFilterChange = (value: string) => {
     setStatusFilter(value);
   };
 
-  // function getOrderStatus(listingId: string | null) {
-  //   if (listingId === null) {
-  //     return "No Order";
-  //   }
-  //   const order = orders?.find((order) => order.id === listingId);
-  //   return order ? order.status : "No Order";
-  // }
-
   const applyStatusFilter = () => {
     return statusFilter === "All"
-      ? userOrders
-      : userOrders.filter((order) => order.status === statusFilter);
+      ? orders
+      : orders?.filter((order) => order.status === statusFilter);
   };
+
+  if (orderQuery.isLoading || albumQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (orderQuery.isError) {
+    return <div>An error occurred: {orderQuery.error.message}</div>;
+  }
+
+  if (albumQuery.isError) {
+    return <div>An error occurred: {albumQuery.error.message}</div>;
+  }
 
   return (
     <>
-      <div className="flex justify-end lg:mr-20">
+      <div className="flex justify-end lg:mr-28">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
             Filter by Status: {""}
@@ -111,8 +63,8 @@ function MyOrders() {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div className="flex items-center justify-center">
-        <table className="m-10 table-auto space-y-6">
+      <div className="ml-40 mr-40 overflow-hidden rounded-lg shadow-md">
+        <table className="w-full border-collapse text-left">
           <thead className="bg-[#FF5500]">
             <tr>
               <th className="p-3 text-left">Album</th>
@@ -125,7 +77,7 @@ function MyOrders() {
           </thead>
           <tbody>
             {applyStatusFilter()?.map((order) => {
-              const listing = order.listing;
+              const listing = order.Listings[0];
               const album = albums?.find(
                 (album) => album.id === listing?.albumId
               );
@@ -148,15 +100,17 @@ function MyOrders() {
                     )}
                   </td>
                   <td className="p-3">
-                    {listing.condition} <br />
-                    {listing.format} <br />
-                    {listing.speed} <br />
-                    {listing.weight}
+                    {listing?.condition || "N/A"} <br />
+                    {listing?.format || "N/A"} <br />
+                    {listing?.speed || "N/A"} <br />
+                    {listing?.weight || "N/A"}
                     <br />
                   </td>
-                  <td className="p-3">{listing.description}</td>
-                  <td className="p-3">{listing.price}</td>
-                  <td className="p-3">{listing.currency.toUpperCase()}</td>
+                  <td className="p-3">{listing?.description || "N/A"}</td>
+                  <td className="p-3">{listing?.price || "N/A"}</td>
+                  <td className="p-3">
+                    {(listing?.currency || "N/A").toUpperCase()}
+                  </td>
                   <td className="p-3">{order.status}</td>
                 </tr>
               );

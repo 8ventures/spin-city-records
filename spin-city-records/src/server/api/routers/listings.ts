@@ -151,6 +151,11 @@ export const listingsRouter = createTRPCRouter({
           where: {
             stripeId: stripeId as string,
           },
+          include: {
+            edition: true,
+            seller: true,
+            order: true,
+          },
         });
         return listings;
       } catch (e) {
