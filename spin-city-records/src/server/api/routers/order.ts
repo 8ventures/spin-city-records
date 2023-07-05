@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 
-export const orderRouter = createTRPCRouter({
+export const ordersRouter = createTRPCRouter({
   createOrder: privateProcedure
     .input(
       z.object({
@@ -16,7 +16,7 @@ export const orderRouter = createTRPCRouter({
           data: {
             userId: input.userId,
             sellerId: input.sellerId,
-            status: "Awating Payment",
+            status: "Awaiting Payment",
             completed: false,
             Listings: {
               connect: {
@@ -67,6 +67,9 @@ export const orderRouter = createTRPCRouter({
       const orders = await ctx.prisma.order.findMany({
         where: {
           userId: ctx.user.id,
+        },
+        include: {
+          Listings: true,
         },
       });
       return orders;

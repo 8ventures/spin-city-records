@@ -6,8 +6,7 @@ import { artistsRouter } from "./routers/artists";
 import { editionsRouter } from "./routers/editions";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { stripeRouter } from "./routers/stripe";
-import { orderRouter } from "./routers/order";
-import { ordersRouter } from "./routers/orders";
+import { ordersRouter } from "./routers/order";
 
 export const appRouter = createTRPCRouter({
   albums: albumsRouter,
@@ -18,7 +17,6 @@ export const appRouter = createTRPCRouter({
   artists: artistsRouter,
   editions: editionsRouter,
   orders: ordersRouter,
-  order: orderRouter,
 });
 
 export type AppRouter = typeof appRouter;
