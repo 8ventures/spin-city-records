@@ -71,7 +71,7 @@ export type Order = {
   completed: boolean;
 };
 
-export type ChatMesssage = {
+export type ChatMessage = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -96,5 +96,5 @@ export type Seller = {
   bio: string;
   email: string | null;
   location: string;
-  listings: Listing[];
+  listings?: Listing[];
 };

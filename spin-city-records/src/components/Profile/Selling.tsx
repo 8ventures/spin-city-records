@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
-import { TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { Listing } from "~/utils/types";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
@@ -35,17 +35,12 @@ function Selling() {
 
   const listingData = listingQuery.data;
   const [listings, setListings] = useState<Listing[]>([]);
-  console.log(listingData);
-
-  const orderQuery = api.orders.getAllOrders.useQuery();
-  const orders = orderQuery.data;
-  console.log(orders);
 
   useEffect(() => {
     if (listingData) {
       setListings(listingData);
     }
-  }, [listingQuery.data]);
+  }, [listingData]);
 
   const handleDeleteListing = async (listingId: string) => {
     if (confirm("Are you sure you want to delete this listing")) {
@@ -69,10 +64,6 @@ function Selling() {
     return <div>Error occurred while fetching stripe ID</div>;
   }
 
-  if (listingQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
-
   if (listingQuery.isError) {
     return <div>Error occurred while fetching listings</div>;
   }
@@ -81,20 +72,10 @@ function Selling() {
     setStatusFilter(value);
   };
 
-  function getOrderStatus(listingId: string | null) {
-    if (listingId === null) {
-      return "No Order";
-    }
-    const order = orders?.find((order) => order.id === listingId);
-    return order ? order.status : "No Order";
-  }
-
   const applyStatusFilter = () => {
     return statusFilter === "All"
       ? listings
-      : listings.filter(
-          (listing) => getOrderStatus(listing.orderId || null) === statusFilter
-        );
+      : listings.filter((listing) => listing.order?.status === statusFilter);
   };
 
   return (
@@ -165,9 +146,7 @@ function Selling() {
                   <td className="p-3">{listing.description}</td>
                   <td className="p-3">{listing.price}</td>
                   <td className="p-3">{listing.currency.toUpperCase()}</td>
-                  <td className="p-3">
-                    {getOrderStatus(listing.orderId || null)}
-                  </td>
+                  <td className="p-3">{listing.order?.status || "No Order"}</td>
                   <td>
                     <div className="m-2 flex h-9 w-9 items-center">
                       <TrashIcon

@@ -105,9 +105,9 @@ export const listingsRouter = createTRPCRouter({
             seller: true,
             album: {
               include: {
-                artist: true
-              }
-            }
+                artist: true,
+              },
+            },
           },
         });
         return listings;
@@ -146,6 +146,11 @@ export const listingsRouter = createTRPCRouter({
         const listings = await ctx.prisma.listing.findMany({
           where: {
             stripeId: stripeId as string,
+          },
+          include: {
+            edition: true,
+            seller: true,
+            order: true,
           },
         });
         return listings;
