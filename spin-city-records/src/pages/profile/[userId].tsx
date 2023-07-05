@@ -13,7 +13,6 @@ import WishList from "~/components/Profile/WishList";
 const profilePagesisSeller = [
   { label: "Wish List", page: "wishList" },
   { label: "My Orders", page: "myOrders" },
-  { label: "Become A Seller", page: "startSelling" },
   { label: "My Listings", page: "selling" },
   { label: "Create a Listing", page: "createListing" },
   { label: "Settings", page: "settings" },

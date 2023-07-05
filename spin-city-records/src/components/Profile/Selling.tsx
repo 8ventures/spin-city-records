@@ -111,18 +111,18 @@ function Selling() {
 
   return (
     <>
-      <div className="flex justify-end lg:mr-28">
+      <div className="flex justify-end text-white lg:mr-28">
         <DropdownMenu.Root>
-          <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
+          <DropdownMenu.Trigger className="my-4 mr-12 inline outline-none sm:mr-14">
             Filter by Status: {""}
             {options.find((option) => option.value === statusFilter)?.label}
           </DropdownMenu.Trigger>
-          <DropdownMenu.Content className="text-md w-44 rounded-xl bg-white p-4 text-black">
+          <DropdownMenu.Content className="w-44 rounded-xl bg-white p-4 text-black">
             {options.map((option) => (
               <DropdownMenu.Item
                 key={option.value}
                 onSelect={() => handleFilterChange(option.value)}
-                className="cursor-pointer rounded text-center outline-none hover:bg-slate-400"
+                className="cursor-pointer rounded text-center outline-none hover:bg-slate-200"
               >
                 {option.label}
               </DropdownMenu.Item>
@@ -130,10 +130,10 @@ function Selling() {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div className="ml-40 mr-40 overflow-hidden rounded-lg shadow-md">
+      <div className="ml-4 mr-4 rounded-lg text-white shadow-md sm:overflow-x-auto md:ml-40 md:mr-40">
         <table className="w-full border-collapse text-left">
-          <thead className=" bg-[#FF5500]">
-            <tr className="">
+          <thead className="bg-[#FF5500]">
+            <tr>
               <th className="p-3 text-left">Album</th>
               <th className="p-3 text-left">Details</th>
               <th className="p-3 text-left">Description</th>
@@ -167,22 +167,26 @@ function Selling() {
                       <div>No image available</div>
                     )}
                   </td>
-                  <td className="p-3">
+                  <td className="p-3 text-sm md:text-base">
                     {listing.condition} <br />
                     {listing.format} <br />
                     {listing.speed} <br />
                     {listing.weight}
                     <br />
                   </td>
-                  <td className="p-3">{listing.description}</td>
-                  <td className="p-3">{listing.price}</td>
-                  <td className="p-3">{listing.currency.toUpperCase()}</td>
-                  <td className="p-3">
+                  <td className="p-3 text-sm md:text-base">
+                    {listing.description}
+                  </td>
+                  <td className="p-3 text-sm md:text-base">{listing.price}</td>
+                  <td className="p-3 text-sm md:text-base">
+                    {listing.currency.toUpperCase()}
+                  </td>
+                  <td className="p-3 sm:text-sm md:text-base">
                     <DropdownMenu.Root>
-                      <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
+                      <DropdownMenu.Trigger className="my-4 mr-12 inline outline-none">
                         {listing.order?.status || "No Order"}
                       </DropdownMenu.Trigger>
-                      <DropdownMenu.Content className="text-md w-44 rounded-xl bg-white p-4 text-black">
+                      <DropdownMenu.Content className="w-44 rounded-xl bg-white p-4 text-black">
                         {statusOptions.map((option) => (
                           <DropdownMenu.Item
                             key={option.value}
@@ -194,7 +198,7 @@ function Selling() {
                                 );
                               }
                             }}
-                            className="cursor-pointer rounded text-center outline-none hover:bg-slate-400"
+                            className="cursor-pointer rounded text-center outline-none hover:bg-slate-200"
                           >
                             {option.label}
                           </DropdownMenu.Item>
@@ -202,8 +206,8 @@ function Selling() {
                       </DropdownMenu.Content>
                     </DropdownMenu.Root>
                   </td>
-                  <td>
-                    <div className="m-2 flex h-9 w-9 items-center">
+                  <td className="p-3 text-sm md:text-base">
+                    <div className="flex h-8 w-8 items-center">
                       <TrashIcon
                         className="m-1 cursor-pointer"
                         onClick={() => handleDeleteListing(listing.id)}
