@@ -35,7 +35,7 @@ const SelectFormat = React.forwardRef<HTMLButtonElement, selectFormatProps>(
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="overflow-hidden bg-black text-gray-300 rounded-xl">
+          <Select.Content className="cursor-pointer overflow-hidden bg-black text-gray-300 rounded-xl">
             <Select.Viewport className="p-[5px]">
               <Select.Group>
                 <SelectItem value="7&quot;">7&quot;</SelectItem>

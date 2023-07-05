@@ -35,7 +35,7 @@ const SelectSpeed = React.forwardRef<HTMLButtonElement, selectSpeedProps> (
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="overflow-hidden  bg-black text-gray-300 rounded-xl">
+          <Select.Content className="cursor-pointer overflow-hidden  bg-black text-gray-300 rounded-xl">
             <Select.Viewport className="p-[5px]">
               <Select.Group>
                 <SelectItem value="33 1/3 RPM">33 1/3 RPM</SelectItem>
