@@ -14,6 +14,13 @@ const options = [
   { value: "No Order", label: "No Order" },
 ];
 
+const statusOptions = [
+  { value: "Awaiting Payment", label: "Awaiting Payment" },
+  { value: "Awaiting Shipment", label: "Awaiting Shipment" },
+  { value: "Shipped", label: "Shipped" },
+  { value: "Complete", label: "Complete" },
+];
+
 function Selling() {
   const [statusFilter, setStatusFilter] = useState(options[0]?.value);
   const deleteListing = api.listings.deleteListing.useMutation();
@@ -78,6 +85,30 @@ function Selling() {
       : listings.filter((listing) => listing.order?.status === statusFilter);
   };
 
+  const changeStatus = api.orders.changeStatus.useMutation();
+
+  const handleChangeStatus = async (orderId: string, status: string) => {
+    try {
+      await changeStatus.mutateAsync({
+        orderId,
+        status: status as
+          | "Awaiting Payment"
+          | "Awaiting Shipment"
+          | "Shipped"
+          | "Complete",
+      });
+      setListings(
+        listings.map((listing) =>
+          listing.order?.id === orderId
+            ? { ...listing, order: { ...listing.order, status } }
+            : listing
+        )
+      );
+    } catch (error) {
+      console.log("Error occurred while changing the order status.", error);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-end lg:mr-20">
@@ -108,7 +139,7 @@ function Selling() {
               <th className="p-3 text-left">Description</th>
               <th className="p-3 text-left">Price</th>
               <th className="p-3 text-left">Currency</th>
-              <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-left">Change Status</th>
               <th className="p-3 text-left">Delete</th>
             </tr>
           </thead>
@@ -146,7 +177,31 @@ function Selling() {
                   <td className="p-3">{listing.description}</td>
                   <td className="p-3">{listing.price}</td>
                   <td className="p-3">{listing.currency.toUpperCase()}</td>
-                  <td className="p-3">{listing.order?.status || "No Order"}</td>
+                  <td className="p-3">
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
+                        {listing.order?.status || "No Order"}
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content className="text-md w-44 rounded-xl bg-white p-4 text-black">
+                        {statusOptions.map((option) => (
+                          <DropdownMenu.Item
+                            key={option.value}
+                            onSelect={() => {
+                              if (listing.order) {
+                                handleChangeStatus(
+                                  listing.order.id,
+                                  option.value
+                                );
+                              }
+                            }}
+                            className="cursor-pointer rounded text-center outline-none hover:bg-slate-400"
+                          >
+                            {option.label}
+                          </DropdownMenu.Item>
+                        ))}
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                  </td>
                   <td>
                     <div className="m-2 flex h-9 w-9 items-center">
                       <TrashIcon
