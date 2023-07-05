@@ -8,7 +8,7 @@ export const SelectItem = React.forwardRef<HTMLLIElement, { value: string; child
   return (
     <Select.Item
       className={cn(
-        'text-xl my-2 leading-none flex items-center h-[25px] pr-[35px] pl-[25px] relative',
+        'text-xl my-2 leading-none flex items-center h-fit p-2 pr-[35px] pl-[25px] relative hover:bg-white hover:text-black',
         className
       )}
       {...props}
