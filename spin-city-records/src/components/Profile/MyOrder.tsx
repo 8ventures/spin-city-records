@@ -44,7 +44,7 @@ function MyOrders() {
 
   return (
     <>
-      <div className="flex justify-end lg:mr-28">
+      <div className="flex justify-end text-white lg:mr-28">
         <DropdownMenu.Root>
           <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
             Filter by Status: {""}
@@ -55,7 +55,7 @@ function MyOrders() {
               <DropdownMenu.Item
                 key={option.value}
                 onSelect={() => handleFilterChange(option.value)}
-                className="cursor-pointer rounded text-center outline-none hover:bg-slate-400"
+                className="cursor-pointer rounded text-center outline-none hover:bg-slate-200"
               >
                 {option.label}
               </DropdownMenu.Item>
@@ -63,7 +63,7 @@ function MyOrders() {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </div>
-      <div className="ml-40 mr-40 overflow-hidden rounded-lg shadow-md">
+      <div className="ml-4 mr-4 rounded-lg text-white shadow-md sm:overflow-x-auto md:ml-40 md:mr-40">
         <table className="w-full border-collapse text-left">
           <thead className="bg-[#FF5500]">
             <tr>
@@ -99,19 +99,23 @@ function MyOrders() {
                       <div>No image available</div>
                     )}
                   </td>
-                  <td className="p-3">
+                  <td className="p-3 text-sm md:text-base">
                     {listing?.condition || "N/A"} <br />
                     {listing?.format || "N/A"} <br />
                     {listing?.speed || "N/A"} <br />
                     {listing?.weight || "N/A"}
                     <br />
                   </td>
-                  <td className="p-3">{listing?.description || "N/A"}</td>
-                  <td className="p-3">{listing?.price || "N/A"}</td>
-                  <td className="p-3">
+                  <td className="p-3 text-sm md:text-base">
+                    {listing?.description || "N/A"}
+                  </td>
+                  <td className="p-3 text-sm md:text-base">
+                    {listing?.price || "N/A"}
+                  </td>
+                  <td className="p-3 text-sm md:text-base">
                     {(listing?.currency || "N/A").toUpperCase()}
                   </td>
-                  <td className="p-3">{order.status}</td>
+                  <td className="p-3 text-sm md:text-base">{order.status}</td>
                 </tr>
               );
             })}
