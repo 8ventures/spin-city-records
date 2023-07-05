@@ -43,7 +43,7 @@ export default function Checkout() {
           {isSession && listing  ? (
                 <CheckoutItems listing={listing} />
               ) : (
-                <Skeleton className=" w-52 h-96 w-96 mb-10"/>
+                <Skeleton className=" h-96 w-96 mb-10"/>
               )}
               {isSession && clientSecret ? (
               <Elements 
@@ -56,7 +56,7 @@ export default function Checkout() {
                 <CheckoutForm listing={listing} />
               </Elements>
               ) : (
-                <Skeleton className=" w-52 h-96 w-96 mb-10 "/>
+                <Skeleton className=" h-96 w-96 mb-10 "/>
               )}          
             </div>
           </div>

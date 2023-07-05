@@ -1,5 +1,5 @@
 import React, { createContext, useState, useCallback } from "react";
-import { Album } from "~/utils/types";
+import type { Album } from "~/utils/types";
 
 interface WishlistContextType {
   wishlist: Album[];

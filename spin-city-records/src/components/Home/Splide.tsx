@@ -27,7 +27,7 @@ const SplideCarousel = () => {
   };
 
   const handleAboutClick = () => {
-    router.push("/");
+    router.push("/").catch((e) => console.log(e));
   };
 
   return (

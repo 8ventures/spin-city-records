@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Collection, Album, Listing } from "../../utils/types";
+import type { Collection, Album, Listing } from "../../utils/types";
 import convertToGlobalCurrency from "../../utils/currencyConversion";
 import { CurrencyContext } from "../GlobalContext/CurrencyContext";
 import { useRouter } from "next/router";
@@ -41,7 +41,7 @@ export default function MusicSection({
     router.push({
       pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
       query: { id: album.id },
-    });
+    }).catch((e)=> console.log(e));
   };
 
   function findLowestPriceListing(listings: Listing[], currency: string) {
