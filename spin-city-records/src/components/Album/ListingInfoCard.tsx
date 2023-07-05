@@ -3,7 +3,6 @@ import { Album, Listing } from "~/utils/types";
 import convertToGlobalCurrency from "../../utils/currencyConversion";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { CartContext } from "../GlobalContext/CartContext";
-import { WishlistContext } from "../GlobalContext/WishListContext";
 import { CurrencyContext } from "../GlobalContext/CurrencyContext";
 import RatingStars from "./RatingStars";
 import { PlusIcon, MinusIcon, TrashIcon } from "@heroicons/react/24/solid";
@@ -23,7 +22,6 @@ export default function ListingInfoCard({
 }: ListingInfoCardProps) {
   //Global Context
   const { cart, addToCart, removeFromCart } = useContext(CartContext);
-  useContext(WishlistContext);
   const { currency } = useContext(CurrencyContext);
 
   //State

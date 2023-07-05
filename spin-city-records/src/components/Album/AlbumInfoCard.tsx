@@ -1,13 +1,15 @@
 import { useState, useEffect, useContext } from "react";
-import type { Album, Listing } from "../../utils/types";
+import { Album, Listing, Collection } from "../../utils/types";
 import convertToGlobalCurrency from "../../utils/currencyConversion";
 import { CartContext } from "../GlobalContext/CartContext";
-import { WishlistContext } from "../GlobalContext/WishListContext";
 import { CurrencyContext } from "../GlobalContext/CurrencyContext";
 import RatingStars from "./RatingStars";
 import { HeartIcon as EmptyHeart } from "@heroicons/react/24/outline";
 import { HeartIcon as FilledHeart } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
+import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
+import NextError from "next/error";
 
 interface AlbumInfoCardProps {
   album: Album;
@@ -22,17 +24,81 @@ export default function AlbumInfoCard({
 }: AlbumInfoCardProps) {
   //Global Context
   const { cart, addToCart, removeFromCart } = useContext(CartContext);
-  const { wishlist, addToWishlist, removeFromWishlist } =
-    useContext(WishlistContext);
-  const { currency } = useContext(CurrencyContext);
 
-  //State
+  // State
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const [lowestPriceListing, setLowestPriceListing] = useState<Listing>();
+  const [collection, setCollection] = useState<Collection>();
+
+  //Data Fetching
+  const router = useRouter();
+  const { user } = useUser();
+  const currentUserId = user?.id;
+  let collections: Collection[];
+
+  const {
+    data: collectionsQueryData,
+    error: collectionsQueryError,
+    isLoading: collectionsQueryLoading,
+    isError: collectionsQueryIsError,
+    isSuccess: collectionsQuerySuccess,
+  } = api.collections.getByUserId.useQuery({
+    userId: currentUserId!,
+  });
+  collections = collectionsQueryData as Collection[];
+
+  const {
+    mutate: createCollection,
+    isSuccess: createCollectionIsSuccess,
+    isError: createCollectionIsError,
+  } = api.collections.create.useMutation();
+
+  const {
+    mutate: addAlbumToCollection,
+    data: addAlbumToCollectionData,
+    isSuccess: addAlbumToCollectionIsSuccess,
+    isError: addAlbumToCollectionIsError,
+  } = api.collections.addAlbum.useMutation();
+
+  const {
+    mutate: removeAlbumFromCollection,
+    data: removeAlbumFromCollectionData,
+    isSuccess: removeAlbumFromCollectionIsSuccess,
+    isError: removeAlbumFromCollectionIsError,
+  } = api.collections.removeAlbum.useMutation();
+
+  //Error Handling
+  if (collectionsQueryIsError) {
+    return <NextError statusCode={500} />;
+  }
+
+  //Side Effects
+  useEffect(() => {
+    if (collectionsQuerySuccess && collectionsQueryData) {
+      setCollection(
+        collections.find((collection) => collection.name === "Wishlist")
+      );
+      if (collection) {
+        const isInWishlist = collection.albums.some(
+          (wishlistAlbum) => wishlistAlbum.id === album.id
+        );
+        setIsInWishlist(isInWishlist);
+      }
+      if (!collection) {
+        createCollection({ userId: currentUserId!, name: "Wishlist" });
+      }
+    }
+  }, [
+    currentUserId,
+    collectionsQuerySuccess,
+    collectionsQueryData,
+    collection,
+  ]);
+
+  const { currency } = useContext(CurrencyContext);
 
   //Logic
-
   function findLowestPriceListing(listings: Listing[], currency: string) {
     let lowestPriceListing: Listing | undefined = undefined;
     let lowestPrice = Infinity;
@@ -51,18 +117,30 @@ export default function AlbumInfoCard({
     return lowestPriceListing;
   }
 
-  const handleClickWishlist = () => {
-    if (album) {
-      if (isInWishlist) {
-        removeFromWishlist(album);
-        setIsInWishlist(false);
-      } else {
-        addToWishlist(album);
-        setIsInWishlist(true);
+  const handleClickWishlist = async () => {
+    if (collection) {
+      const newIsInWishlist = !isInWishlist;
+      setIsInWishlist(newIsInWishlist);
+
+      try {
+        if (newIsInWishlist) {
+          await addAlbumToCollection({
+            collectionId: collection.id,
+            albumId: album.id,
+          });
+        } else {
+          await removeAlbumFromCollection({
+            collectionId: collection.id,
+            albumId: album.id,
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setIsInWishlist(!newIsInWishlist);
       }
     }
   };
-  const router = useRouter();
+
   const handleClickArtist = (album: Album) => {
     const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
     router.push({
@@ -70,6 +148,7 @@ export default function AlbumInfoCard({
       query: { id: album.artist.id },
     }).catch((e) => console.log(e));
   };
+
   const handleClickCart = () => {
     if (currentListing) {
       if (isInCart) {
@@ -81,17 +160,6 @@ export default function AlbumInfoCard({
       }
     }
   };
-
-  //Effects
-  useEffect(() => {
-    if (album) {
-      if (wishlist.some((wishlistAlbum) => wishlistAlbum.id === album.id)) {
-        setIsInWishlist(true);
-      } else {
-        setIsInWishlist(false);
-      }
-    }
-  }, [wishlist, album]);
 
   useEffect(() => {
     if (currentListing) {
@@ -162,6 +230,12 @@ export default function AlbumInfoCard({
               >
                 Create a listing
               </div>
+              <button
+                onClick={handleClickWishlist}
+                className="mt-8 h-9 w-9 text-red-500"
+              >
+                {isInWishlist ? <FilledHeart /> : <EmptyHeart />}
+              </button>
             </div>
           )}
           {currentListing && (
