@@ -72,7 +72,7 @@ export default function MusicSection({
       {loading ? (
         <div className="mb-8  h-36 w-5/6 animate-pulse rounded-xl bg-gray-200 sm:h-40 md:h-44 lg:h-48 xl:h-64"></div>
       ) : (
-        <div className="mx-auto  mb-2 flex w-5/6 max-w-full flex-row overflow-y-hidden rounded-xl hover:overflow-x-auto ">
+        <div className="mx-auto  mb-2 flex w-5/6 max-w-full flex-row overflow-y-hidden rounded-xl hover:[overflow-x:overlay] overflow-x-hidden">
           {collection.albums.map((album) => (
             <div
               key={album.id}
@@ -116,6 +116,8 @@ export default function MusicSection({
                   No listings available
                 </p>
               )}
+              <div className="h-2">
+              </div>
             </div>
           ))}
         </div>

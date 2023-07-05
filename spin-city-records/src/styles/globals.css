@@ -67,6 +67,10 @@ h5,
 h6 {
   overflow-wrap: break-word;
 }
+
+div {
+  scrollbar-gutter: stable;
+}
 /*
   8. Create a root stacking context
 */

@@ -54,7 +54,7 @@ export const sellersRouter = createTRPCRouter({
 
   getStripeId: privateProcedure
     .input(z.object({ clerkId: z.string() }))
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       try {
         const user = await clerkClient.users.getUser(input.clerkId);
         const stripeId = user.privateMetadata.stripeId;

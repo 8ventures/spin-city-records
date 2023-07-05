@@ -4,20 +4,7 @@ import { api } from "~/utils/api";
 import SplideCarousel from "~/components/Home/Splide";
 import MusicSection from "~/components/Home/MusicSection";
 import Layout from "~/components/Layout/Layout";
-import { DM_Sans } from "@next/font/google";
-import { DM_Serif_Display } from "@next/font/google";
-
-const sans = DM_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-});
-
-const serif = DM_Serif_Display({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-});
+import { serif } from "~/utils/fonts";
 
 export default function Home() {
   //Data Fetching

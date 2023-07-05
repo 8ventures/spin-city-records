@@ -1,24 +1,14 @@
-import Layout from "~/components/Layout/Layout";
-import type { Listing } from "~/utils/types";
+import Layout from "../../components/Layout/Layout";
+import type { Listing } from "../..//utils/types";
 import { useContext } from "react";
-import { CartContext } from "~/components/GlobalContext/CartContext";
-import { CurrencyContext } from "~/components/GlobalContext/CurrencyContext";
-import convertToGlobalCurrency from '../utils/currencyConversion'
-import getSymbolFromCurrency from "currency-symbol-map";
-import { api } from "~/utils/api";
+import { CartContext } from "../../components/GlobalContext/CartContext";
+import { CurrencyContext } from "../../components/GlobalContext/CurrencyContext";
+import convertToGlobalCurrency from '../../utils/currencyConversion'
 import { useRouter } from "next/router";
-import Image from "next/image";
-import Skeleton from "~/components/skeleton";
-import { DM_Serif_Display } from "@next/font/google";
+import Skeleton from "../../components/skeleton";
+import {serif, sans} from '../../utils/fonts'
 
-
-const serif = DM_Serif_Display({
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-});
-
-function Cart() {
+export default function Cart() {
   const { cart } = useContext(CartContext);
   const { currency } = useContext(CurrencyContext);
   const router = useRouter()
@@ -34,7 +24,7 @@ function Cart() {
 
   return (
     <Layout>
-      <div className="h-screen flex flex-col items-center text-white">
+      <div className={`h-screen flex flex-col items-center text-white ${sans.className}`}>
         <div className=" xl:w-2/3 w-5/6 mt-2">
           <h1
             className={`text-black ${serif.className} mb-2 mt-2 w-5/6 px-4  text-lg sm:text-lg md:text-xl lg:text-xl xl:text-2xl`}
@@ -91,7 +81,7 @@ function Cart() {
                     </div>
                   </div>
                   <button 
-                    className={`sm:my-8 sm:text-left md:text-xl xl:text-2xl h-1/2 p-2 flex flex-col rounded-xl items-center bg-[#FF5500]`}
+                    className={`sm:my-8 sm:text-left md:text-xl xl:text-2xl h-1/2 p-2 flex flex-col rounded-xl items-center bg-[#FF5500] ${sans.className}`}
                     onClick={() => checkoutItem(listing)}
                   >
                     <h3 className="font-semibold ">Checkout for</h3>
@@ -114,5 +104,3 @@ function Cart() {
     </Layout>
   );
 }
-
-export default Cart;
