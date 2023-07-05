@@ -16,9 +16,6 @@ function MyOrders() {
   const orderQuery = api.orders.getBuyerOrders.useQuery();
   const orders = orderQuery.data;
 
-  const albumQuery = api.albums.getAll.useQuery();
-  const albums = albumQuery.data;
-
   const handleFilterChange = (value: string) => {
     setStatusFilter(value);
   };
@@ -29,16 +26,12 @@ function MyOrders() {
       : orders?.filter((order) => order.status === statusFilter);
   };
 
-  if (orderQuery.isLoading || albumQuery.isLoading) {
+  if (orderQuery.isLoading) {
     return <div>Loading...</div>;
   }
 
   if (orderQuery.isError) {
     return <div>An error occurred: {orderQuery.error.message}</div>;
-  }
-
-  if (albumQuery.isError) {
-    return <div>An error occurred: {albumQuery.error.message}</div>;
   }
 
   return (
@@ -76,9 +69,7 @@ function MyOrders() {
           <tbody>
             {applyStatusFilter()?.map((order) => {
               const listing = order.Listings[0];
-              const album = albums?.find(
-                (album) => album.id === listing?.albumId
-              );
+              const album = listing?.album;
               return (
                 <tr key={order.id} className="border-b border-gray-900">
                   <td className="p-3">
