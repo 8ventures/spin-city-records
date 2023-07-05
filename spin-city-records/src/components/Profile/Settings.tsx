@@ -1,5 +1,16 @@
+import { UserProfile } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 const Settings = () => {
-  return <h1 className="m-4 flex justify-center">Settings Page</h1>;
+  return (
+    <UserProfile
+      appearance={{
+        elements: {
+          card: "w-full",
+          rootBox: "w-full",
+        },
+      }}
+    />
+  );
 };
 
 export default Settings;

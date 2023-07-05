@@ -6,7 +6,8 @@ function MyOrders() {
 
   return (
     <>
-      <h1>My Albums</h1>
+      <div className="flex flex-wrap">
+
       {albums?.map((album) => (
         <div
           key={album.id}
@@ -18,6 +19,7 @@ function MyOrders() {
           </div>
         </div>
       ))}
+      </div>
     </>
   );
 }

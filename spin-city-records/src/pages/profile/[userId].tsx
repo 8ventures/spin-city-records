@@ -14,10 +14,10 @@ import WishList from "~/components/Profile/WishList";
 const profilePages = [
   { label: "Wish List", page: "wishList" },
   { label: "My Orders", page: "myOrders" },
-  { label: "Messages", page: "messages" },
-  { label: "Start Selling", page: "startSelling" },
-  { label: "Selling", page: "selling" },
-  { label: "Create Listing", page: "createListing" },
+  { label: "My Messages", page: "messages" },
+  { label: "Become A Seller", page: "startSelling" },
+  { label: "My Listings", page: "selling" },
+  { label: "Create a Listing", page: "createListing" },
   { label: "Settings", page: "settings" },
 ];
 
@@ -57,7 +57,7 @@ const ProfilePage = () => {
     }
   }, [page]);
 
-  const PageComponent = pageComponents[currentPage] || WishList;
+  const PageComponent = pageComponents[currentPage] || Settings;
 
   const handleClick = (page: Page) => {
     setCurrentPage(page);
@@ -67,7 +67,7 @@ const ProfilePage = () => {
   return (
     <Layout>
       <div className="text-white">
-        <div className="mb-14 ml-28 w-96 text-gray-400 md:w-[790px]">
+        <div className="mb-10 ml-28  text-gray-400">
           {profilePages.map(({ label, page }) => (
             <ProfilePageButton
               key={page}

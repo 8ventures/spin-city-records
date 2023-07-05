@@ -22,7 +22,7 @@ const ProfilePageButton: FC<ProfileButtonProps> = ({
   return (
     <button
       onClick={handleClick}
-      className={`m-3 rounded-xl p-2 hover:bg-gray-700 ${
+      className={`m-2 rounded-xl p-2 hover:bg-gray-700 ${
         currentPage === page ? "text-white" : "hover:text-white"
       }`}
       style={{ position: "relative", padding: "8px" }}
