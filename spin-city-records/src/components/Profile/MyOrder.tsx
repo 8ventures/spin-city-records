@@ -1,6 +1,8 @@
 import { api } from "~/utils/api";
 import { useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useRouter } from "next/router";
+import type { Listing } from "~/utils/types";
 
 const options = [
   { value: "All", label: "All" },
@@ -12,6 +14,7 @@ const options = [
 
 function MyOrders() {
   const [statusFilter, setStatusFilter] = useState(options[0]?.value);
+  const router = useRouter()
 
   const orderQuery = api.orders.getBuyerOrders.useQuery();
   const orders = orderQuery.data;
@@ -19,6 +22,14 @@ function MyOrders() {
   const handleFilterChange = (value: string) => {
     setStatusFilter(value);
   };
+
+  const checkoutItem = (listing: Listing): void => {
+    console.log(listing)
+    router.push({
+      pathname: '/checkout',
+      query: {id: listing.id}
+    }).catch((e)=>(console.log(e)))
+  }
 
   const applyStatusFilter = () => {
     return statusFilter === "All"
@@ -102,8 +113,14 @@ function MyOrders() {
                     {listing?.price || "N/A"}{" "}
                     {(listing?.currency || "N/A").toUpperCase()}
                   </td>
-                  <td className="p-3 font-sans text-sm md:text-base">
-                    {order.status}
+                  <td className="p-3 text-sm md:text-base">
+                    { order.status === 'Awaiting Payment' ? 
+                      (<button
+                        className='bg-white text-black hover:bg-[#FF5500] hover:text-white p-2'
+                        onClick={() => checkoutItem(listing)}
+                        >{order.status}</button>
+                      ) : <>{order.status}</>
+                    }
                   </td>
                 </tr>
               );
