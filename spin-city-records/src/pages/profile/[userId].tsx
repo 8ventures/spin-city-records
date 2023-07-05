@@ -60,7 +60,7 @@ const ProfilePage = () => {
     }
   }, [page]);
 
-  const PageComponent = pageComponents[currentPage] || WishList;
+  const PageComponent = pageComponents[currentPage] || Settings;
 
   const handleClick = (page: Page) => {
     setCurrentPage(page);
