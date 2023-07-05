@@ -64,4 +64,23 @@ export const sellersRouter = createTRPCRouter({
         console.log(`Failed to fetch Stripe ID`);
       }
     }),
+
+    checkIfSeller: privateProcedure
+    .input(z.object({ clerkId: z.string()}))
+    .query(async ({ ctx, input }) => {
+      try {
+        const user = await clerkClient.users.getUser(input.clerkId);
+        const stripeId = user.privateMetadata.stripeId as string;
+        const seller = await ctx.prisma.seller.findUnique({
+          where: {
+            stripeId: stripeId,
+          },
+        });
+        return seller;
+      } catch (e) {
+        console.log(e);
+        console.log(`Failed to fetch Stripe ID`);
+      }
+    }
+    ),
 });

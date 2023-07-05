@@ -20,6 +20,7 @@ export const collectionRouter = createTRPCRouter({
       console.log(e);
     }
   }),
+
   getById: publicProcedure
     .input(
       z.object({
@@ -41,10 +42,9 @@ export const collectionRouter = createTRPCRouter({
             },
           },
         });
-        return collection?.albums;
+        return collection;
       } catch (e) {
         console.log("here");
-        console.log(e);
       }
     }),
 });

@@ -1,49 +1,75 @@
-import { api } from "~/utils/api";
 import NextError from "next/error";
-import { useState, useEffect } from "react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Carousel from "~/components/Home/Carousel";
+import { Collection } from "~/utils/types";
+import { api } from "~/utils/api";
+import SplideCarousel from "~/components/Home/Splide";
 import MusicSection from "~/components/Home/MusicSection";
 import Layout from "~/components/Layout/Layout";
-import SplideCarousel from "~/components/Home/Splide";
+import { DM_Sans } from "@next/font/google";
+import { DM_Serif_Display } from "@next/font/google";
+
+const sans = DM_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
+
+const serif = DM_Serif_Display({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+});
 
 export default function Home() {
-  const [recentlyAdded, setRecentlyAdded] = useState<any>([]); //TODO map function to Album[]
+  //Data Fetching
+  const recentlyAddedId = "cljmx6n8c0000ua3czgt95ysp";
+  const {
+    data: recentlyAddedQueryData,
+    error: recentlyAddedQueryError,
+    isLoading: recentlyAddedQueryIsLoading,
+    isError: recentlyAddedQueryIsError,
+    isSuccess: recentlyAddedQueryIsSuccess,
+  } = api.collections.getById.useQuery({ id: recentlyAddedId });
 
-  const recentlyAddedQuery = api.collections.getById.useQuery({
-    id: "cljmx6n8c0000ua3czgt95ysp",
-  });
+  const recentlyAdded: Collection = recentlyAddedQueryData as Collection;
 
-  useEffect(() => {
-    if (!recentlyAddedQuery.isLoading && !recentlyAddedQuery.error) {
-      setRecentlyAdded(recentlyAddedQuery.data);
-    }
-  }, [recentlyAddedQuery.isLoading, recentlyAddedQuery.error]);
-
-  if (recentlyAddedQuery.error) {
+  // Error Handling
+  if (recentlyAddedQueryIsError) {
     return (
       <NextError
-        title={recentlyAddedQuery.error.message}
-        statusCode={recentlyAddedQuery.error.data?.httpStatus ?? 500}
+        title={recentlyAddedQueryError?.message}
+        statusCode={recentlyAddedQueryError?.data?.httpStatus ?? 500}
       />
     );
   }
 
-  //TODO PLACEHOLDER SKELETON
-  // if (recentlyAddedQuery.isLoading) {
-  //   return <div>Loading...</div>;
-  // }
   return (
     <Layout>
       <SplideCarousel />
-      <section>
-        <h1 className="mt-8 text-center text-3xl font-bold text-white">
+      <section className="mx-auto flex w-full flex-col items-center justify-center overflow-hidden">
+        <h1
+          className={`mt-8 w-full text-center text-2xl text-white sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl ${serif.className}`}
+        >
           SHOP MUSIC
         </h1>
-        <MusicSection title="Recently Added" collection={recentlyAdded} />
-        {/* <MusicSection title="BEST SELLERS" items={newReleases} />
-          <MusicSection title="GENRE" items={newReleases} /> */}
+        <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+        <MusicSection
+          title={"RECENTLY ADDED"}
+          collection={recentlyAdded}
+          loading={recentlyAddedQueryIsLoading}
+        />
+        <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+        <MusicSection
+          title={"NEW RELEASES"}
+          collection={recentlyAdded}
+          loading={recentlyAddedQueryIsLoading}
+        />
+        <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+        <MusicSection
+          title={"BEST SELLERS"}
+          collection={recentlyAdded}
+          loading={recentlyAddedQueryIsLoading}
+        />
+        <div className="my-4" />
       </section>
     </Layout>
   );

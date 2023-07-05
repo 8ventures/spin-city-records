@@ -6,6 +6,7 @@ import SearchAlbumsForm from "~/components/Create Listing/SearchAlbumsForm";
 import Layout from "~/components/Layout/Layout";
 const CreateListingPage = () => {
   const { user } = useUser();
+  console.log( user )
   const router = useRouter();
   //const userId = user?.id;
   const [form, setForm] = useState({

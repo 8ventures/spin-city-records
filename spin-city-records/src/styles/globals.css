@@ -96,7 +96,15 @@ h6 {
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1a1;
 }
+/* Styles for horizontal scrollbar */
+::-webkit-scrollbar-horizontal {
+  width: 5px;
+}
 
-.button-class {
-  @apply m-2 inline-flex h-14 cursor-pointer select-none items-center justify-center rounded-xl border-2 border-solid border-gray-900 bg-transparent px-2 py-0 text-center align-middle font-semibold text-gray-200 transition-all duration-300 ease-in-out hover:border-cyan-200 hover:shadow-lg hover:shadow-cyan-500/50 focus:no-underline;
+::-webkit-scrollbar-thumb:horizontal {
+  background-color: #777;
+}
+
+::-webkit-scrollbar-thumb:hover:horizontal {
+  background-color: #ff5500;
 }
