@@ -12,7 +12,8 @@ import { SubmitHandler, useForm, Controller, useFieldArray } from "react-hook-fo
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import Spinner from '../../components/spinner'
-
+import { useUser } from "@clerk/nextjs";
+import {toast } from "react-toastify";
 const validationSchema = z.object({
   album: z.object({
     artistId: z.string(),
@@ -40,13 +41,21 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 
 
 export default function CreateListingForm () {
-  
+
   const router = useRouter();
+  const { user } = useUser();
+  //console.log( user )
+
+  const currentUserId = user?.id;
+  const sellerCheck = api.sellers.checkIfSeller.useQuery({
+    clerkId: currentUserId || "",
+  });
+    console.log(sellerCheck)
 
   const { mutate: createListing, isSuccess, isLoading: isListingLoading } = api.listings.createListing.useMutation();
-  
+
   const { data: editions, isLoading: isEditionsLoading, isError } = api.editions.getAll.useQuery();
-  
+
   const {register, handleSubmit, control,} = useForm<ValidationSchema>({});
   const {fields, append, remove } = useFieldArray({
     control,
@@ -54,13 +63,30 @@ export default function CreateListingForm () {
   });
 
   if (isSuccess) {
-    router.push('http://localhost:3000/profile/user_2RmYnqMfglB4HTLO9IUfhERAJWK')
+    router.push('/profile/selling')
       .catch((e) => console.log(e))
   }
-  
+
   const onSubmit = (e: ValidationSchema) => {
-    console.log(e)
-    createListing(e)
+    if (!sellerCheck.data) {
+      toast.error('You need to become a seller firstly to create new listings!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        });
+      return
+    }
+    try {
+      //console.log(e)
+      createListing(e)
+    } catch (error) {
+console.log(error)
+    }
   }
 
   return (
@@ -80,7 +106,7 @@ export default function CreateListingForm () {
                   return <SearchAlbumsForm ref={field.ref} field={field} />;
                 }}
               />
-            <label className="my-2 text-xl text-white">Set Price</label>
+            <label className="my-2 text-xl text-white mt-7">Set Price</label>
             <div className="flex space-x-10">
               <div className="flex flex-col">
                 <input
@@ -98,7 +124,7 @@ export default function CreateListingForm () {
                 }}
               />
             </div>
-            <label className="my-2 text-xl text-white">Select Album Features</label>
+            <label className="my-2 text-xl text-white mt-7">Select Album Features</label>
             <div className="flex space-x-10">
               <Controller
                 name="speed"
@@ -130,7 +156,7 @@ export default function CreateListingForm () {
                 }}
               />
             </div>
-            <label className="my-2 text-xl text-white">Select Album Edition</label>
+            <label className="my-2 text-xl text-white mt-7">Select Album Edition</label>
             <div className="flex space-x-2">
             <Controller
               name={`editions.${0}.value`}
@@ -156,7 +182,7 @@ export default function CreateListingForm () {
             >
               <PlusIcon className=" text-black h-8 w-8"/>
             </button>
-            {fields.length > 1 && 
+            {fields.length > 1 &&
             <button
               type="button"
               onClick={() => remove(fields.length -1 )}
@@ -166,7 +192,7 @@ export default function CreateListingForm () {
             </button>
             }
             </div>
-            <label className="my-2 text-xl text-white">Add Description</label>
+            <label className="my-2 text-xl text-white mt-7">Add Description</label>
             <input
               type="text"
               placeholder="e.g. Plays great!"
@@ -176,7 +202,7 @@ export default function CreateListingForm () {
             {isListingLoading || isSuccess? (
               <Spinner/>
                 ) : (
-                <button className="rounded-xl bg-white text-black text-xl py-2 px-4 mt-2" type="submit">
+                <button className="rounded-xl bg-custom-orange text-black text-xl py-2 px-4 mt-8" type="submit">
                   Create Listing
                 </button>
               )

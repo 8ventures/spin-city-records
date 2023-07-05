@@ -45,6 +45,7 @@
     "react-icons": "^4.10.1",
     "react-query": "^3.39.3",
     "react-slick": "^0.29.0",
+    "react-toastify": "^9.1.3",
     "slick-carousel": "^1.8.1",
     "split-match": "^0.2.2",
     "stripe": "^12.11.0",

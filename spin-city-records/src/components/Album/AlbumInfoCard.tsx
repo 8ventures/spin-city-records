@@ -152,9 +152,16 @@ export default function AlbumInfoCard({
           {!currentListing && listings.length === 0 && (
             <div className="text-md my-4 sm:my-8 sm:text-left md:text-lg xl:text-xl">
               <div className="">No available listings</div>
-              <span className="cursor-pointer text-lg font-semibold text-[#FF5500] hover:underline sm:text-left md:text-xl xl:text-2xl">
-                Create a listing
-              </span>
+              <div
+                className="cursor-pointer text-lg font-semibold text-[#FF5500] hover:underline sm:text-left md:text-xl xl:text-2xl"
+                onClick={() =>
+                  router.push({
+                    pathname: "/profile/createListing",
+                  })
+                }
+              >
+                Create a listing or become a seller
+              </div>
             </div>
           )}
           {currentListing && (
