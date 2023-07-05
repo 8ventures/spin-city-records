@@ -49,22 +49,22 @@ const Dropdown: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className="relative inline-block text-left " ref={dropdownRef}>
       <div>
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-xl  px-4 py-2 focus:outline-none"
+          className="inline-flex items-center justify-center focus:outline-none "
           id="options-menu"
           aria-haspopup="true"
           aria-expanded="true"
           onClick={() => setIsOpen(!isOpen)}
         >
           {selectedCurrency && (
-            <div className="h-10 w-10 rounded-xl">
+            <div className=" w-8  ">
               <img
                 src={selectedCurrency.flag}
                 alt={selectedCurrency.alt}
-                className="h-full w-full rounded-full"
+                className="w-full rounded-sm "
               />
             </div>
           )}
@@ -93,7 +93,7 @@ const Dropdown: React.FC = () => {
                 <img
                   src={ccy.flag}
                   alt={ccy.alt}
-                  className="mr-2 inline h-5 w-5 rounded-lg"
+                  className="mr-2 inline h-5 w-5 "
                 />
                 <span className="font-semibold">{ccy.code}</span>
               </div>

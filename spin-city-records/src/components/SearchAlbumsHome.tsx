@@ -61,30 +61,32 @@ const SearchAlbumsHome = () => {
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
-
-
   useEffect(() => {
     if (selectedAlbum && selectedAlbum.id && artistsData) {
       // Get artist details from all artists using artistId of selectedAlbum
-      const artist = artistsData.find(a => a.id === selectedAlbum.artistId);
+      const artist = artistsData.find((a) => a.id === selectedAlbum.artistId);
       if (artist) {
         const normalizedArtist = artist.name.replace(/\s+/g, "-");
         const normalizedAlbum = selectedAlbum.name.replace(/\s+/g, "-");
-        router.push({
-          pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
-          query: { id: selectedAlbum.id },
-        }).catch((e) => console.error(e));
+        router
+          .push({
+            pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
+            query: { id: selectedAlbum.id },
+          })
+          .catch((e) => console.error(e));
       }
     }
-}, [selectedAlbum]);
+  }, [selectedAlbum]);
 
   useEffect(() => {
     if (selectedArtist && selectedArtist.id) {
       const normalizedArtist = selectedArtist.name.replace(/\s+/g, "-");
-      router.push({
-        pathname: `/artist/${normalizedArtist}/`,
-        query: { id: selectedArtist.id },
-      }).catch((e) => console.log(e));
+      router
+        .push({
+          pathname: `/artist/${normalizedArtist}/`,
+          query: { id: selectedArtist.id },
+        })
+        .catch((e) => console.log(e));
     }
   }, [selectedArtist]);
 

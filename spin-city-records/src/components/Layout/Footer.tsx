@@ -12,7 +12,7 @@ const sans = DM_Sans({
 export default function Footer() {
   const router = useRouter();
   return (
-    <footer className="bottom-0 mx-auto flex w-full border-t border-[#A1A1A1] bg-black p-4 text-white sm:p-0">
+    <footer className="bottom-0 mx-auto flex w-5/6  bg-black p-4 text-white sm:p-0">
       <div className="mx-auto flex flex-col items-center justify-center md:flex-row">
         <Image
           src={logo as string}
@@ -21,22 +21,22 @@ export default function Footer() {
           onClick={() => {
             router.push("/").catch((e) => console.log(e));
           }}
-          className="m-2 w-40 cursor-pointer sm:w-60"
+          className="mr-4  w-40 cursor-pointer sm:w-48"
         />
-        <div className="grid grid-cols-3 gap-4">
-          <ul className="md:text-md m-2 list-none p-0 text-center text-sm md:m-8 lg:text-base">
+        <div className="grid grid-cols-3 gap-8">
+          <ul className="md:text-md m-2 list-none p-0 text-center text-xs md:m-8 lg:text-sm">
             <li className="cursor-pointer hover:underline">Shop With Us</li>
             <li className="cursor-pointer hover:underline">Sell With Us</li>
             <li className="cursor-pointer hover:underline">About Us</li>
             <li className="cursor-pointer hover:underline">Follow Us</li>
           </ul>
-          <ul className="md:text-md m-2 list-none p-0 text-center text-sm md:m-8 lg:text-base">
+          <ul className="md:text-md m-2 list-none p-0 text-center text-xs md:m-8 lg:text-sm">
             <li className="cursor-pointer hover:underline">Search</li>
             <li className="cursor-pointer hover:underline">My Account</li>
             <li className="cursor-pointer hover:underline">My Orders</li>
             <li className="cursor-pointer hover:underline">View Basket</li>
           </ul>
-          <ul className="md:text-md m-2 list-none p-0 text-center text-sm md:m-8 lg:text-base">
+          <ul className="md:text-md m-2 list-none p-0 text-center text-xs md:m-8 lg:text-sm">
             <li className="cursor-pointer hover:underline">FAQ</li>
             <li className="cursor-pointer hover:underline">Help</li>
             <li className="cursor-pointer hover:underline">Contact Us</li>

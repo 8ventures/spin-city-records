@@ -6,11 +6,9 @@ import { useRouter } from "next/router";
 import Dropdown from "./Dropdown";
 import { CartContext } from "~/components/GlobalContext/CartContext";
 import { useContext } from "react";
+import { serif, sans } from "../../utils/fonts";
 
-import {
-  ShoppingBagIcon,
-  UserIcon,
-} from "@heroicons/react/24/solid";
+import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
 
 export default function Header() {
   const router = useRouter();
@@ -20,68 +18,75 @@ export default function Header() {
   const currentUserId = user.user?.id;
 
   return (
-    <header className="flex min-w-full justify-center border-b border-[#A1A1A1] bg-black">
-      <nav className="h-34 mb-4 flex w-full flex-col items-center justify-between px-6 py-4 md:flex-row">
-        <Image
-          src={logo as string}
-          alt="logo"
-          onClick={() => {
-            router.push("/").catch((e) => console.log(e));
-          }}
-          className="max-h-full max-w-full cursor-pointer"
-        />
-        <div className="ml-4 md:ml-14 mt-2 md:mt-6 flex md:flex-row w-full px-4 md:px-8">
-          <SearchAlbumsHome />
+    <nav className="mx-auto my-4 flex w-5/6 flex-col items-center justify-between bg-black md:flex-row">
+      <Image
+        src={logo as string}
+        alt="logo"
+        onClick={() => {
+          router.push("/").catch((e) => console.log(e));
+        }}
+        className="mx-auto mb-2 flex w-48 cursor-pointer items-start object-contain align-middle md:mb-0 md:w-64"
+      />
+      <div className="mx-8 flex w-full flex-grow items-center justify-center align-middle md:w-fit">
+        <SearchAlbumsHome />
+      </div>
+
+      <div className="mx-auto mt-6 flex flex-row md:mt-0">
+        <div className=" mr-4 mt-3">
+          <Dropdown />
         </div>
-
-
-        <div className="ml-14 mt-8 flex items-end justify-center">
-
-        <div>
-            <Dropdown />
-
-          </div>
-          <div
-            onClick={() => router.push("/cart").catch((e) => console.log(e))}
-            className="relative mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
-          >
-
-            <ShoppingBagIcon className="mb-5 h-10 w-10 text-white" />
+        <div onClick={() => router.push("/cart").catch((e) => console.log(e))}>
+          <div className="relative">
+            <ShoppingBagIcon className="w-10 min-w-[2rem] cursor-pointer text-white hover:text-[#FF5500]" />
             {cart.length > 0 && (
-              <div className="absolute bottom-9 right-0 mb-1 h-6 w-6 rounded-xl bg-custom-orange pb-7 text-center text-lg  text-white ">
-                {cart.length}
+              <div className="absolute right-0 top-2 -mr-1 -mt-1 ">
+                <div className="flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                  {cart.length}
+                </div>
               </div>
             )}
-
-
-          </div>
-
-
-          {currentUserId && (
-            <div
-              onClick={() => router.push(`/profile/${currentUserId}`).catch((e) => console.log(e))}
-              className=" mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
-            >
-              <UserIcon className="mb-5 h-10 w-10 text-white" />
-            </div>
-          )}
-
-          <div className="mx-2 mb-3 w-10 p-0 text-white">
-            {!user.isSignedIn && (
-              <SignInButton mode="modal">
-                <button className="py-1">LogIn</button>
-              </SignInButton>
-            )}
-            {user.isSignedIn && (
-
-                <SignOutButton signOutCallback={()=>router.push("/").catch((e) => console.log(e))}>
-                <button className="py-1">Logout</button>
-                </SignOutButton>
-
-            )}
           </div>
         </div>
-      </nav>
-    </header>
+
+        {user.isSignedIn && (
+          <div
+            onClick={() =>
+              router
+                .push(`/profile/${currentUserId}`)
+                .catch((e) => console.log(e))
+            }
+            className="mx-2 cursor-pointer"
+          >
+            <UserIcon className="w-10 min-w-[2rem] cursor-pointer text-white hover:text-[#FF5500]" />
+          </div>
+        )}
+
+        {user.isSignedIn ? (
+          <div className="mx-2 cursor-pointer">
+            <SignOutButton
+              signOutCallback={() =>
+                router.push("/").catch((e) => console.log(e))
+              }
+            >
+              <button
+                className={` bg-white p-2 text-black hover:bg-[#FF5500] hover:text-[white]  ${serif.className} w-max`}
+              >
+                Sign Out
+              </button>
+            </SignOutButton>
+          </div>
+        ) : (
+          <div className="mx-2 cursor-pointer">
+            <SignInButton mode="modal">
+              <button
+                className={` bg-white p-2 text-black hover:bg-[#FF5500] hover:text-[white]  ${serif.className} w-max`}
+              >
+                Sign In
+              </button>
+            </SignInButton>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 }
