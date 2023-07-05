@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.10",
+    "@clerk/themes": "^1.7.5",
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.1.1",
     "@next/font": "^13.4.8",
@@ -44,6 +45,7 @@
     "react-icons": "^4.10.1",
     "react-query": "^3.39.3",
     "react-slick": "^0.29.0",
+    "react-toastify": "^9.1.3",
     "slick-carousel": "^1.8.1",
     "split-match": "^0.2.2",
     "stripe": "^12.11.0",

@@ -76,7 +76,7 @@ const SearchAlbumsHome = () => {
         const normalizedArtist = artist.name.replace(/\s+/g, "-");
         const normalizedAlbum = selectedAlbum.name.replace(/\s+/g, "-");
         router.push({
-          pathname: `/${normalizedArtist}/${normalizedAlbum}`,
+          pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
           query: { id: selectedAlbum.id },
         }).catch((e) => console.error(e));
       }
@@ -87,7 +87,7 @@ const SearchAlbumsHome = () => {
     if (selectedArtist && selectedArtist.id) {
       const normalizedArtist = selectedArtist.name.replace(/\s+/g, "-");
       router.push({
-        pathname: `/${normalizedArtist}/`,
+        pathname: `/artist/${normalizedArtist}/`,
         query: { id: selectedArtist.id },
       });
     }

@@ -63,10 +63,14 @@ export default function Header() {
           <div>
             <Dropdown />
           </div>
-          <div className="mx-2 mb-3 w-10 text-white">
-            {!user.isSignedIn && <SignInButton />}
+          <div className="mx-2 mb-3 w-10 p-0 text-white">
+            {!user.isSignedIn && (
+              <SignInButton mode="modal">
+                <button className="py-1">Login</button>
+              </SignInButton>
+            )}
             {user.isSignedIn && (
-              <div className="">
+              <div>
                 <UserButton afterSignOutUrl="/" />
               </div>
             )}
