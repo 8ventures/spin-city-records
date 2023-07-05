@@ -84,7 +84,7 @@ const SearchAlbumsHome = () => {
       router.push({
         pathname: `/artist/${normalizedArtist}/`,
         query: { id: selectedArtist.id },
-      });
+      }).catch((e) => console.log(e));
     }
   }, [selectedArtist]);
 
@@ -92,11 +92,11 @@ const SearchAlbumsHome = () => {
     return arg !== undefined && arg.year !== undefined;
   }
 
-  const handleSelect = (item: Album | Artist, name: string, index: number) => {
+  const handleSelect = (item: Album | Artist) => {
     if (isAlbum(item)) {
-      setSelectedAlbum(item as Album); // typecast as Album
+      setSelectedAlbum(item); // typecast as Album
     } else {
-      setSelectedArtist(item as Artist); // typecast as Artist
+      setSelectedArtist(item); // typecast as Artist
     }
   };
 

@@ -13,7 +13,6 @@ import WishList from "~/components/Profile/WishList";
 const profilePagesisSeller = [
   { label: "Wish List", page: "wishList" },
   { label: "My Orders", page: "myOrders" },
-  { label: "Become A Seller", page: "startSelling" },
   { label: "My Listings", page: "selling" },
   { label: "Create a Listing", page: "createListing" },
   { label: "Settings", page: "settings" },
@@ -63,8 +62,11 @@ const ProfilePage = () => {
   const PageComponent = pageComponents[currentPage] || Settings;
 
   const handleClick = (page: Page) => {
+
     setCurrentPage(page);
-    router.push(`/profile/${page}`).catch((e) => console.log(e));
+    if (currentUserId) {
+      router.push(`/profile/${page}`).catch((e) => console.log(e));
+    }
   };
 
   return (
@@ -75,6 +77,7 @@ const ProfilePage = () => {
             ? profilePagesisSeller.map(({ label, page }) => (
                 <button
                   onClick={() => handleClick(page as Page)}
+                  key={label}
                   className={` m-4 rounded-xl ${
                     currentPage === page
                       ? "text-white underline decoration-4 underline-offset-8"
@@ -86,6 +89,7 @@ const ProfilePage = () => {
               ))
             : profilePages.map(({ label, page }) => (
                 <button
+                key={label}
                   onClick={() => handleClick(page as Page)}
                   className={`m-4 rounded-xl  ${
                     currentPage === page

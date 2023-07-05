@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import NextError from "next/error";
-
 import { api } from "~/utils/api";
 import { Album, Artist } from "../../../utils/types";
 
@@ -11,6 +10,8 @@ import Layout from "~/components/Layout/Layout";
 export default function ArtistPage() {
   //Data Fetching
   const router = useRouter();
+  const { currency } = useContext(CurrencyContext);
+
   const id = router.query.id as string;
   const {
     data: artistQueryData,
@@ -31,9 +32,6 @@ export default function ArtistPage() {
       />
     );
   }
-
-  //Global Context
-  const { currency } = useContext(CurrencyContext);
 
   const handleClick = (artist: Artist, album: Album) => {
     const normalizedArtist = artist.name.replace(/\s+/g, "-");

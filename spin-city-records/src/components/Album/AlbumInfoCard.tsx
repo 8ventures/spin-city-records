@@ -146,7 +146,7 @@ export default function AlbumInfoCard({
     router.push({
       pathname: `/artist/${normalizedArtist}/`,
       query: { id: album.artist.id },
-    });
+    }).catch((e) => console.log(e));
   };
 
   const handleClickCart = () => {

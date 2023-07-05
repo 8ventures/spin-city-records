@@ -10,6 +10,7 @@ import { CurrencyContext } from "~/components/GlobalContext/CurrencyContext";
 import convertToGlobalCurrency from '../../utils/currencyConversion'
 import { useContext } from 'react'
 import { Listing } from "~/utils/types";
+import { sans, serif } from '../../utils/fonts'
 
 type CheckoutFormProps = {
   listing: Listing
@@ -80,15 +81,18 @@ export default function CheckoutForm({listing}: CheckoutFormProps) {
         layout: "tabs",
       }} />
       <button 
-        className={`sm:my-8 sm:text-left md:text-xl xl:text-2xl p-2 flex space-x-2 rounded-xl items-center bg-[#FF5500] text-white h-fit`}
+        className={`sm:my-8 sm:text-left md:text-xl xl:text-2xl p-2 flex space-x-2 
+          ${serif.className} items-center bg-[#FF5500] text-white h-fit
+          hover:bg-white hover:text-black
+          `}
         type="submit"
           disabled={
             !['initial', 'succeeded', 'error'].includes(payment.status) ||
             !stripe
           }
       >
-        <h3 className="font-semibold ">Pay</h3>
-        <span className="text-2xl font-semibold text-white ">
+        <h3 className="font-semibold ">PAY</h3>
+        <span className="text-2xl font-semibold">
           {convertToGlobalCurrency(
             listing.price,
             listing.currency,

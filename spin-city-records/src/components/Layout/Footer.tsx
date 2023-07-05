@@ -17,11 +17,11 @@ export default function Footer() {
     >
       <div className="mx-auto flex flex-col items-center justify-center md:flex-row">
         <Image
-          src={logo}
+          src={logo as string}
           alt="logo"
           priority
           onClick={() => {
-            router.push("/");
+            router.push("/").catch((e)=> console.log(e));
           }}
           className="m-2 w-40 cursor-pointer sm:w-60"
         />

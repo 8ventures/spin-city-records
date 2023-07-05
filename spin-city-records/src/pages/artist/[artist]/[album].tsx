@@ -1,11 +1,9 @@
 import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import NextError from "next/error";
-
 import { api } from "~/utils/api";
-import { Album, Listing } from "~/utils/types";
+import type { Album, Listing } from "~/utils/types";
 import convertToGlobalCurrency from "~/utils/currencyConversion";
-
 import { CurrencyContext } from "~/components/GlobalContext/CurrencyContext";
 import Layout from "~/components/Layout/Layout";
 import ListingInfoCard from "~/components/Album/ListingInfoCard";
@@ -15,20 +13,23 @@ import SortBy from "~/components/Album/SortComponent";
 export default function AlbumPage() {
   //Data Fetching
   const router = useRouter();
+  const { currency } = useContext(CurrencyContext);
+  const [currentListing, setCurrentListing] = useState<Listing>();
+  const [sortOption, setSortOption] = useState<string | undefined>(undefined);
+  const [sortedListings, setSortedListings] = useState<Listing[] | undefined>(
+    undefined
+  );
   const id = router.query.id as string;
+  console.log(id)
   const {
     data: albumQueryData,
     error: albumQueryError,
-    isLoading: albumQueryLoading,
     isError: albumQueryIsError,
-    isSuccess: albumQuerySuccess,
   } = api.albums.getById.useQuery({ id: id });
   const {
     data: listingQueryData,
     error: listingQueryError,
-    isLoading: listingQueryLoading,
     isError: listingQueryIsError,
-    isSuccess: listingQuerySuccess,
   } = api.listings.getByAlbumId.useQuery({
     albumId: id,
   });
@@ -50,17 +51,6 @@ export default function AlbumPage() {
     );
   }
 
-  //Global Context
-  const { currency } = useContext(CurrencyContext);
-
-  // State
-  const [currentListing, setCurrentListing] = useState<Listing>();
-  const [sortOption, setSortOption] = useState<string | undefined>(undefined);
-  const [sortedListings, setSortedListings] = useState<Listing[] | undefined>(
-    undefined
-  );
-
-  //Logic
   const handleSortOption = (option: string) => {
     console.log(option);
 

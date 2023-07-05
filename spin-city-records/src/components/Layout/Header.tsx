@@ -1,6 +1,6 @@
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
-import { useUser, SignInButton, UserButton, SignOutButton } from "@clerk/nextjs";
+import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
 import SearchAlbumsHome from "~/components/SearchAlbumsHome";
 import { useRouter } from "next/router";
 import Dropdown from "./Dropdown";
@@ -10,7 +10,6 @@ import { useContext } from "react";
 import {
   ShoppingBagIcon,
   UserIcon,
-  EnvelopeIcon,
 } from "@heroicons/react/24/solid";
 
 export default function Header() {
