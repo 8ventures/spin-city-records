@@ -5,6 +5,7 @@ import SplideCarousel from "~/components/Home/Splide";
 import MusicSection from "~/components/Home/MusicSection";
 import Layout from "~/components/Layout/Layout";
 import { serif } from "~/utils/fonts";
+import Head from "next/head";
 
 export default function Home() {
   //Data Fetching
@@ -30,6 +31,12 @@ export default function Home() {
   }
 
   return (
+    <>
+      <Head>
+        <html lang="en" />
+        <title>Spin City Records</title>
+        <meta name="description" content="Spin City Records" />
+      </Head>
     <Layout>
       <SplideCarousel />
       <section className="mx-auto flex w-full flex-col items-center justify-center overflow-hidden">
@@ -59,5 +66,6 @@ export default function Home() {
         <div className="my-4" />
       </section>
     </Layout>
+    </>
   );
 }
