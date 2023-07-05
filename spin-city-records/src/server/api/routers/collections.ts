@@ -52,7 +52,7 @@ export const collectionRouter = createTRPCRouter({
         });
         return collection;
       } catch (e) {
-        console.log("here");
+        console.log(e);
       }
     }),
 

@@ -61,7 +61,7 @@ export default function CheckoutForm({listing}: CheckoutFormProps) {
     const { error } = await stripe!.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/order/',
+        return_url: 'http://localhost:3000/profile/myOrders',
       },
     })
 
