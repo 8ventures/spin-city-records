@@ -24,9 +24,7 @@ const statusOptions = [
 function Selling() {
   const [statusFilter, setStatusFilter] = useState(options[0]?.value);
   const deleteListing = api.listings.deleteListing.useMutation();
-
-  const albumQuery = api.albums.getAll.useQuery();
-  const albums = albumQuery.data;
+  const changeStatus = api.orders.changeStatus.useMutation();
 
   const user = useUser();
   const currentUserId = user.user?.id;
@@ -43,11 +41,9 @@ function Selling() {
   const listingData = listingQuery.data;
   const [listings, setListings] = useState<Listing[]>([]);
 
-  const changeStatus = api.orders.changeStatus.useMutation();
-
   useEffect(() => {
     if (listingData) {
-      setListings(listingData);
+      setListings(listingData as Listing[]);
     }
   }, [listingData]);
 
@@ -145,22 +141,18 @@ function Selling() {
           </thead>
           <tbody className="">
             {applyStatusFilter()?.map((listing) => {
-              const album = albums?.find(
-                (album) => album.id === listing.albumId
-              );
-
               return (
                 <tr key={listing.id} className="border-b border-gray-900">
                   <td className="p-3">
-                    {album ? (
+                    {listing.album ? (
                       <>
                         <img
-                          src={album.artwork}
-                          alt={album.name}
+                          src={listing.album.artwork}
+                          alt={listing.album.name}
                           className="h-12 w-12 rounded md:h-44 md:w-44"
                         />
                         <div className="mt-2 w-12 text-center font-sans md:w-44">
-                          {album.name}
+                          {listing.album.name}
                         </div>
                       </>
                     ) : (
