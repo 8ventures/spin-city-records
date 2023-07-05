@@ -7,14 +7,14 @@ import Selling from "../../components/Profile/Selling";
 import CreateListingForm from "../../components/Create Listing/createListingForm";
 import OnboardingForm from "../../components/Profile/onboardingForm";
 import ProfilePageButton from "../../components/Profile/ProfilePageButton";
-import Messages from "../../components/Profile/Messages";
+
 import Settings from "../../components/Profile/Settings";
 import WishList from "~/components/Profile/WishList";
 
 const profilePages = [
   { label: "Wish List", page: "wishList" },
   { label: "My Orders", page: "myOrders" },
-  { label: "My Messages", page: "messages" },
+
   { label: "Become A Seller", page: "startSelling" },
   { label: "My Listings", page: "selling" },
   { label: "Create a Listing", page: "createListing" },
@@ -24,7 +24,6 @@ const profilePages = [
 const pageComponents = {
   wishList: WishList,
   myOrders: MyOrders,
-  messages: Messages,
   startSelling: OnboardingForm,
   selling: Selling,
   createListing: CreateListingForm,
@@ -34,7 +33,6 @@ const pageComponents = {
 type Page =
   | "wishList"
   | "myOrders"
-  | "messages"
   | "startSelling"
   | "selling"
   | "createListing"

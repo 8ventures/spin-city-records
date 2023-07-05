@@ -51,9 +51,9 @@ export interface Album {
 
 const styles = {
   input:
-    "h-12 w-full bg-transparent pl-5 text-xl text-white outline-none rounded-xl border",
+    "h-12 w-full bg-transparent pl-5 text-xl text-white outline-none rounded-xl border border-gray-600",
   inputFocus:
-    "h-12 w-full bg-transparent pl-5 text-xl text-white outline-none rounded-xl border-2 border-custom-orange shadow-lg shadow-custom-orange/50",
+    "h-12 w-full bg-transparent pl-5 text-xl text-white outline-none rounded-xl border border-gray-400 shadow-lg shadow-gray-600/10",
   query: "text-oldsilver-800 placeholder-oldsilver-400",
   typeahead: "text-slate-500",
   cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-crystal-600 inline-flex sm:hidden`,
@@ -64,9 +64,9 @@ const styles = {
   listbox:
     "w-full bg-black text-sm text-white sm:rounded-md text-left sm:mt-2 p-2 sm:drop-shadow-xl",
   match: "font-bold",
-  item: "cursor-pointer p-1 text-lg whitespace-nowrap text-ellipsis overflow-hidden text-white",
+  item: "cursor-pointer p-0 text-md whitespace-nowrap text-ellipsis overflow-hidden text-white",
   highlightedItem:
-    "cursor-pointer p-1.5 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-oldsilver-900 rounded-md bg-gradient-to-t from-crystal-100 to-white",
+    "cursor-pointer p-0 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-oldsilver-900 rounded-md bg-gradient-to-t from-crystal-100 to-white",
   noItems: "cursor-default text-center my-20",
 };
 
@@ -110,13 +110,13 @@ const SearchAlbumsForm = React.forwardRef<
     const { index, item, query } = props;
     const img = () => {
       return (
-        <div className="flex cursor-pointer items-center px-2 py-2">
+        <div className="flex cursor-pointer items-center px-1 py-1">
           <img
-            width={60}
-            height={60}
+            width={70}
+            height={70}
             src={item.artwork}
             alt={item.name}
-            className="mr-2 rounded-full object-cover"
+            className="mr-1 rounded-full object-cover"
           />
         </div>
       );
@@ -161,7 +161,7 @@ const SearchAlbumsForm = React.forwardRef<
     <Turnstone
       Item={ItemContents}
       autoFocus={false}
-      cancelButton={true}
+      cancelButton={false}
       clearButton={true}
       debounceWait={250}
       maxItems={5}
