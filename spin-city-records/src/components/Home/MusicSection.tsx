@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { Collection, Album, Listing } from "../../utils/types";
 import convertToGlobalCurrency from "../../utils/currencyConversion";
 import { CurrencyContext } from "../GlobalContext/CurrencyContext";
 import { useRouter } from "next/router";
-import { DM_Sans, Space_Mono } from "@next/font/google";
+import { DM_Sans } from "@next/font/google";
 import { DM_Serif_Display } from "@next/font/google";
 
 const sans = DM_Sans({
