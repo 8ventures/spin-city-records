@@ -24,10 +24,10 @@ export default function Header() {
     <header className="flex min-w-full justify-center border-b border-[#A1A1A1] bg-black">
       <nav className="h-34 mb-4 flex w-full flex-col items-center justify-between px-6 py-4 md:flex-row">
         <Image
-          src={logo}
+          src={logo as string}
           alt="logo"
           onClick={() => {
-            router.push("/");
+            router.push("/").catch((e) => console.log(e));
           }}
           className="max-h-full max-w-full cursor-pointer"
         />
@@ -35,12 +35,14 @@ export default function Header() {
           <SearchAlbumsHome />
         </div>
         <div className="ml-14 mt-8 flex items-end justify-center">
-          <div
-            onClick={() => router.push(`/profile/${currentUserId}`)}
-            className=" mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
-          >
+          {currentUserId && 
+            <div
+              onClick={() => router.push(`/profile/${currentUserId}`)}
+              className=" mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
+            >
             <UserIcon className="mb-5 h-10 w-10 text-white" />
           </div>
+          }
           <div
             onClick={() => router.push("/cart")}
             className=" mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"

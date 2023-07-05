@@ -66,7 +66,7 @@ function Cart() {
                       <span className="text-[#A1A1A1]">by </span>{" "}
                       <a
                         className="cursor-pointer hover:underline"
-                        onClick={() => handleClickArtist(album)}
+                        // onClick={() => handleClickArtist(album)}
                       >
                         {" "}
                         {listing.album?.artist.name}

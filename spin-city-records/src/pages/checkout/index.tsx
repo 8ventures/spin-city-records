@@ -29,22 +29,24 @@ export default function Checkout() {
 
   return (
     <Layout>
-      <div className="flex">
-        {isSession && listing  ? (
-          <CheckoutItems listing={listing} />
-        ) : (
-          <Skeleton className=" h-96"/>
-        )}
-        {isSession && clientSecret ? (
-          <Elements options={{
-            appearance,
-            clientSecret
-          }} stripe={stripePromise}>
-            <CheckoutForm/>
-          </Elements>
-        ) : (
-          <Skeleton className=" h-96"/>
+      <div className="flex flex-col items-center mt-2">
+        <div className="flex w-5/6 space-x-2 justify-center"> 
+          {isSession && listing  ? (
+            <CheckoutItems listing={listing} />
+          ) : (
+            <Skeleton className=" h-96"/>
           )}
+          {isSession && clientSecret ? (
+            <Elements options={{
+              appearance,
+              clientSecret
+            }} stripe={stripePromise}>
+              <CheckoutForm listing={listing} />
+            </Elements>
+          ) : (
+            <Skeleton className=" h-96"/>
+            )}
+        </div>
       </div>
     </Layout>
   )

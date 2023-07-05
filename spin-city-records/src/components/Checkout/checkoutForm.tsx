@@ -6,8 +6,16 @@ import {
   AddressElement
 } from "@stripe/react-stripe-js";
 import { useForm, Controller } from "react-hook-form";
+import { CurrencyContext } from "~/components/GlobalContext/CurrencyContext";
+import convertToGlobalCurrency from '../../utils/currencyConversion'
+import { useContext } from 'react'
+import { Listing } from "~/utils/types";
 
-export default function CheckoutForm() {
+type CheckoutFormProps = {
+  listing: Listing
+}
+
+export default function CheckoutForm({listing}: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
  
@@ -15,6 +23,7 @@ export default function CheckoutForm() {
   const [payment, setPayment] = useState({ status: 'initial' })
   const [errorMessage, setErrorMessage] = useState('')
   const { handleSubmit, control,} = useForm();
+  const { currency } = useContext(CurrencyContext);
   
 
   const PaymentStatus = ({ status }: { status: string }) => {
@@ -62,7 +71,7 @@ export default function CheckoutForm() {
   }
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit(onSubmit)}>
+    <form id="payment-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
       <AddressElement id="address-element" options={{
         mode: 'shipping'
         }}
@@ -70,15 +79,23 @@ export default function CheckoutForm() {
       <PaymentElement id="payment-element" options={{
         layout: "tabs",
       }} />
-      <button
-          className="text-white bg-[#FF5500] font-bold h-fit w-fit p-2 rounded-xl"
-          type="submit"
+      <button 
+        className={`sm:my-8 sm:text-left md:text-xl xl:text-2xl p-2 flex space-x-2 rounded-xl items-center bg-[#FF5500] text-white h-fit`}
+        type="submit"
           disabled={
             !['initial', 'succeeded', 'error'].includes(payment.status) ||
             !stripe
           }
-        >
-          Pay
+      >
+        <h3 className="font-semibold ">Pay</h3>
+        <span className="text-2xl font-semibold text-white ">
+          {convertToGlobalCurrency(
+            listing.price,
+            listing.currency,
+            currency
+          )}{" "}
+          {currency}
+        </span>
       </button>
       <PaymentStatus status={payment.status}/>
     </form>
