@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { type AppType } from "next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,6 +13,11 @@ import "react-toastify/dist/ReactToastify.css";
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
+      <Head>
+        <html lang="en" />
+        <title>Spin City Records</title>
+        <meta name="description" content="Spin City Records" />
+      </Head>
       <ClerkProvider
         appearance={{
           baseTheme: dark,
