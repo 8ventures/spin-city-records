@@ -253,7 +253,7 @@ export default function CreateListingForm () {
             {isListingLoading || isSuccess? (
               <Spinner/>
                 ) : (
-                <button className={` ${serif.className} bg-[#FF5500] text-white text-xl py-2 px-4 mt-8 w-2/4`} type="submit">
+                <button className={` ${serif.className} bg-[#FF5500] text-white hover:bg-white hover:text-black text-xl py-2 px-4 mt-8 w-2/4`} type="submit">
                   Create Listing
                 </button>
               )
