@@ -35,6 +35,7 @@ function Selling() {
 
   const listingData = listingQuery.data;
   const [listings, setListings] = useState<Listing[]>([]);
+  console.log(listingData);
 
   const orderQuery = api.orders.getAllOrders.useQuery();
   const orders = orderQuery.data;

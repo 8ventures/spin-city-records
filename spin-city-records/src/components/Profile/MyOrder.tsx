@@ -1,23 +1,169 @@
 import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
+import { Listing } from "~/utils/types";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+
+const options = [
+  { value: "All", label: "All" },
+  { value: "Awaiting Payment", label: "Awaiting Payment" },
+  { value: "Awaiting Shipment", label: "Awaiting Shipment" },
+  { value: "Shipped", label: "Shipped" },
+  { value: "Complete", label: "Complete" },
+  { value: "No Order", label: "No Order" },
+];
 
 function MyOrders() {
+  const [statusFilter, setStatusFilter] = useState(options[0]?.value);
+  const deleteListing = api.listings.deleteListing.useMutation();
+
   const albumQuery = api.albums.getAll.useQuery();
   const albums = albumQuery.data;
 
+  const user = useUser();
+  const currentUserId = user.user?.id;
+
+  const stripeIdQuery = api.sellers.getStripeId.useQuery({
+    clerkId: currentUserId || "",
+  });
+  const stripeId = stripeIdQuery.data as string | undefined;
+
+  const listingQuery = api.listings.getAll.useQuery();
+  const listingData = listingQuery.data;
+  console.log(listingData);
+
+  const orderQuery = api.orders.getAllOrders.useQuery();
+  const orders = orderQuery.data;
+  console.log(orders);
+
+  const [userOrders, setUserOrders] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (orders && listingData) {
+      const filteredOrders = orders.filter(
+        (order) => order.userId === currentUserId
+      );
+      const mappedOrders = filteredOrders.map((order) => {
+        const listing = listingData.find(
+          (listing) => listing.orderId === order.id
+        );
+        return {
+          ...order,
+          listing,
+        };
+      });
+      setUserOrders(mappedOrders);
+    }
+  }, [orders, listingData]);
+
+  if (!currentUserId || stripeIdQuery.isLoading || listingQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (stripeIdQuery.isError) {
+    return <div>Error occurred while fetching stripe ID</div>;
+  }
+
+  if (listingQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (listingQuery.isError) {
+    return <div>Error occurred while fetching listings</div>;
+  }
+
+  const handleFilterChange = (value: string) => {
+    setStatusFilter(value);
+  };
+
+  // function getOrderStatus(listingId: string | null) {
+  //   if (listingId === null) {
+  //     return "No Order";
+  //   }
+  //   const order = orders?.find((order) => order.id === listingId);
+  //   return order ? order.status : "No Order";
+  // }
+
+  const applyStatusFilter = () => {
+    return statusFilter === "All"
+      ? userOrders
+      : userOrders.filter((order) => order.status === statusFilter);
+  };
+
   return (
     <>
-      <h1>My Albums</h1>
-      {albums?.map((album) => (
-        <div
-          key={album.id}
-          className="m-10 flex w-[250px] flex-col items-center"
-        >
-          <img src={album.artwork} alt={album.name} className="rounded-xl" />
-          <div>
-            <h2>{album.name}</h2>
-          </div>
-        </div>
-      ))}
+      <div className="flex justify-end lg:mr-20">
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
+            Filter by Status: {""}
+            {options.find((option) => option.value === statusFilter)?.label}
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content className="text-md w-44 rounded-xl bg-white p-4 text-black">
+            {options.map((option) => (
+              <DropdownMenu.Item
+                key={option.value}
+                onSelect={() => handleFilterChange(option.value)}
+                className="cursor-pointer rounded text-center outline-none hover:bg-slate-400"
+              >
+                {option.label}
+              </DropdownMenu.Item>
+            ))}
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      </div>
+      <div className="flex items-center justify-center">
+        <table className="m-10 table-auto space-y-6">
+          <thead className="bg-[#FF5500]">
+            <tr>
+              <th className="p-3 text-left">Album</th>
+              <th className="p-3 text-left">Details</th>
+              <th className="p-3 text-left">Description</th>
+              <th className="p-3 text-left">Price</th>
+              <th className="p-3 text-left">Currency</th>
+              <th className="p-3 text-left">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {applyStatusFilter()?.map((order) => {
+              const listing = order.listing;
+              const album = albums?.find(
+                (album) => album.id === listing?.albumId
+              );
+              return (
+                <tr key={order.id} className="border-b border-gray-900">
+                  <td className="p-3">
+                    {album ? (
+                      <>
+                        <img
+                          src={album.artwork}
+                          alt={album.name}
+                          className="h-12 w-12 rounded md:h-44 md:w-44"
+                        />
+                        <div className="mt-2 w-12 text-center md:w-44">
+                          {album.name}
+                        </div>
+                      </>
+                    ) : (
+                      <div>No image available</div>
+                    )}
+                  </td>
+                  <td className="p-3">
+                    {listing.condition} <br />
+                    {listing.format} <br />
+                    {listing.speed} <br />
+                    {listing.weight}
+                    <br />
+                  </td>
+                  <td className="p-3">{listing.description}</td>
+                  <td className="p-3">{listing.price}</td>
+                  <td className="p-3">{listing.currency.toUpperCase()}</td>
+                  <td className="p-3">{order.status}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

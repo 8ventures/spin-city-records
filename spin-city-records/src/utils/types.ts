@@ -67,7 +67,7 @@ export type Order = {
   userId: string;
   sellerId: string;
   status: string;
-  Listings: Listing[];
+  Listings?: Listing[];
   completed: boolean;
 };
 
