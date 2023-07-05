@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Album, Listing } from "../../utils/types";
+import type { Album, Listing } from "../../utils/types";
 import convertToGlobalCurrency from "../../utils/currencyConversion";
 import { CartContext } from "../GlobalContext/CartContext";
 import { WishlistContext } from "../GlobalContext/WishListContext";
@@ -68,7 +68,7 @@ export default function AlbumInfoCard({
     router.push({
       pathname: `/artist/${normalizedArtist}/`,
       query: { id: album.artist.id },
-    });
+    }).catch((e) => console.log(e));
   };
   const handleClickCart = () => {
     if (currentListing) {
