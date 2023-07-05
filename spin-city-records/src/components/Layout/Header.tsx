@@ -34,20 +34,43 @@ export default function Header() {
         <div className="ml-4 md:ml-14 mt-2 md:mt-6 flex md:flex-row w-full px-4 md:px-8">
           <SearchAlbumsHome />
         </div>
+
         <div className="ml-4 mt-8 flex items-end justify-center">
         <div>
             <Dropdown />
           </div>
+        <div className="ml-14 mt-8 flex items-end justify-center">
+          {currentUserId && (
+            <div
+              onClick={() => router.push(`/profile/wishlist`)}
+              className=" mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
+            >
+              <UserIcon className="mb-5 h-10 w-10 text-white" />
+            </div>
+          )}
+
           <div
             onClick={() => router.push("/cart")}
             className="relative mx-2 flex h-10 w-10 flex-shrink-0 cursor-pointer items-center"
           >
+
             <ShoppingBagIcon className="mb-5 h-10 w-10 text-white" />
             {cart.length > 0 && (
               <div className="absolute bottom-9 right-0 mb-1 h-6 w-6 rounded-xl bg-custom-orange pb-7 text-center text-lg  text-white ">
                 {cart.length}
               </div>
             )}
+
+            <EnvelopeIcon className="mb-3 h-10 w-10 text-white" />
+            {cart.length > 0 && (
+              <div className="absolute bottom-6 right-12 mb-1 h-6 w-6 rounded-xl bg-[#FF5500] pb-7 text-center text-lg  text-white ">
+                {cart.length}
+              </div>
+            )}
+          </div>
+          <div>
+            <Dropdown />
+
           </div>
 
           {currentUserId && (
