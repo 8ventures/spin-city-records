@@ -8,7 +8,6 @@ const options = [
   { value: "Awaiting Shipment", label: "Awaiting Shipment" },
   { value: "Shipped", label: "Shipped" },
   { value: "Complete", label: "Complete" },
-  { value: "No Order", label: "No Order" },
 ];
 
 function MyOrders() {
@@ -46,16 +45,16 @@ function MyOrders() {
     <>
       <div className="flex justify-end text-white lg:mr-28">
         <DropdownMenu.Root>
-          <DropdownMenu.Trigger className="my-4 mr-12 inline text-lg outline-none sm:mr-14">
+          <DropdownMenu.Trigger className="my-4 mr-12 inline outline-none sm:mr-14">
             Filter by Status: {""}
             {options.find((option) => option.value === statusFilter)?.label}
           </DropdownMenu.Trigger>
-          <DropdownMenu.Content className="text-md w-44 rounded-xl bg-white p-4 text-black">
+          <DropdownMenu.Content className="text-md w-44 rounded-xl bg-white p-4 font-sans text-black">
             {options.map((option) => (
               <DropdownMenu.Item
                 key={option.value}
                 onSelect={() => handleFilterChange(option.value)}
-                className="cursor-pointer rounded text-center outline-none hover:bg-slate-200"
+                className="cursor-pointer rounded text-center font-sans outline-none hover:bg-slate-200"
               >
                 {option.label}
               </DropdownMenu.Item>
@@ -67,12 +66,11 @@ function MyOrders() {
         <table className="w-full border-collapse text-left">
           <thead className="bg-[#FF5500]">
             <tr>
-              <th className="p-3 text-left">Album</th>
-              <th className="p-3 text-left">Details</th>
-              <th className="p-3 text-left">Description</th>
-              <th className="p-3 text-left">Price</th>
-              <th className="p-3 text-left">Currency</th>
-              <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-left font-serif">Album</th>
+              <th className="p-3 text-left font-serif">Details</th>
+              <th className="p-3 text-left font-serif">Description</th>
+              <th className="p-3 text-left font-serif">Price</th>
+              <th className="p-3 text-left font-serif">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -91,7 +89,7 @@ function MyOrders() {
                           alt={album.name}
                           className="h-12 w-12 rounded md:h-44 md:w-44"
                         />
-                        <div className="mt-2 w-12 text-center md:w-44">
+                        <div className="mt-2 w-12 text-center font-sans md:w-44">
                           {album.name}
                         </div>
                       </>
@@ -99,23 +97,23 @@ function MyOrders() {
                       <div>No image available</div>
                     )}
                   </td>
-                  <td className="p-3 text-sm md:text-base">
-                    {listing?.condition || "N/A"} <br />
-                    {listing?.format || "N/A"} <br />
-                    {listing?.speed || "N/A"} <br />
-                    {listing?.weight || "N/A"}
+                  <td className="p-3 font-sans text-sm md:text-base">
+                    <b>Condition: </b> {listing?.condition || "N/A"} <br />
+                    <b>Format: </b> {listing?.format || "N/A"} <br />
+                    <b>Speed: </b> {listing?.speed || "N/A"} <br />
+                    <b>Weight: </b> {listing?.weight || "N/A"}
                     <br />
                   </td>
-                  <td className="p-3 text-sm md:text-base">
+                  <td className="p-3 font-sans text-sm md:text-base">
                     {listing?.description || "N/A"}
                   </td>
-                  <td className="p-3 text-sm md:text-base">
-                    {listing?.price || "N/A"}
-                  </td>
-                  <td className="p-3 text-sm md:text-base">
+                  <td className="p-3 font-sans text-sm md:text-base">
+                    {listing?.price || "N/A"}{" "}
                     {(listing?.currency || "N/A").toUpperCase()}
                   </td>
-                  <td className="p-3 text-sm md:text-base">{order.status}</td>
+                  <td className="p-3 font-sans text-sm md:text-base">
+                    {order.status}
+                  </td>
                 </tr>
               );
             })}
