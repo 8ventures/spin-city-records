@@ -33,7 +33,7 @@ const SelectCondition = React.forwardRef<
       value={field.value}
     >
       <Select.Trigger
-        className="inline-flex items-center justify-center gap-[10px] rounded-xl bg-black py-2 text-lg leading-none text-gray-300 outline-none"
+        className="inline-flex items-center justify-center gap-[10px] rounded-2xl bg-black py-2 text-lg leading-none text-gray-300 outline-none"
         aria-label="Condition"
         ref={forwardedRef}
       >
@@ -43,42 +43,42 @@ const SelectCondition = React.forwardRef<
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
-        <Select.Content className="cursor-pointer overflow-hidden rounded-xl bg-black text-gray-300">
+        <Select.Content className="cursor-pointer overflow-hidden rounded-2xl bg-black text-gray-300">
           <Select.Viewport className="p-[10px]">
             <Select.Group>
               <SelectItem
                 value="Mint"
-                className="text-lg  outline-none hover:text-[#FF5500]"
+                className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
               >
                 Mint
               </SelectItem>
               <SelectItem
                 value="Near Mint"
-                className="text-lg  outline-none hover:text-[#FF5500]"
+                className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
               >
                 Near Mint
               </SelectItem>
               <SelectItem
                 value="Very Good"
-                className="text-lg  outline-none hover:text-[#FF5500]"
+                className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
               >
                 Very Good
               </SelectItem>
               <SelectItem
                 value="Good"
-                className="text-lg  outline-none hover:text-[#FF5500]"
+                className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
               >
                 Good
               </SelectItem>
               <SelectItem
                 value="Fair"
-                className="text-lg  outline-none hover:text-[#FF5500]"
+                className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
               >
                 Fair
               </SelectItem>
               <SelectItem
                 value="Poor"
-                className="text-lg  outline-none hover:text-[#FF5500]"
+                className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
               >
                 Poor
               </SelectItem>

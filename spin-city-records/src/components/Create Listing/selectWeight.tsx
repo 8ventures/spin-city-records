@@ -31,7 +31,7 @@ const SelectWeight = React.forwardRef<HTMLButtonElement, selectWeightProps>(
         value={field.value}
       >
         <Select.Trigger
-          className="inline-flex items-center justify-center gap-[5px] rounded-xl bg-black  py-2 text-lg leading-none text-gray-300 outline-none"
+          className="inline-flex items-center justify-center gap-[5px] rounded-2xl bg-black  py-2 text-lg leading-none text-gray-300 outline-none"
           aria-label="Weight"
           ref={forwardRef}
         >
@@ -41,18 +41,18 @@ const SelectWeight = React.forwardRef<HTMLButtonElement, selectWeightProps>(
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="cursor-pointer overflow-hidden rounded-xl bg-black text-gray-300">
+          <Select.Content className="cursor-pointer overflow-hidden rounded-2xl bg-black text-gray-300">
             <Select.Viewport className="p-[5px]">
               <Select.Group>
                 <SelectItem
                   value="standard"
-                  className="text-lg  outline-none hover:text-[#FF5500]"
+                  className="text-lg  outline-none  hover:bg-gray-900 hover:text-[#FF5500]"
                 >
                   Standard
                 </SelectItem>
                 <SelectItem
                   value="180"
-                  className="text-lg  outline-none hover:text-[#FF5500]"
+                  className="text-lg  outline-none  hover:bg-gray-900 hover:text-[#FF5500]"
                 >
                   180 grams
                 </SelectItem>

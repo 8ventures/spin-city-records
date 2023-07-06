@@ -30,7 +30,7 @@ const SelectCurrency = React.forwardRef<HTMLButtonElement, selectCurrencyProps>(
         value={field.value}
       >
         <Select.Trigger
-          className="inline-flex items-center justify-center gap-[10px] rounded-xl bg-black px-[15px] py-2 text-lg leading-none text-gray-300 outline-none"
+          className="inline-flex items-center justify-center gap-[10px] rounded-2xl bg-black px-[15px] py-2 text-lg leading-none text-gray-300 outline-none"
           aria-label="Condition"
           ref={forwardedRef}
         >
@@ -40,24 +40,24 @@ const SelectCurrency = React.forwardRef<HTMLButtonElement, selectCurrencyProps>(
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="cursor-pointer overflow-hidden rounded-xl bg-black text-gray-300">
+          <Select.Content className="cursor-pointer overflow-hidden rounded-2xl bg-black text-gray-300">
             <Select.Viewport className="p-[10px]">
               <Select.Group>
                 <SelectItem
                   value="gbp"
-                  className="text-lg  outline-none hover:text-[#FF5500]"
+                  className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
                 >
                   GBP
                 </SelectItem>
                 <SelectItem
                   value="eur"
-                  className="text-lg  outline-none hover:text-[#FF5500]"
+                  className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
                 >
                   EUR
                 </SelectItem>
                 <SelectItem
                   value="usd"
-                  className="text-lg  outline-none hover:text-[#FF5500]"
+                  className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
                 >
                   USD
                 </SelectItem>

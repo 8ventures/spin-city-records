@@ -1,3 +1,5 @@
+// @ts-nocheck
+// old code
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { useRouter } from "next/router";

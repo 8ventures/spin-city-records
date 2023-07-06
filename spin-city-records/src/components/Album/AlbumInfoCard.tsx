@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { useUser } from "@clerk/nextjs";
 import { serif, sans } from "../../utils/fonts";
-
+import { toast } from "react-toastify";
 interface AlbumInfoCardProps {
   album: Album;
   listings: Listing[];
@@ -37,6 +37,15 @@ export default function AlbumInfoCard({
   const currentUserId = user?.id;
   let collections: Collection[];
 
+  let sellerChecking = false;
+  if (currentUserId) {
+    const sellerCheck = api.sellers.checkIfSeller.useQuery({
+      clerkId: currentUserId || "",
+    });
+    if (sellerCheck.data) {
+      sellerChecking = true;
+    }
+  }
   const {
     data: collectionsQueryData,
     error: collectionsQueryError,
@@ -113,6 +122,19 @@ export default function AlbumInfoCard({
   }
 
   const handleClickWishlist = async () => {
+    if (!user) {
+      toast.error("You must be logged in to add to your wishlist", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
     if (collection) {
       const newIsInWishlist = !isInWishlist;
       setIsInWishlist(newIsInWishlist);
@@ -135,6 +157,39 @@ export default function AlbumInfoCard({
       }
     }
   };
+
+  const handleCreateListing = () => {
+    if (sellerChecking) {
+      router
+        .push({
+          pathname: "/profile/createListing",
+        })
+        .catch((e) => console.log(e));
+    } else if (!sellerChecking && user){
+      router
+        .push({
+          pathname: "/profile/startSelling",
+        })
+        .catch((e) => console.log(e));
+      toast.error("Please register as a Seller firstly!", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+    else {
+      router
+      .push({
+        pathname: "/profile/startSelling",
+      })
+      .catch((e) => console.log(e));
+  }
+};
 
   const handleClickArtist = (album: Album) => {
     const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
@@ -219,13 +274,7 @@ export default function AlbumInfoCard({
               <div className="">No available listings</div>
               <div
                 className="cursor-pointer text-lg font-semibold text-[#FF5500] hover:underline sm:text-left md:text-xl xl:text-2xl"
-                onClick={() =>
-                  router
-                    .push({
-                      pathname: "/profile/createListing",
-                    })
-                    .catch((e) => console.log(e))
-                }
+                onClick={() => handleCreateListing()}
               >
                 Create a listing
               </div>
@@ -312,16 +361,17 @@ export default function AlbumInfoCard({
                   </span>
                 </div>
               )}
+
               <div className="mt-4 flex flex-row items-center justify-center sm:justify-start">
                 <button
                   onClick={handleClickWishlist}
-                  className="mx-5 h-9 w-9 text-red-500"
+                  className="mx-5 h-10 w-10 text-red-600"
                 >
                   {isInWishlist ? <FilledHeart /> : <EmptyHeart />}
                 </button>
                 <button
                   onClick={handleClickCart}
-                  className={`mx-5 flex h-fit w-fit flex-col items-center bg-white p-2 text-black hover:bg-[#FF5500] hover:text-[white] sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
+                  className={`mx-4 flex h-fit w-fit flex-col items-center rounded-2xl border-4 border-gray-900 bg-black p-2 text-gray-400 hover:border-gray-800 hover:bg-gray-800 hover:text-white sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
                 >
                   {isInCart ? "Remove from cart" : "Add to cart"}
                 </button>

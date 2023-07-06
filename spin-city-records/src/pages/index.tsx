@@ -41,19 +41,19 @@ export default function Home() {
           >
             SHOP MUSIC
           </h1>
-          <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+          <div className="my-8 w-5/6 border-b border-gray-600" />
           <MusicSection
             title={"RECENTLY ADDED"}
             collection={recentlyAdded}
             loading={recentlyAddedQueryIsLoading}
           />
-          <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+          <div className="my-8 w-5/6 border-b border-gray-600" />
           <MusicSection
             title={"NEW RELEASES"}
             collection={recentlyAdded}
             loading={recentlyAddedQueryIsLoading}
           />
-          <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+          <div className="my-8 w-5/6 border-b border-gray-600" />
           <MusicSection
             title={"BEST SELLERS"}
             collection={recentlyAdded}

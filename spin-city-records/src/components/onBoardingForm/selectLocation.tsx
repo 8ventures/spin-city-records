@@ -16,7 +16,7 @@ const SelectLocation  = React.forwardRef<HTMLButtonElement, selectLocationProps>
     return (
       <Select.Root onValueChange={field.onChange} name={field.name} value={field.value}>
         <Select.Trigger
-          className="inline-flex bg-black text-gray-300 items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
+          className="inline-flex bg-black text-gray-300 items-center justify-center rounded-2xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
           aria-label="Location"
           ref={forwardedRef}
         >
@@ -26,12 +26,12 @@ const SelectLocation  = React.forwardRef<HTMLButtonElement, selectLocationProps>
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="cursor-pointer overflow-hidden bg-black text-gray-300 rounded-xl">
-            <Select.Viewport className="p-[5px]">
+          <Select.Content className="cursor-pointer overflow-hidden bg-black text-gray-300 rounded-2xl">
+            <Select.Viewport className="p-[5px] ">
               <Select.Group>
-                <SelectItem value="United Kingdom">United Kingdom</SelectItem>
-                <SelectItem value="United States">United States</SelectItem>
-                <SelectItem value="Europe">Europe</SelectItem>
+                <SelectItem className="hover:bg-gray-900 hover:text-custom-orange" value="United Kingdom">United Kingdom</SelectItem>
+                <SelectItem className="hover:bg-gray-900 hover:text-custom-orange" value="United States">United States</SelectItem>
+                <SelectItem className="hover:bg-gray-900 hover:text-custom-orange" value="Europe">Europe</SelectItem>
               </Select.Group>
             </Select.Viewport>
           </Select.Content>
