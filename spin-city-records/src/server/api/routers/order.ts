@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, privateProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const ordersRouter = createTRPCRouter({
   createOrder: privateProcedure
@@ -81,7 +81,7 @@ export const ordersRouter = createTRPCRouter({
       console.log(e);
     }
   }),
-  changeStatus: privateProcedure
+  changeStatus: publicProcedure
     .input(
       z.object({
         status: z.enum([
@@ -95,6 +95,7 @@ export const ordersRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
+        console.log(input)
         const updatedOrder = await ctx.prisma.order.update({
           where: {
             id: input.orderId,
@@ -103,6 +104,7 @@ export const ordersRouter = createTRPCRouter({
             status: input.status,
           },
         });
+        console.log(updatedOrder)
         return updatedOrder;
       } catch (e) {
         console.log(e);

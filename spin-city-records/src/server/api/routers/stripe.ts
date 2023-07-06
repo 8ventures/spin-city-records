@@ -55,7 +55,6 @@ export const stripeRouter = createTRPCRouter({
           });
           listing = cleanListing
         }
-        console.log(listing);
         if (listing && !listing.orderId) {
           console.log('Creating new order')
           const newOrder = await ctx.prisma.order.create({
@@ -78,7 +77,6 @@ export const stripeRouter = createTRPCRouter({
               },
             },
           });
-          console.log(uplisting);
           const paymentIntent = await ctx.stripe.paymentIntents.create({
             amount: listing.price * 100,
             currency: listing.currency,

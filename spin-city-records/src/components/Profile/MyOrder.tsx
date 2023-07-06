@@ -3,6 +3,8 @@ import { useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/router";
 import type { Listing } from "~/utils/types";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const options = [
   { value: "All", label: "All" },
@@ -14,17 +16,35 @@ const options = [
 
 function MyOrders() {
   const [statusFilter, setStatusFilter] = useState(options[0]?.value);
-  const router = useRouter()
+  const router = useRouter();
+
+  const { payment_intent: paymentIntentId } = router.query;
+  const { data: paymentIntent, isSuccess } = api.stripe.retrivePaymentIntent.useQuery(
+    {paymentIntentId},{enabled: !!paymentIntentId}) 
 
   const orderQuery = api.orders.getBuyerOrders.useQuery();
   const orders = orderQuery.data;
+
+
+  if( isSuccess && paymentIntent ) {
+    paymentIntent.status === 'succeeded' ? (
+      toast.success('Payment Completed!', {
+      position: toast.POSITION.TOP_LEFT
+      })
+    ) : paymentIntent.status === 'processing' ? (
+      toast.warning('Payment Processing', {
+      position: toast.POSITION.TOP_LEFT})
+    ) : paymentIntent.status === 'requires_payment_method' ? (
+      toast.error('Please Try another payment method', {
+      position: toast.POSITION.TOP_LEFT})
+    ) : null
+  }
 
   const handleFilterChange = (value: string) => {
     setStatusFilter(value);
   };
 
   const checkoutItem = (listing: Listing): void => {
-    console.log(listing)
     router.push({
       pathname: '/checkout',
       query: {id: listing.id}

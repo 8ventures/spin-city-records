@@ -14,7 +14,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
 export default function Checkout() {
 
   const router = useRouter()
-  const listingId = router.query.id as string;
+  const listingId = router.query.id;
   const {data, isSuccess: isSession} = api.stripe.checkoutSession.useQuery({listingId}, {enabled: (typeof listingId === 'string')})
   
   const clientSecret = data?.clientSecret
