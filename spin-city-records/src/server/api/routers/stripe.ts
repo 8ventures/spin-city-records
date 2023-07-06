@@ -6,10 +6,16 @@ export const stripeRouter = createTRPCRouter({
     .input(
       z.object({
         listingId: z.string(),
+        hasData: z.any()
       })
     )
     .query(async ({ ctx, input }) => {
-      const { listingId } = input;
+      const { listingId, hasData } = input;
+      console.log('Data REf =====>', hasData)
+      if(hasData.current) {
+        return 
+      }
+      console.log('Creating Session =====================')
       try {
         let listing = await ctx.prisma.listing.findUnique({
           where: {
@@ -56,6 +62,7 @@ export const stripeRouter = createTRPCRouter({
           listing = cleanListing
         }
         if (listing && !listing.orderId) {
+          console.log('clean listing:', listing)
           console.log('Creating new order')
           const newOrder = await ctx.prisma.order.create({
             data: {
@@ -65,6 +72,7 @@ export const stripeRouter = createTRPCRouter({
               completed: false,
             },
           });
+          console.log('new order: ', newOrder)
           const uplisting = await ctx.prisma.listing.update({
             where: {
               id: listing.id,
@@ -77,6 +85,7 @@ export const stripeRouter = createTRPCRouter({
               },
             },
           });
+          console.log('Updated listing: ', uplisting)
           const paymentIntent = await ctx.stripe.paymentIntents.create({
             amount: listing.price * 100,
             currency: listing.currency,

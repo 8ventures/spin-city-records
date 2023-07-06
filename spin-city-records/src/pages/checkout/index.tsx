@@ -8,17 +8,33 @@ import Skeleton from "~/components/skeleton";
 import CheckoutItems from "~/components/Checkout/checkoutItems";
 import type { Listing } from "~/utils/types";
 import { serif, sans } from "~/utils/fonts";
+import { useEffect, useRef } from "react";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
 
 export default function Checkout() {
 
+  const hasData = useRef(false)
+  console.log('Checkout')
+
   const router = useRouter()
   const listingId = router.query.id;
-  const {data, isSuccess: isSession} = api.stripe.checkoutSession.useQuery({listingId}, {enabled: (typeof listingId === 'string')})
+  const {data, isSuccess: isSession} = api.stripe.checkoutSession.useQuery({listingId, hasData}, {enabled: (typeof listingId === 'string') && !hasData.current})
   
   const clientSecret = data?.clientSecret
   const listing: Listing = data?.listing as Listing
+  
+  if( clientSecret && isSession) {
+    hasData.current = true
+  }
+  console.log('Check: ', clientSecret, isSession, hasData.current, listingId);
+
+  useEffect(() => {
+    console.log('sideeffect, rendered', hasData.current)
+    return () => {
+      console.log('cleanup, beforeRender', hasData.current)
+    }
+  })
 
   const appearance = {
     variables: {

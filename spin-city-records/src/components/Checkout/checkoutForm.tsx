@@ -23,7 +23,6 @@ export default function CheckoutForm({listing}: CheckoutFormProps) {
 
   const [payment, setPayment] = useState({ status: 'initial' })
   const [errorMessage, setErrorMessage] = useState('')
-  const { handleSubmit, control,} = useForm();
   const { currency } = useContext(CurrencyContext);
   
 
@@ -53,8 +52,10 @@ export default function CheckoutForm({listing}: CheckoutFormProps) {
     }
   }
   
-  const onSubmit= async () => {
-  
+  const onSubmit= async (event: React.FormEvent<HTMLFormElement> ) => {
+
+    event.preventDefault()
+
     if (!elements) return
     setPayment({ status: 'processing' })
 
@@ -72,7 +73,7 @@ export default function CheckoutForm({listing}: CheckoutFormProps) {
   }
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center">
+    <form id="payment-form" onSubmit={onSubmit} className="flex flex-col items-center">
       <AddressElement id="address-element" options={{
         mode: 'shipping'
         }}
