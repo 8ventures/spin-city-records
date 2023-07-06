@@ -7,16 +7,16 @@ import SelectCondition from "./selectCondition";
 import SelectCurrency from "./selectCurrency";
 import SelectEdition from "./selectEdition";
 import Skeleton from "../skeleton";
-import { z } from 'zod';
-import { zodResolver} from '@hookform/resolvers/zod'
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import Spinner from "../../components/spinner";
 import { useUser } from "@clerk/nextjs";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { serif, sans } from "~/utils/fonts";
-const requiredError ={required_error: 'This field is required'}
+const requiredError = { required_error: "This field is required" };
 
 const validationSchema = z.object({
   album: z.object({
@@ -29,17 +29,24 @@ const validationSchema = z.object({
     updatedAt: z.date(),
     year: z.number(),
   }),
-  price: z.number().gt(1, {message: "Price must be at least 1 of your local currency"}),
+  price: z
+    .number()
+    .gt(1, { message: "Price must be at least 1 of your local currency" }),
   currency: z.string(requiredError),
   speed: z.string(requiredError),
   weight: z.string(requiredError),
   format: z.string(requiredError),
   condition: z.string(requiredError),
-  editions: z.object({
-    value: z.string()
-  }).array().min(1, {message: 'Must choose at leasst on edtion type'}),
-  description: z.string().min(5, { message: "Must be at least 5 character long" }),
-})
+  editions: z
+    .object({
+      value: z.string(),
+    })
+    .array()
+    .min(1, { message: "Must choose at leasst on edtion type" }),
+  description: z
+    .string()
+    .min(5, { message: "Must be at least 5 character long" }),
+});
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
@@ -64,8 +71,13 @@ export default function CreateListingForm() {
     isError,
   } = api.editions.getAll.useQuery();
 
-  const {register, handleSubmit, control, formState: {errors} } = useForm<ValidationSchema>({resolver: zodResolver(validationSchema)});
-  const {fields, append, remove } = useFieldArray({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<ValidationSchema>({ resolver: zodResolver(validationSchema) });
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "editions",
   });
@@ -90,9 +102,8 @@ export default function CreateListingForm() {
         }
       );
       return;
-    }
-    else{
-      toast.success('Listing created successfully!', {
+    } else {
+      toast.success("Listing created successfully!", {
         position: "top-left",
         autoClose: 4000,
         hideProgressBar: false,
@@ -101,7 +112,7 @@ export default function CreateListingForm() {
         draggable: false,
         progress: undefined,
         theme: "dark",
-        });
+      });
     }
     try {
       createListing(e);
@@ -238,7 +249,9 @@ export default function CreateListingForm() {
               {...register("description")}
             />
             {errors.description && (
-              <p className="text-md text-red-500 mt-2"> {errors.description.message}
+              <p className="text-md mt-2 text-red-500">
+                {" "}
+                {errors.description.message}
               </p>
             )}
             <div className="flex justify-center align-middle">
@@ -247,9 +260,7 @@ export default function CreateListingForm() {
               ) : (
                 <button
                   type="submit"
-                  className={`mx-5 mt-8 flex h-fit w-fit flex-col items-center bg-black border-4 border-gray-800 rounded-full py-2 px-6 text-xl text-custom-orange hover:bg-custom-orange hover:text-black hover:border-custom-orange sm:my-8 font-black`}
-
-
+                  className={`mx-4 mt-5 flex  flex-col items-center bg-white  p-2 text-black  hover:bg-[#FF5500] hover:text-white sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
                 >
                   Create Listing
                 </button>

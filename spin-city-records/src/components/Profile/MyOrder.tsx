@@ -184,7 +184,7 @@ function MyOrders() {
                       <td className="lg:text-md ml-2 p-3 font-sans text-xs md:text-base">
                         {order.status === "Awaiting Payment" ? (
                           <button
-                            className={`rounded-2xl border-4 border-gray-800 bg-black p-3 text-white hover:bg-gray-800 hover:text-white ${serif.className}`}
+                            className={`lg:text-md   flex flex-col items-center  bg-white p-2  text-xs text-black hover:bg-[#FF5500] hover:text-white md:text-base ${serif.className}`}
                             onClick={() => checkoutItem(listing)}
                           >
                             {order.status}

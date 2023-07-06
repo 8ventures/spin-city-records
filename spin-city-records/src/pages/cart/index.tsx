@@ -9,15 +9,15 @@ import Skeleton from "../../components/skeleton";
 import { serif, sans } from "../../utils/fonts";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { useUser } from "@clerk/clerk-react";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 export default function Cart() {
   const { cart, removeFromCart } = useContext(CartContext);
   const { currency } = useContext(CurrencyContext);
   const router = useRouter();
 
-  const {user} = useUser();
+  const { user } = useUser();
   if (!user) {
-    toast.warn('Please, log in or sign up to proceed to checkout!', {
+    toast.warn("Please, log in or sign up to proceed to checkout!", {
       position: "top-center",
       autoClose: 4000,
       hideProgressBar: false,
@@ -26,8 +26,7 @@ export default function Cart() {
       draggable: false,
       progress: undefined,
       theme: "dark",
-      });
-
+    });
   }
   const checkoutItem = (listing: Listing): void => {
     console.log(listing);
@@ -106,11 +105,11 @@ export default function Cart() {
                       <TrashIcon className="h-8 w-8 hover:text-custom-orange" />
                     </button>
                     <button
-                      className={`flex h-fit w-fit flex-col border-2 border-custom-orange rounded-3xl items-center bg-black p-2 text-custom-orange hover:bg-custom-orange hover:text-black hover:border-none sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
+                      className={`mx-4 flex  flex-col items-center bg-white  p-2 text-black  hover:bg-[#FF5500] hover:text-white sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
                       onClick={() => checkoutItem(listing)}
                     >
-                      <h3 className="font-semibold px-2">Checkout</h3>
-                      <span className="text-3xl px-2 font-black ">
+                      <h3 className="px-2 font-semibold">Checkout</h3>
+                      <span className="px-2 text-3xl font-black ">
                         {convertToGlobalCurrency(
                           listing.price,
                           listing.currency,

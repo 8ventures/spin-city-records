@@ -165,7 +165,7 @@ export default function AlbumInfoCard({
           pathname: "/profile/createListing",
         })
         .catch((e) => console.log(e));
-    } else if (!sellerChecking && user){
+    } else if (!sellerChecking && user) {
       router
         .push({
           pathname: "/profile/startSelling",
@@ -181,15 +181,14 @@ export default function AlbumInfoCard({
         progress: undefined,
         theme: "dark",
       });
-    }
-    else {
+    } else {
       router
-      .push({
-        pathname: "/profile/startSelling",
-      })
-      .catch((e) => console.log(e));
-  }
-};
+        .push({
+          pathname: "/profile/startSelling",
+        })
+        .catch((e) => console.log(e));
+    }
+  };
 
   const handleClickArtist = (album: Album) => {
     const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
@@ -371,7 +370,7 @@ export default function AlbumInfoCard({
                 </button>
                 <button
                   onClick={handleClickCart}
-                  className={`mx-4 flex h-fit w-fit flex-col items-center rounded-2xl border-4 border-gray-900 bg-black p-2 text-gray-400 hover:border-gray-800 hover:bg-gray-800 hover:text-white sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
+                  className={`mx-4 flex  flex-col items-center bg-white  p-2 text-black  hover:bg-[#FF5500] hover:text-white sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
                 >
                   {isInCart ? "Remove from cart" : "Add to cart"}
                 </button>

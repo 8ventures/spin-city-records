@@ -96,7 +96,7 @@ function Selling() {
         query: { id: listing.album?.id },
       })
       .catch((e) => console.log(e));
-  }
+  };
 
   const handleChangeStatus = async (orderId: string, status: string) => {
     try {
@@ -222,10 +222,8 @@ function Selling() {
                             <img
                               src={listing.album.artwork}
                               alt={listing.album.name}
-                              className="h-12 w-12 rounded object-cover cursor-pointer"
-                              onClick={() =>
-                                handleClickListings(listing)
-                              }
+                              className="h-12 w-12 cursor-pointer rounded object-cover"
+                              onClick={() => handleClickListings(listing)}
                             />
                             <div className="ml-2 p-3  text-xs md:text-base">
                               {listing.album.name}
@@ -282,9 +280,9 @@ function Selling() {
                         )}
                       </td>
                       <td className="lg:text-md ml-2 p-3  text-xs md:text-base">
-                        <div className="flex h-8 w-8 items-center">
+                        <div className="flex h-6 w-6 items-center md:h-8 md:w-8">
                           <TrashIcon
-                            className="ml-1 cursor-pointer hover:text-custom-orange"
+                            className="ml-1 cursor-pointer hover:text-custom-orange "
                             onClick={() => handleDeleteListing(listing.id)}
                           />
                         </div>

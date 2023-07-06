@@ -89,17 +89,14 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
         }}
       />
       <button
-        className={`flex space-x-2 px-4 py-2 sm:my-8 sm:text-left md:text-xl xl:text-2xl
-          ${serif.className} h-fit items-center rounded-full border-2 border-custom-orange bg-black text-custom-orange
-          hover:bg-[#FF5500] hover:text-black
-          `}
+        className={`mx-4 flex w-fit flex-col items-center bg-white  p-2 text-black  hover:bg-[#FF5500] hover:text-white sm:my-8 sm:text-left md:text-lg xl:text-xl ${serif.className}`}
         type="submit"
         disabled={
           !["initial", "succeeded", "error"].includes(payment.status) || !stripe
         }
       >
         <h3 className="font-normal ">Pay</h3>
-        <span className="text-2xl font-black">
+        <span className="font-black md:text-lg xl:text-xl">
           {convertToGlobalCurrency(listing.price, listing.currency, currency)}{" "}
           {currency}
         </span>

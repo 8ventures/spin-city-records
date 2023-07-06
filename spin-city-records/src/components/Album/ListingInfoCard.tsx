@@ -111,7 +111,7 @@ export default function ListingInfoCard({
           {isInCart && (
             <button
               onClick={handleClickCart}
-              className="mx-2 flex w-6 items-center justify-center rounded-xl text-base font-semibold text-white lg:w-6"
+              className="mx-2 flex w-6 items-center justify-center rounded-xl text-base font-semibold text-white hover:text-custom-orange lg:w-6"
             >
               <TrashIcon />
             </button>
