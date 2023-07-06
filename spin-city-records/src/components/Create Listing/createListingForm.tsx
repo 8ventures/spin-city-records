@@ -194,6 +194,7 @@ export default function CreateListingForm() {
                 control={control}
                 render={({ field }) => {
                   return (
+                    // @ts-ignore
                     <SelectEdition field={field} editions={editions || []} />
                   );
                 }}
