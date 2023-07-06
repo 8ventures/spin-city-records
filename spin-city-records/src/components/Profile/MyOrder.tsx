@@ -3,8 +3,9 @@ import { useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/router";
 import type { Listing } from "~/utils/types";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { serif } from "~/utils/fonts";
 
 const options = [
   { value: "All", label: "All" },
@@ -18,25 +19,29 @@ function MyOrders() {
   const [statusFilter, setStatusFilter] = useState(options[0]?.value);
   const router = useRouter();
   const { payment_intent: paymentIntentId } = router.query;
-  const { data: paymentIntent, isSuccess } = api.stripe.retrivePaymentIntent.useQuery(
-    {paymentIntentId},{enabled: !!paymentIntentId}) 
-  
+  const { data: paymentIntent, isSuccess } =
+    api.stripe.retrivePaymentIntent.useQuery(
+      { paymentIntentId },
+      { enabled: !!paymentIntentId }
+    );
+
   const orderQuery = api.orders.getBuyerOrders.useQuery();
   const orders = orderQuery.data;
 
-
-  if( isSuccess && paymentIntent ) {
-    paymentIntent.status === 'succeeded' ? (
-      toast.success('Payment Completed!', {
-      position: toast.POSITION.TOP_LEFT
-      })
-    ) : paymentIntent.status === 'processing' ? (
-      toast.warning('Payment Processing', {
-      position: toast.POSITION.TOP_LEFT})
-    ) : paymentIntent.status === 'requires_payment_method' ? (
-      toast.error('Please Try another payment method', {
-      position: toast.POSITION.TOP_LEFT})
-    ) : null
+  if (isSuccess && paymentIntent) {
+    paymentIntent.status === "succeeded"
+      ? toast.success("Payment Completed!", {
+          position: toast.POSITION.TOP_LEFT,
+        })
+      : paymentIntent.status === "processing"
+      ? toast.warning("Payment Processing", {
+          position: toast.POSITION.TOP_LEFT,
+        })
+      : paymentIntent.status === "requires_payment_method"
+      ? toast.error("Please Try another payment method", {
+          position: toast.POSITION.TOP_LEFT,
+        })
+      : null;
   }
 
   const handleFilterChange = (value: string) => {
@@ -44,12 +49,13 @@ function MyOrders() {
   };
 
   const checkoutItem = (listing: Listing): void => {
-    router.push({
-      pathname: '/checkout',
-      query: {id: listing.id}
-    }).catch((e)=>(console.log(e)))
-  }
-
+    router
+      .push({
+        pathname: "/checkout",
+        query: { id: listing.id },
+      })
+      .catch((e) => console.log(e));
+  };
 
   const applyStatusFilter = () => {
     return statusFilter === "All"
@@ -86,16 +92,16 @@ function MyOrders() {
         <div className="mx-2 flex flex-col text-white md:mx-auto md:w-2/3 ">
           <div className="  flex justify-end text-white ">
             <DropdownMenu.Root>
-              <DropdownMenu.Trigger className="border-b-2 border-gray-700  p-1 text-md my-4 mr-12 inline outline-none md:text-lg">
+              <DropdownMenu.Trigger className="text-md my-4  mr-12 inline border-b-2 border-gray-700 p-1 outline-none md:text-lg">
                 Filter by Status: {""}
                 {options.find((option) => option.value === statusFilter)?.label}
               </DropdownMenu.Trigger>
-              <DropdownMenu.Content className="w-44 m-0 rounded-2xl bg-black px-1 font-sans text-sm text-white md:text-lg">
+              <DropdownMenu.Content className="m-0 w-44 rounded-2xl bg-black px-1 font-sans text-sm text-white md:text-lg">
                 {options.map((option) => (
                   <DropdownMenu.Item
                     key={option.value}
                     onSelect={() => handleFilterChange(option.value)}
-                    className="py-2 border-t border-b border-gray-700 cursor-pointer rounded text-center font-sans outline-none hover:bg-gray-800 hover:text-white"
+                    className="cursor-pointer rounded border-b border-t border-gray-700 py-2 text-center font-sans outline-none hover:bg-gray-800 hover:text-white"
                   >
                     {option.label}
                   </DropdownMenu.Item>
@@ -178,7 +184,7 @@ function MyOrders() {
                       <td className="lg:text-md ml-2 p-3 font-sans text-xs md:text-base">
                         {order.status === "Awaiting Payment" ? (
                           <button
-                            className={`bg-black border-gray-800 border-4 p-3 rounded-2xl text-white hover:bg-gray-800 hover:text-white ${serif.className}`}
+                            className={`rounded-2xl border-4 border-gray-800 bg-black p-3 text-white hover:bg-gray-800 hover:text-white ${serif.className}`}
                             onClick={() => checkoutItem(listing)}
                           >
                             {order.status}
