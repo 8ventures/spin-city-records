@@ -72,9 +72,9 @@ const Dropdown: React.FC = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-56 origin-top-right scale-100 transform rounded-md bg-white opacity-100 shadow-lg ring-1 ring-black ring-opacity-5 transition duration-100 ease-out">
+        <div className="absolute right-0 z-50 mt-3 w-56 origin-top-right scale-100 border transform border-gray-700 rounded-md bg-black opacity-100 shadow-lg ring-1 ring-black ring-opacity-5 transition duration-100 ease-out">
           <div
-            className="py-1"
+            className="py-0"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="options-menu"
@@ -82,9 +82,9 @@ const Dropdown: React.FC = () => {
             {currencies.map((ccy, index) => (
               <div
                 key={ccy.code}
-                className={`cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
+                className={`cursor-pointer px-4 py-2 text-sm text-white hover:bg-gray-800 ${
                   index < currencies.length - 1
-                    ? "border-b border-gray-200"
+                    ? "border-b border-gray-800"
                     : ""
                 }`}
                 role="menuitem"
@@ -93,7 +93,7 @@ const Dropdown: React.FC = () => {
                 <img
                   src={ccy.flag}
                   alt={ccy.alt}
-                  className="mr-2 inline h-5 w-5 "
+                  className="mr-3 inline h-5 w-7 rounded-lg"
                 />
                 <span className="font-semibold">{ccy.code}</span>
               </div>

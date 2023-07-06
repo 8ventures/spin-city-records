@@ -41,7 +41,7 @@ export default function Header() {
         </div>
         <div onClick={() => router.push("/cart").catch((e) => console.log(e))}>
           <div className="relative">
-            <ShoppingBagIcon className="w-10 min-w-[2rem] cursor-pointer text-white hover:text-[#FF5500]" />
+            <ShoppingBagIcon className="w-10 min-w-[2rem] cursor-pointer text-gray-600  hover:text-white" />
             {cart.length > 0 && (
               <div className="absolute right-0 top-2 -mr-1 -mt-1 ">
                 <div className="flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
@@ -59,7 +59,7 @@ export default function Header() {
             }
             className="mx-2 cursor-pointer"
           >
-            <UserIcon className="w-10 min-w-[2rem] cursor-pointer text-white hover:text-[#FF5500]" />
+            <UserIcon className="w-10 min-w-[2rem] cursor-pointer text-gray-500  hover:text-white" />
           </div>
         )}
 
@@ -68,9 +68,9 @@ export default function Header() {
             onClick={() =>
               router.push(`/profile/wishList`).catch((e) => console.log(e))
             }
-            className="mx-2 cursor-pointer"
+            className="mx-0 cursor-pointer"
           >
-            <HeartIcon className="w-10 min-w-[2rem] cursor-pointer text-white hover:text-[#FF5500]" />
+            <HeartIcon className="w-10 min-w-[2rem] cursor-pointer text-red-800  hover:text-red-500" />
           </div>
         )}
 
@@ -82,7 +82,7 @@ export default function Header() {
               }
             >
               <button
-                className={` bg-white p-2 text-black hover:bg-[#FF5500] hover:text-[white]  ${serif.className} w-max`}
+                className={`bg-black p-2  text-gray-500 font-black hover:text-white  w-max`}
               >
                 Sign Out
               </button>
@@ -92,7 +92,7 @@ export default function Header() {
           <div className="mx-2 cursor-pointer">
             <SignInButton mode="modal">
               <button
-                className={` bg-white p-2 text-black hover:bg-[#FF5500] hover:text-[white]  ${serif.className} w-max`}
+                className={` bg-black p-2  text-white font-black hover:text-custom-orange  w-max`}
               >
                 Sign In
               </button>

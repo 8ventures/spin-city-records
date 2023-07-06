@@ -8,12 +8,27 @@ import { useRouter } from "next/router";
 import Skeleton from "../../components/skeleton";
 import { serif, sans } from "../../utils/fonts";
 import { TrashIcon } from "@heroicons/react/24/solid";
-
+import { useUser } from "@clerk/clerk-react";
+import {toast} from 'react-toastify';
 export default function Cart() {
   const { cart, removeFromCart } = useContext(CartContext);
   const { currency } = useContext(CurrencyContext);
   const router = useRouter();
 
+  const {user} = useUser();
+  if (!user) {
+    toast.warn('Please, log in or sign up to proceed to checkout!', {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "dark",
+      });
+
+  }
   const checkoutItem = (listing: Listing): void => {
     console.log(listing);
     router
@@ -88,14 +103,14 @@ export default function Cart() {
                       className="text-white  hover:text-black"
                       onClick={() => removeFromCart(listing)}
                     >
-                      <TrashIcon className="h-7 w-7 hover:text-[#FF5500]" />
+                      <TrashIcon className="h-8 w-8 hover:text-custom-orange" />
                     </button>
                     <button
-                      className={`flex h-fit w-fit flex-col items-center bg-white p-2 text-black hover:bg-[#FF5500] hover:text-[white] sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
+                      className={`flex h-fit w-fit flex-col border-2 border-custom-orange rounded-3xl items-center bg-black p-2 text-custom-orange hover:bg-custom-orange hover:text-black hover:border-none sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}
                       onClick={() => checkoutItem(listing)}
                     >
-                      <h3 className="font-semibold ">CHECKOUT</h3>
-                      <span className="text-2xl font-semibold ">
+                      <h3 className="font-semibold px-2">Checkout</h3>
+                      <span className="text-3xl px-2 font-black ">
                         {convertToGlobalCurrency(
                           listing.price,
                           listing.currency,

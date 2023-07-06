@@ -87,6 +87,17 @@ function Selling() {
     return listings.filter((listing) => listing.order?.status === statusFilter);
   };
 
+  const handleClickListings = (listing: Listing) => {
+    const normalizedArtist = listing.album?.artist?.name?.replace(/\s+/g, "-");
+    const normalizedAlbum = listing.album?.name?.replace(/\s+/g, "-");
+    router
+      .push({
+        pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
+        query: { id: listing.album?.id },
+      })
+      .catch((e) => console.log(e));
+  }
+
   const handleChangeStatus = async (orderId: string, status: string) => {
     try {
       await changeStatus.mutateAsync({
@@ -211,7 +222,10 @@ function Selling() {
                             <img
                               src={listing.album.artwork}
                               alt={listing.album.name}
-                              className="h-12 w-12 rounded object-cover"
+                              className="h-12 w-12 rounded object-cover cursor-pointer"
+                              onClick={() =>
+                                handleClickListings(listing)
+                              }
                             />
                             <div className="ml-2 p-3  text-xs md:text-base">
                               {listing.album.name}
@@ -270,7 +284,7 @@ function Selling() {
                       <td className="lg:text-md ml-2 p-3  text-xs md:text-base">
                         <div className="flex h-8 w-8 items-center">
                           <TrashIcon
-                            className="m-1 cursor-pointer"
+                            className="ml-1 cursor-pointer hover:text-custom-orange"
                             onClick={() => handleDeleteListing(listing.id)}
                           />
                         </div>

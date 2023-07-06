@@ -31,7 +31,7 @@ const SelectSpeed = React.forwardRef<HTMLButtonElement, selectSpeedProps>(
         value={field.value}
       >
         <Select.Trigger
-          className="inline-flex  items-center justify-center gap-[10px] rounded-xl bg-black py-2 pl-[15px] text-lg leading-none text-gray-300 outline-none"
+          className="inline-flex  items-center justify-center gap-[10px] rounded-2xl bg-black py-2 pl-[15px] text-lg leading-none text-gray-300 outline-none"
           aria-label="Speed"
           ref={forwardedRef}
         >
@@ -41,24 +41,24 @@ const SelectSpeed = React.forwardRef<HTMLButtonElement, selectSpeedProps>(
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="cursor-pointer overflow-hidden  rounded-xl bg-black text-gray-300">
+          <Select.Content className="cursor-pointer overflow-hidden  rounded-2xl bg-black text-gray-300">
             <Select.Viewport className="p-[10px]">
               <Select.Group>
                 <SelectItem
                   value="33 1/3 RPM"
-                  className="text-lg  outline-none hover:text-[#FF5500]"
+                  className="text-lg  outline-none hover:text-[#FF5500]  hover:bg-gray-900"
                 >
                   33 1/3 RPM
                 </SelectItem>
                 <SelectItem
                   value="45 RPM"
-                  className="text-lg  outline-none hover:text-[#FF5500]"
+                  className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
                 >
                   45 RPM
                 </SelectItem>
                 <SelectItem
                   value="78 RPM"
-                  className="text-lg  outline-none hover:text-[#FF5500]"
+                  className="text-lg  outline-none hover:text-[#FF5500] hover:bg-gray-900"
                 >
                   78 RPM
                 </SelectItem>

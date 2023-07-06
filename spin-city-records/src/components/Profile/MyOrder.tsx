@@ -69,16 +69,16 @@ function MyOrders() {
         <div className="mx-2 flex flex-col text-white md:mx-auto md:w-2/3 ">
           <div className="  flex justify-end text-white ">
             <DropdownMenu.Root>
-              <DropdownMenu.Trigger className="text-md my-4 mr-12 inline outline-none md:text-lg">
+              <DropdownMenu.Trigger className="border-b-2 border-gray-700  p-1 text-md my-4 mr-12 inline outline-none md:text-lg">
                 Filter by Status: {""}
                 {options.find((option) => option.value === statusFilter)?.label}
               </DropdownMenu.Trigger>
-              <DropdownMenu.Content className="w-44 rounded-xl bg-white p-4 font-sans text-sm text-black md:text-lg">
+              <DropdownMenu.Content className="w-44 m-0 rounded-2xl bg-black px-1 font-sans text-sm text-white md:text-lg">
                 {options.map((option) => (
                   <DropdownMenu.Item
                     key={option.value}
                     onSelect={() => handleFilterChange(option.value)}
-                    className="cursor-pointer rounded text-center font-sans outline-none hover:bg-slate-200"
+                    className="py-2 border-t border-b border-gray-700 cursor-pointer rounded text-center font-sans outline-none hover:bg-gray-800 hover:text-white"
                   >
                     {option.label}
                   </DropdownMenu.Item>
@@ -161,7 +161,7 @@ function MyOrders() {
                       <td className="lg:text-md ml-2 p-3 font-sans text-xs md:text-base">
                         {order.status === "Awaiting Payment" ? (
                           <button
-                            className={`bg-white p-2 text-black hover:bg-[#FF5500] hover:text-white ${serif.className}`}
+                            className={`bg-black border-gray-800 border-4 p-3 rounded-2xl text-white hover:bg-gray-800 hover:text-white ${serif.className}`}
                             onClick={() => checkoutItem(listing)}
                           >
                             {order.status}

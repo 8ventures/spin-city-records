@@ -102,11 +102,11 @@ h6 {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-  background-color: #ff5500;
+  background-color: rgb(55 65 81);;
 }
 
 ::-webkit-scrollbar-thumb:hover:horizontal {
-  background-color: #ff5500;
+  background-color: rgb(107 114 128);
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

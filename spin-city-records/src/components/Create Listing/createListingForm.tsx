@@ -16,7 +16,6 @@ import Spinner from "../../components/spinner";
 import { useUser } from "@clerk/nextjs";
 import {toast } from "react-toastify";
 import { serif, sans } from "~/utils/fonts";
-
 const requiredError ={required_error: 'This field is required'}
 
 const validationSchema = z.object({
@@ -91,6 +90,18 @@ export default function CreateListingForm() {
         }
       );
       return;
+    }
+    else{
+      toast.success('Listing created successfully!', {
+        position: "top-left",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "dark",
+        });
     }
     try {
       createListing(e);
@@ -235,7 +246,9 @@ export default function CreateListingForm() {
               ) : (
                 <button
                   type="submit"
-                  className={`mx-5 mt-8 flex h-fit w-fit flex-col items-center bg-white p-2 text-lg text-black hover:bg-[#FF5500] hover:text-[white] sm:my-8 ${serif.className}`}
+                  className={`mx-5 mt-8 flex h-fit w-fit flex-col items-center bg-black border-4 border-gray-800 rounded-full py-2 px-6 text-xl text-custom-orange hover:bg-custom-orange hover:text-black hover:border-custom-orange sm:my-8 font-black`}
+
+
                 >
                   Create Listing
                 </button>
