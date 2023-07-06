@@ -60,7 +60,7 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
       elements,
       confirmParams: {
         return_url:
-          "https://spin-city-records-9at8bhoj8-8ventures.vercel.app/profile/myOrders",
+          "https://spin-city-records-gamma.vercel.app//profile/myOrders",
       },
     });
 
