@@ -88,7 +88,7 @@ export default function Cart() {
                       className="text-white  hover:text-black"
                       onClick={() => removeFromCart(listing)}
                     >
-                      <TrashIcon className="h-7 w-7 hover:bg-white" />
+                      <TrashIcon className="h-7 w-7 hover:text-[#FF5500]" />
                     </button>
                     <button
                       className={`flex h-fit w-fit flex-col items-center bg-white p-2 text-black hover:bg-[#FF5500] hover:text-[white] sm:my-8 sm:text-left md:text-xl xl:text-2xl ${serif.className}`}

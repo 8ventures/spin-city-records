@@ -35,7 +35,7 @@ const SelectWeight = React.forwardRef<HTMLButtonElement, selectWeightProps>(
           aria-label="Weight"
           ref={forwardRef}
         >
-          <Select.Value placeholder="Select Weight" />
+          <Select.Value placeholder="Weight" />
           <Select.Icon className="text-[#FF5500]">
             <ChevronDownIcon />
           </Select.Icon>

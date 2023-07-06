@@ -1,5 +1,6 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80">
+
   <text x="30" y="30" fill="#fff" font-family="DM Serif Display" font-size="30" font-weight="bold" filter="url(#f1)">Spin City</text>
   <text x="30" y="65" fill="#fff" font-family="DM Serif Display" font-size="30" font-weight="bold" filter="url(#f1)">Records</text>
   <circle cx="200" cy="35" r="30" fill="#FF5500" />
