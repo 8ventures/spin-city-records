@@ -123,16 +123,21 @@ export default function AlbumInfoCard({
 
   const handleClickWishlist = async () => {
     if (!user) {
-      toast.error("You must be logged in to add to your wishlist", {
+      toast.error("Please login or sign up", {
         position: "top-center",
         autoClose: 2000,
-        hideProgressBar: false,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: false,
         progress: undefined,
         theme: "dark",
       });
+      router
+        .push({
+          pathname: "/profile/wishlist",
+        })
+        .catch((e) => console.log(e));
       return;
     }
     if (collection) {
