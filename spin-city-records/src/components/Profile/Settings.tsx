@@ -2,8 +2,7 @@ import { UserProfile } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 const Settings = () => {
   return (
-    <div className="flex justify-center items-center align-middle">
-
+    <div className="mt-8 flex items-center justify-center align-middle">
       <UserProfile
         appearance={{
           baseTheme: dark,
@@ -14,9 +13,8 @@ const Settings = () => {
           variables: {
             colorAlphaShade: "#FF5500",
             colorInputBackground: "black",
-
-
-          }}}
+          },
+        }}
       />
     </div>
   );

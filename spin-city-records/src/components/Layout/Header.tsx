@@ -8,7 +8,11 @@ import { CartContext } from "~/components/GlobalContext/CartContext";
 import { useContext } from "react";
 import { serif, sans } from "../../utils/fonts";
 
-import { ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
+import {
+  ShoppingBagIcon,
+  UserIcon,
+  HeartIcon,
+} from "@heroicons/react/24/solid";
 
 export default function Header() {
   const router = useRouter();
@@ -51,13 +55,22 @@ export default function Header() {
         {user.isSignedIn && (
           <div
             onClick={() =>
-              router
-                .push(`/profile/${currentUserId}`)
-                .catch((e) => console.log(e))
+              router.push(`/profile/myOrders`).catch((e) => console.log(e))
             }
             className="mx-2 cursor-pointer"
           >
             <UserIcon className="w-10 min-w-[2rem] cursor-pointer text-white hover:text-[#FF5500]" />
+          </div>
+        )}
+
+        {user.isSignedIn && (
+          <div
+            onClick={() =>
+              router.push(`/profile/wishList`).catch((e) => console.log(e))
+            }
+            className="mx-2 cursor-pointer"
+          >
+            <HeartIcon className="w-10 min-w-[2rem] cursor-pointer text-white hover:text-[#FF5500]" />
           </div>
         )}
 

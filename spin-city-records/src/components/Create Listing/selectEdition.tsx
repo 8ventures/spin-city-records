@@ -1,32 +1,38 @@
-import React from 'react';
-import * as Select from '@radix-ui/react-select';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { SelectItem } from '../../components/selectItem'
-import type { ControllerRenderProps } from 'react-hook-form';
-import type { Album } from './SearchAlbumsForm';
+import React from "react";
+import * as Select from "@radix-ui/react-select";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { SelectItem } from "../../components/selectItem";
+import type { ControllerRenderProps } from "react-hook-form";
+import type { Album } from "./SearchAlbumsForm";
 
 type SelectEditionProps = {
-  editions: { id: number; type: string; }[],
-  field: ControllerRenderProps<{
-    price: number;
-    currency: string;
-    weight: string;
-    format: string;
-    description: string;
-    condition: string;
-    speed: string;
-    album: Album;
-    editions: {value: string}[];
-    }, `editions.${number}.value`>
-}
+  editions: { id: number; type: string }[];
+  field: ControllerRenderProps<
+    {
+      price: number;
+      currency: string;
+      weight: string;
+      format: string;
+      description: string;
+      condition: string;
+      speed: string;
+      album: Album;
+      editions: { value: string }[];
+    },
+    `editions.${number}.value`
+  >;
+};
 
 const SelectEdition = React.forwardRef<HTMLButtonElement, SelectEditionProps>(
-  ({editions, field}, forwardedRef) => {
-
+  ({ editions, field }, forwardedRef) => {
     return (
-      <Select.Root onValueChange={field.onChange} name={field.name} value={field.value}>
+      <Select.Root
+        onValueChange={field.onChange}
+        name={field.name}
+        value={field.value}
+      >
         <Select.Trigger
-          className="inline-flex  bg-black text-gray-300 items-center justify-center rounded-xl px-[15px] text-xl leading-none h-fit py-2 gap-[5px] outline-none"
+          className="inline-flex items-center justify-center gap-[10px] rounded-xl bg-black px-[15px] py-2 text-lg leading-none text-gray-300 outline-none"
           aria-label="Edition"
           ref={forwardedRef}
         >
@@ -36,24 +42,30 @@ const SelectEdition = React.forwardRef<HTMLButtonElement, SelectEditionProps>(
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="cursor-pointer overflow-hidden  bg-black text-gray-300 rounded-xl">
-            <Select.Viewport className="p-[5px]">
+          <Select.Content className="cursor-pointer overflow-hidden  rounded-xl bg-black text-gray-300">
+            <Select.Viewport className="p-[10px]">
               <Select.Group>
                 {editions.map((e, i) => (
-                  <SelectItem key={`Edition ${i}`} value={String(e.id)}>{e.type}</SelectItem>
+                  <SelectItem
+                    key={`Edition ${i}`}
+                    value={String(e.id)}
+                    className="text-md  outline-none hover:text-[#FF5500]"
+                  >
+                    {e.type}
+                  </SelectItem>
                 ))}
               </Select.Group>
             </Select.Viewport>
           </Select.Content>
         </Select.Portal>
       </Select.Root>
-    )
+    );
   }
-)
+);
 
-SelectEdition.displayName= 'SelectEdition'
+SelectEdition.displayName = "SelectEdition";
 
-export default SelectEdition
+export default SelectEdition;
 // {editions.map((edition) => (
 //   <label key={edition.id} className="flex items-center">
 //     <input

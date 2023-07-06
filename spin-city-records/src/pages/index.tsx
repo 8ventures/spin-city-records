@@ -32,40 +32,36 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <html lang="en" />
-        <title>Spin City Records</title>
-        <meta name="description" content="Spin City Records" />
-      </Head>
-    <Layout>
-      <SplideCarousel />
-      <section className="mx-auto flex w-full flex-col items-center justify-center overflow-hidden">
-        <h1
-          className={`mt-8 w-full text-center text-2xl text-white sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl ${serif.className}`}
-        >
-          SHOP MUSIC
-        </h1>
-        <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
-        <MusicSection
-          title={"RECENTLY ADDED"}
-          collection={recentlyAdded}
-          loading={recentlyAddedQueryIsLoading}
-        />
-        <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
-        <MusicSection
-          title={"NEW RELEASES"}
-          collection={recentlyAdded}
-          loading={recentlyAddedQueryIsLoading}
-        />
-        <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
-        <MusicSection
-          title={"BEST SELLERS"}
-          collection={recentlyAdded}
-          loading={recentlyAddedQueryIsLoading}
-        />
-        <div className="my-4" />
-      </section>
-    </Layout>
+
+      <Layout>
+        <SplideCarousel />
+        <section className="mx-auto flex w-full flex-col items-center justify-center overflow-hidden">
+          <h1
+            className={`mt-8 w-full text-center text-2xl text-white sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl ${serif.className}`}
+          >
+            SHOP MUSIC
+          </h1>
+          <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+          <MusicSection
+            title={"RECENTLY ADDED"}
+            collection={recentlyAdded}
+            loading={recentlyAddedQueryIsLoading}
+          />
+          <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+          <MusicSection
+            title={"NEW RELEASES"}
+            collection={recentlyAdded}
+            loading={recentlyAddedQueryIsLoading}
+          />
+          <div className="my-8 w-5/6 border-b border-[#A1A1A1]" />
+          <MusicSection
+            title={"BEST SELLERS"}
+            collection={recentlyAdded}
+            loading={recentlyAddedQueryIsLoading}
+          />
+          <div className="my-4" />
+        </section>
+      </Layout>
     </>
   );
 }

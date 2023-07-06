@@ -14,6 +14,8 @@ import { useRouter } from "next/router";
 import Spinner from "../../components/spinner";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "react-toastify";
+import { serif, sans } from "../../utils/fonts";
+
 const validationSchema = z.object({
   album: z.object({
     artistId: z.string(),
@@ -44,13 +46,11 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 export default function CreateListingForm() {
   const router = useRouter();
   const { user } = useUser();
-  //console.log( user )
 
   const currentUserId = user?.id;
   const sellerCheck = api.sellers.checkIfSeller.useQuery({
     clerkId: currentUserId || "",
   });
-  console.log(sellerCheck);
 
   const {
     mutate: createListing,
@@ -92,7 +92,6 @@ export default function CreateListingForm() {
       return;
     }
     try {
-      //console.log(e)
       createListing(e);
     } catch (error) {
       console.log(error);
@@ -106,13 +105,13 @@ export default function CreateListingForm() {
       ) : isError ? (
         <div>Error Loading form</div>
       ) : (
-        <div className="flex items-center justify-center rounded-xl">
+        <div className="mx-auto flex w-full items-center justify-center md:w-2/3 ">
           <form
-            className="flex flex-col rounded-xl p-4"
+            className="flex w-full flex-col rounded-xl p-4 md:w-2/3"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <label className="my-2 text-xl text-custom-orange">
-              Select Album
+            <label className="text-md sm:text-md my-2 text-[#ff5500]">
+              Select an Album
             </label>
             <Controller
               name="album"
@@ -121,18 +120,18 @@ export default function CreateListingForm() {
                 return <SearchAlbumsForm ref={field.ref} field={field} />;
               }}
             />
-            <label className="my-2 mt-7 text-xl text-custom-orange">
-              Set Price
+            <label className="sm:text-md text-md my-2 mt-7 text-[#ff5500]">
+              Set Price & Currency
             </label>
-            <div className="flex space-x-10">
-              <div className="flex flex-col">
-                <input
-                  type="number"
-                  className="rounded-xl border border-gray-600 bg-inherit px-4 py-2 text-white focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gray-600"
-                  {...register("price", { valueAsNumber: true })}
-                  step={0.01}
-                />
-              </div>
+            <div className="flex flex-row">
+              <input
+                type="number"
+                className="mr-8 rounded-xl border border-gray-600 bg-inherit px-4 py-2 text-lg text-white focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gray-600"
+                {...register("price", { valueAsNumber: true })}
+                step={0.01}
+                min={0}
+                placeholder="Price"
+              />
               <Controller
                 name="currency"
                 control={control}
@@ -141,7 +140,7 @@ export default function CreateListingForm() {
                 }}
               />
             </div>
-            <label className="my-2 mt-7 text-xl text-custom-orange">
+            <label className="sm:text-md text-md my-2 mt-7 text-custom-orange">
               Set Album Features
             </label>
             <div className="flex space-x-10">
@@ -163,7 +162,6 @@ export default function CreateListingForm() {
                 name="format"
                 control={control}
                 render={({ field, fieldState }) => {
-                  console.log(fieldState);
                   return <SelectFormat ref={field.ref} field={field} />;
                 }}
               />
@@ -175,7 +173,7 @@ export default function CreateListingForm() {
                 }}
               />
             </div>
-            <label className="my-2 mt-7 text-xl text-custom-orange">
+            <label className="sm:text-md text-md my-2 mt-7 text-custom-orange">
               Set Album Editions
             </label>
             <div className="flex space-x-2">
@@ -217,12 +215,12 @@ export default function CreateListingForm() {
                 </button>
               )}
             </div>
-            <label className="my-2 mt-7 text-xl text-custom-orange">
+            <label className="sm:text-md text-md my-2 mt-7 text-custom-orange">
               Add Description
             </label>
             <input
               type="text"
-              placeholder="e.g. Plays great!"
+              placeholder=" ..."
               className="rounded-xl border border-gray-600 bg-inherit px-4 py-2 text-white focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gray-600"
               {...register("description")}
             />
@@ -231,8 +229,8 @@ export default function CreateListingForm() {
                 <Spinner />
               ) : (
                 <button
-                  className="mt-8 w-2/4 rounded-xl bg-custom-orange px-4 py-2 text-xl text-white"
                   type="submit"
+                  className={`mx-5 mt-8 flex h-fit w-fit flex-col items-center bg-white p-2 text-lg text-black hover:bg-[#FF5500] hover:text-[white] sm:my-8 ${serif.className}`}
                 >
                   Create Listing
                 </button>
