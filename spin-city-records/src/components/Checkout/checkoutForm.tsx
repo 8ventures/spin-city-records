@@ -20,8 +20,8 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [payment, setPayment] = useState({ status: 'initial' })
-  const [errorMessage, setErrorMessage] = useState('')
+  const [payment, setPayment] = useState({ status: "initial" });
+  const [errorMessage, setErrorMessage] = useState("");
   const { currency } = useContext(CurrencyContext);
 
   const PaymentStatus = ({ status }: { status: string }) => {
@@ -48,19 +48,19 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
       default:
         return null;
     }
-  }
-  
-  const onSubmit= async (event: React.FormEvent<HTMLFormElement> ) => {
+  };
 
-    event.preventDefault()
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (!elements) return
-    setPayment({ status: 'processing' })
+    if (!elements) return;
+    setPayment({ status: "processing" });
 
     const { error } = await stripe!.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/profile/myOrders',
+        return_url:
+          "https://spin-city-records-9at8bhoj8-8ventures.vercel.app/profile/myOrders",
       },
     });
 
@@ -71,9 +71,15 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
   };
 
   return (
-    <form id="payment-form" onSubmit={onSubmit} className="flex flex-col items-center">
-      <AddressElement id="address-element" options={{
-        mode: 'shipping'
+    <form
+      id="payment-form"
+      onSubmit={onSubmit}
+      className="flex flex-col items-center"
+    >
+      <AddressElement
+        id="address-element"
+        options={{
+          mode: "shipping",
         }}
       />
       <PaymentElement
@@ -83,8 +89,8 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
         }}
       />
       <button
-        className={`flex space-x-2 py-2 px-4 sm:my-8 sm:text-left md:text-xl xl:text-2xl
-          ${serif.className} h-fit items-center bg-black text-custom-orange border-2 border-custom-orange rounded-full
+        className={`flex space-x-2 px-4 py-2 sm:my-8 sm:text-left md:text-xl xl:text-2xl
+          ${serif.className} h-fit items-center rounded-full border-2 border-custom-orange bg-black text-custom-orange
           hover:bg-[#FF5500] hover:text-black
           `}
         type="submit"
