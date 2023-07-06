@@ -12,6 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
+      <Head>
+        <title>Spin City Records</title>
+        <meta property="og:title" content="Spin City Records" key="title" />
+      </Head>
       <ClerkProvider
         appearance={{
           baseTheme: dark,
@@ -22,7 +26,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       >
         <CurrencyProvider>
           <CartProvider>
-              <Component {...pageProps} />
+            <Component {...pageProps} />
           </CartProvider>
         </CurrencyProvider>
       </ClerkProvider>

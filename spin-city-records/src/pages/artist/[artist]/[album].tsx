@@ -20,7 +20,7 @@ export default function AlbumPage() {
     undefined
   );
   const id = router.query.id as string;
-  console.log(id)
+  console.log(id);
   const {
     data: albumQueryData,
     error: albumQueryError,

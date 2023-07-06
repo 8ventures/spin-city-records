@@ -13,7 +13,6 @@ const convertToGlobalCurrency = (
   currency: string,
   globalCurrency: string
 ): number => {
-  console.log(price)
   const currencyRate = conversionRates[currency.toUpperCase()];
   const globalCurrencyRate = conversionRates[globalCurrency];
 

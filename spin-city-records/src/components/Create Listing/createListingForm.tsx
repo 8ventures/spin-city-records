@@ -12,7 +12,7 @@ import { zodResolver} from '@hookform/resolvers/zod'
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
-import Spinner from '../../components/spinner'
+import Spinner from "../../components/spinner";
 import { useUser } from "@clerk/nextjs";
 import {toast } from "react-toastify";
 import { serif, sans } from "~/utils/fonts";
@@ -28,7 +28,7 @@ const validationSchema = z.object({
     label: z.string(),
     name: z.string(),
     updatedAt: z.date(),
-    year: z.number()
+    year: z.number(),
   }),
   price: z.number().gt(1, {message: "Price must be at least 1 of your local currency"}),
   currency: z.string(requiredError),
@@ -44,55 +44,60 @@ const validationSchema = z.object({
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
-
-export default function CreateListingForm () {
-
+export default function CreateListingForm() {
   const router = useRouter();
   const { user } = useUser();
-  //console.log( user )
 
   const currentUserId = user?.id;
   const sellerCheck = api.sellers.checkIfSeller.useQuery({
     clerkId: currentUserId || "",
   });
-    console.log(sellerCheck)
 
-  const { mutate: createListing, isSuccess, isLoading: isListingLoading } = api.listings.createListing.useMutation();
+  const {
+    mutate: createListing,
+    isSuccess,
+    isLoading: isListingLoading,
+  } = api.listings.createListing.useMutation();
 
-  const { data: editions, isLoading: isEditionsLoading, isError } = api.editions.getAll.useQuery();
+  const {
+    data: editions,
+    isLoading: isEditionsLoading,
+    isError,
+  } = api.editions.getAll.useQuery();
 
   const {register, handleSubmit, control, formState: {errors} } = useForm<ValidationSchema>({resolver: zodResolver(validationSchema)});
   const {fields, append, remove } = useFieldArray({
     control,
-    name: 'editions'
+    name: "editions",
   });
 
   if (isSuccess) {
-    router.push('/profile/selling')
-      .catch((e) => console.log(e))
+    router.push("/profile/selling").catch((e) => console.log(e));
   }
 
   const onSubmit = (e: ValidationSchema) => {
     if (!sellerCheck.data) {
-      toast.error('You need to become a seller firstly to create new listings!', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "dark",
-        });
-      return
+      toast.error(
+        "You need to become a seller firstly to create new listings!",
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "dark",
+        }
+      );
+      return;
     }
     try {
-      //console.log(e)
-      createListing(e)
+      createListing(e);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div>
@@ -101,163 +106,140 @@ export default function CreateListingForm () {
       ) : isError ? (
         <div>Error Loading form</div>
       ) : (
-        <div className="flex justify-center items-center rounded-xl">
-          <form className="flex flex-col md:w-2/5 sm:3-4 p-4 rounded-xl text-white" onSubmit={handleSubmit(onSubmit)}>
-            {/* <label className="my-2 text-xl">Select Album</label> */}
+        <div className="mx-auto flex w-full items-center justify-center md:w-2/3 ">
+          <form
+            className="flex w-full flex-col rounded-xl p-4 md:w-2/3"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <label className="text-md sm:text-md my-2 text-[#ff5500]">
+              Select an Album
+            </label>
             <Controller
-                name="album"
+              name="album"
+              control={control}
+              render={({ field }) => {
+                return <SearchAlbumsForm ref={field.ref} field={field} />;
+              }}
+            />
+            <label className="sm:text-md text-md my-2 mt-7 text-[#ff5500]">
+              Set Price & Currency
+            </label>
+            <div className="flex flex-row">
+              <input
+                type="number"
+                className="mr-8 rounded-xl border border-gray-600 bg-inherit px-4 py-2 text-lg text-white focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gray-600"
+                {...register("price", { valueAsNumber: true })}
+                step={0.01}
+                min={0}
+                placeholder="Price"
+              />
+              <Controller
+                name="currency"
                 control={control}
                 render={({ field }) => {
-                  return <SearchAlbumsForm ref={field.ref} field={field} />;
+                  return <SelectCurrency ref={field.ref} field={field} />;
                 }}
               />
-            <label className="my-2 text-xl mt-7">Set Price</label>
-            <div className="flex space-x-10 flex-wrap justify-center ">
-              <div className="flex flex-col">
-                <div className="flex flex-col items-center">
-                <input
-                  type="number"
-                  className="rounded-xl border border-gray-600 bg-inherit text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
-                  {...register("price", {valueAsNumber: true}) }
-                  step={0.01}
-                />
-                {errors.price && (
-                <p className="text-md text-red-500 mt-2"> {errors.price.message}
-                </p>
-                )}
-              </div>
-              </div>
-              <div className="flex flex-col items-center">
-                <Controller
-                  name="currency"
-                  control={control}
-                  render={({ field }) => {
-                    return <SelectCurrency ref={field.ref} field={field} />;
-                  }}
-                />
-                {errors.currency && (
-                <p className="text-md text-red-500 mt-2"> {errors.currency.message}
-                </p>
-                )}
-              </div>
             </div>
-            <label className="my-2 text-xl mt-7">Set Album Features</label>
-            <div className="grid md:grid-cols-2 grid-cols-1">
-              <div className="flex flex-col items-center">
-                <Controller
-                  name="speed"
-                  control={control}
-                  render={({ field }) => {
-                    return <SelectSpeed ref={field.ref} field={field} />;
-                  }}
-                />
-                {errors.speed && (
-                <p className="text-md text-red-500 mt-2"> {errors.speed.message}
-                </p>
-                )}
-              </div>
-              <div className="flex flex-col items-center">
-                <Controller
-                  name="weight"
-                  control={control}
-                  render={({ field }) => {
-                    return <SelectWeight ref={field.ref} field={field} />;
-                  }}
-                />
-                {errors.weight && (
-                <p className="text-md text-red-500 mt-2"> {errors.weight.message}
-                </p>
-                )}
-              </div>
-              <div className="flex flex-col items-center">
-                <Controller
-                  name="format"
-                  control={control}
-                  render={({ field, fieldState}) => {
-                    console.log(fieldState)
-                    return <SelectFormat ref={field.ref} field={field} />;
-                  }}
-                />
-                {errors.format && (
-                <p className="text-md text-red-500 mt-2"> {errors.format.message}
-                </p>
-                )}
-              </div>
-              <div className="flex flex-col items-center">
-                <Controller
-                  name="condition"
-                  control={control}
-                  render={({ field }) => {
-                    return <SelectCondition ref={field.ref} field={field} />;
-                  }}
-                />
-                {errors.condition && (
-                <p className="text-md text-red-500 mt-2"> {errors.condition.message}
-                </p>
-                )}
-              </div>
-            </div>
-            <label className="my-2 text-xl mt-7">Set Album Editions</label>
-            <div className="flex space-x-2">
-            <Controller
-              name={`editions.${0}.value`}
-              control={control}
-              render={({ field }) => {
-                return <SelectEdition field={field} editions={editions || []} />;
-              }}
-              />
-            {fields.slice(1).map((field, index) => (
+            <label className="sm:text-md text-md my-2 mt-7 text-custom-orange">
+              Set Album Features
+            </label>
+            <div className="flex space-x-10">
               <Controller
-              key={field.id}
-              name={`editions.${index + 1}.value` as const}
-              control={control}
-              render={({ field }) => {
-                return <SelectEdition field={field} editions={editions || []} />;
-              }}
+                name="speed"
+                control={control}
+                render={({ field }) => {
+                  return <SelectSpeed ref={field.ref} field={field} />;
+                }}
               />
-            ))}
-            <button
-              type="button"
-              onClick={() => append({value: '1'})}
-              className="flex items-center justify-center h-9 w-9 bg-black rounded-xl "
-            >
-              <PlusIcon className=" h-5 w-5 ml-1"/>
-            </button>
-            {fields.length > 1 &&
-            <button
-              type="button"
-              onClick={() => remove(fields.length -1 )}
-              className="flex items-center justify-center h-9 w-9 bg-black rounded-xl "
-            >
-              <MinusIcon className=" h-5 w-5 ml-1"/>
-            </button>
-            }
-            {errors.editions && (
-              <p className="text-md text-red-500 mt-2"> {errors.editions.message}
-              </p>
-            )}   
+              <Controller
+                name="weight"
+                control={control}
+                render={({ field }) => {
+                  return <SelectWeight ref={field.ref} field={field} />;
+                }}
+              />
+              <Controller
+                name="format"
+                control={control}
+                render={({ field, fieldState }) => {
+                  return <SelectFormat ref={field.ref} field={field} />;
+                }}
+              />
+              <Controller
+                name="condition"
+                control={control}
+                render={({ field }) => {
+                  return <SelectCondition ref={field.ref} field={field} />;
+                }}
+              />
             </div>
-            <label className="my-2 text-xl mt-7">Add Description</label>
+            <label className="sm:text-md text-md my-2 mt-7 text-custom-orange">
+              Set Album Editions
+            </label>
+            <div className="flex space-x-2">
+              <Controller
+                name={`editions.${0}.value`}
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <SelectEdition field={field} editions={editions || []} />
+                  );
+                }}
+              />
+              {fields.slice(1).map((field, index) => (
+                <Controller
+                  key={field.id}
+                  name={`editions.${index + 1}.value` as const}
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <SelectEdition field={field} editions={editions || []} />
+                    );
+                  }}
+                />
+              ))}
+              <button
+                type="button"
+                onClick={() => append({ value: "1" })}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-black "
+              >
+                <PlusIcon className="ml-1 h-5 w-5 text-custom-orange" />
+              </button>
+              {fields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => remove(fields.length - 1)}
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-black "
+                >
+                  <MinusIcon className="ml-1 h-5 w-5 text-custom-orange" />
+                </button>
+              )}
+            </div>
+            <label className="sm:text-md text-md my-2 mt-7 text-custom-orange">
+              Add Description
+            </label>
             <input
               type="text"
-              placeholder="e.g. Plays great!"
-              className="rounded-xl border border-gray-600 bg-inherit text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
+              placeholder=" ..."
+              className="rounded-xl border border-gray-600 bg-inherit px-4 py-2 text-white focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gray-600"
               {...register("description")}
             />
             {errors.description && (
               <p className="text-md text-red-500 mt-2"> {errors.description.message}
               </p>
-            )}          
+            )}
             <div className="flex justify-center align-middle">
-
-            {isListingLoading || isSuccess? (
-              <Spinner/>
-                ) : (
-                <button className={` ${serif.className} bg-[#FF5500] text-white hover:bg-white hover:text-black text-xl py-2 px-4 mt-8 w-2/4`} type="submit">
+              {isListingLoading || isSuccess ? (
+                <Spinner />
+              ) : (
+                <button
+                  type="submit"
+                  className={`mx-5 mt-8 flex h-fit w-fit flex-col items-center bg-white p-2 text-lg text-black hover:bg-[#FF5500] hover:text-[white] sm:my-8 ${serif.className}`}
+                >
                   Create Listing
                 </button>
-              )
-            }
+              )}
             </div>
           </form>
         </div>

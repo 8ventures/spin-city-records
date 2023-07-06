@@ -78,10 +78,12 @@ function WishList() {
   const handleClick = (album: Album) => {
     const normalizedArtist = album.artist.name.replace(/\s+/g, "-");
     const normalizedAlbum = album.name.replace(/\s+/g, "-");
-    router.push({
-      pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
-      query: { id: album.id },
-    }).catch((err) => console.log(err));
+    router
+      .push({
+        pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
+        query: { id: album.id },
+      })
+      .catch((err) => console.log(err));
   };
 
   function findLowestPriceListing(listings: Listing[], currency: string) {
@@ -122,7 +124,7 @@ function WishList() {
   if (collectionsQueryLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <div className="mx-auto justify-center text-center align-middle">
+        <div className="mx-auto flex items-center justify-center">
           <Spinner />
         </div>
       </div>

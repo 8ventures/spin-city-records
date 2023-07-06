@@ -82,19 +82,19 @@ h6 {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #000;
+  background: #333;
   border-radius: 5px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #000;
+  background: #333;
   border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #000;
+  background: #333;
 }
 /* Styles for horizontal scrollbar */
 ::-webkit-scrollbar-horizontal {
@@ -102,9 +102,20 @@ h6 {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-  background-color: #000;
+  background-color: #ff5500;
 }
 
 ::-webkit-scrollbar-thumb:hover:horizontal {
   background-color: #ff5500;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

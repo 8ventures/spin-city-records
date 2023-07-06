@@ -33,22 +33,15 @@ export default function SortBy({
           Price
         </DropdownMenu.Label>
         <DropdownMenu.Item
-          className="text-md cursor-pointer text-right outline-none"
+          className="text-md cursor-pointer text-left outline-none"
           onClick={() => handleSortOption("lowToHigh")}
         >
-          {sortOption === "lowToHigh" && (
-            <CheckIcon className="inline-block h-4 w-4 text-sm text-black " />
-          )}{" "}
           {`Low to High`}
         </DropdownMenu.Item>
         <DropdownMenu.Item
-          className="text-md cursor-pointer text-right outline-none"
+          className="text-md cursor-pointer text-left outline-none"
           onClick={() => handleSortOption("highToLow")}
         >
-          {" "}
-          {sortOption === "highToLow" && (
-            <CheckIcon className=" text-md inline-block h-4 w-4 text-black " />
-          )}{" "}
           {`High to Low`}
         </DropdownMenu.Item>
         <DropdownMenu.Separator className="my-4 border-b" />
