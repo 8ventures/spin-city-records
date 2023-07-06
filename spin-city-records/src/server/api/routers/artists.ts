@@ -27,7 +27,6 @@ export const artistsRouter = createTRPCRouter({
         });
         return artist;
       } catch (e) {
-        console.log("here");
         console.log(e);
       }
     }),

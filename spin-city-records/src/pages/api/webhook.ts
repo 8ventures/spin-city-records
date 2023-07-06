@@ -32,7 +32,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     transformer: SuperJSON
   });
 
-  console.log(webhookSecret)
   console.log('Running webook')
   if (req.method === 'POST') {
     const buf = await buffer(req);
@@ -57,8 +56,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         console.log(`PaymentIntent status: ${paymentIntent.status}`);
-        const orderId = paymentIntent.metadata?.orderId
+        const orderId = paymentIntent.metadata?.order_id
+        console.log(paymentIntent.metadata)
         if (orderId) {
+          console.log('Updating OrderID: ', orderId)
           client.orders.changeStatus.mutate({
             orderId,
             status: 'Awaiting Shipment'

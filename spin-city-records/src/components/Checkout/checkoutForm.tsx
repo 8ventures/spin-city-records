@@ -20,9 +20,8 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [payment, setPayment] = useState({ status: "initial" });
-  const [errorMessage, setErrorMessage] = useState("");
-  const { handleSubmit, control } = useForm();
+  const [payment, setPayment] = useState({ status: 'initial' })
+  const [errorMessage, setErrorMessage] = useState('')
   const { currency } = useContext(CurrencyContext);
 
   const PaymentStatus = ({ status }: { status: string }) => {
@@ -49,16 +48,19 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
       default:
         return null;
     }
-  };
+  }
+  
+  const onSubmit= async (event: React.FormEvent<HTMLFormElement> ) => {
 
-  const onSubmit = async () => {
-    if (!elements) return;
-    setPayment({ status: "processing" });
+    event.preventDefault()
+
+    if (!elements) return
+    setPayment({ status: 'processing' })
 
     const { error } = await stripe!.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:3000/order/",
+        return_url: 'http://localhost:3000/profile/myOrders',
       },
     });
 
@@ -69,15 +71,9 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
   };
 
   return (
-    <form
-      id="payment-form"
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col items-center"
-    >
-      <AddressElement
-        id="address-element"
-        options={{
-          mode: "shipping",
+    <form id="payment-form" onSubmit={onSubmit} className="flex flex-col items-center">
+      <AddressElement id="address-element" options={{
+        mode: 'shipping'
         }}
       />
       <PaymentElement
