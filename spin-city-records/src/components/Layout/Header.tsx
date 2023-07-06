@@ -92,7 +92,7 @@ export default function Header() {
           <div className="mx-2 cursor-pointer">
             <SignInButton mode="modal">
               <button
-                className={` bg-black p-2  text-white font-black hover:text-custom-orange  w-max`}
+                className={` bg-black p-2  text-gray-500 font-black hover:text-white  w-max`}
               >
                 Sign In
               </button>
