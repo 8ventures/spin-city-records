@@ -64,6 +64,14 @@ export default function MusicSection({
     return lowestPriceListing;
   }
 
+  function truncateText(text: string, limit: number) {
+    const words = text.split(" ");
+    if (words.length > limit) {
+      return words.slice(0, limit).join(" ") + "...";
+    }
+    return text;
+  }
+
   return (
     <>
       <h2
@@ -74,11 +82,11 @@ export default function MusicSection({
       {loading ? (
         <div className="mb-8  h-36 w-5/6 animate-pulse rounded-xl bg-zinc-800 sm:h-40 md:h-44 lg:h-48 xl:h-64"></div>
       ) : (
-        <div className="mx-auto  mb-2 flex w-5/6 max-w-full flex-row overflow-x-hidden overflow-y-hidden rounded-xl hover:overflow-x-visible ">
+        <div className="mx-auto  mb-2 flex w-5/6 max-w-full flex-row space-x-8 overflow-x-hidden overflow-y-hidden rounded-xl hover:overflow-x-visible ">
           {collection.albums.map((album) => (
             <div
               key={album.id}
-              className="mx-8 mt-2 flex flex-shrink-0 cursor-pointer flex-col flex-wrap items-center justify-center"
+              className="w-58 mx-8 mt-2 flex  flex-shrink-0 cursor-pointer flex-col flex-wrap items-center justify-center "
               onClick={() => handleClick(album)}
             >
               <img
@@ -89,12 +97,12 @@ export default function MusicSection({
               <p
                 className={`mt-4 text-center text-white ${sans.className} text-sm sm:text-sm md:text-base xl:text-base`}
               >
-                {album.artist.name}
+                {truncateText(album.artist.name, 5)}
               </p>
               <p
                 className={`text-center text-white ${sans.className} text-sm sm:text-sm md:text-base xl:text-base`}
               >
-                {album.name}
+                {truncateText(album.name, 5)}
               </p>
 
               {album.listings.length > 0 ? (
