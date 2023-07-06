@@ -7,14 +7,17 @@ import SelectCondition from "./selectCondition";
 import SelectCurrency from "./selectCurrency";
 import SelectEdition from "./selectEdition";
 import Skeleton from "../skeleton";
-import { z } from "zod";
+import { z } from 'zod';
+import { zodResolver} from '@hookform/resolvers/zod'
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import Spinner from "../../components/spinner";
 import { useUser } from "@clerk/nextjs";
-import { toast } from "react-toastify";
-import { serif, sans } from "../../utils/fonts";
+import {toast } from "react-toastify";
+import { serif, sans } from "~/utils/fonts";
+
+const requiredError ={required_error: 'This field is required'}
 
 const validationSchema = z.object({
   album: z.object({
@@ -27,19 +30,17 @@ const validationSchema = z.object({
     updatedAt: z.date(),
     year: z.number(),
   }),
-  price: z.number(),
-  currency: z.string(),
-  speed: z.string(),
-  weight: z.string(),
-  format: z.string(),
-  condition: z.string(),
-  editions: z
-    .object({
-      value: z.string(),
-    })
-    .array(),
-  description: z.string(),
-});
+  price: z.number().gt(1, {message: "Price must be at least 1 of your local currency"}),
+  currency: z.string(requiredError),
+  speed: z.string(requiredError),
+  weight: z.string(requiredError),
+  format: z.string(requiredError),
+  condition: z.string(requiredError),
+  editions: z.object({
+    value: z.string()
+  }).array().min(1, {message: 'Must choose at leasst on edtion type'}),
+  description: z.string().min(5, { message: "Must be at least 5 character long" }),
+})
 
 type ValidationSchema = z.infer<typeof validationSchema>;
 
@@ -64,8 +65,8 @@ export default function CreateListingForm() {
     isError,
   } = api.editions.getAll.useQuery();
 
-  const { register, handleSubmit, control } = useForm<ValidationSchema>({});
-  const { fields, append, remove } = useFieldArray({
+  const {register, handleSubmit, control, formState: {errors} } = useForm<ValidationSchema>({resolver: zodResolver(validationSchema)});
+  const {fields, append, remove } = useFieldArray({
     control,
     name: "editions",
   });
@@ -224,6 +225,10 @@ export default function CreateListingForm() {
               className="rounded-xl border border-gray-600 bg-inherit px-4 py-2 text-white focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gray-600"
               {...register("description")}
             />
+            {errors.description && (
+              <p className="text-md text-red-500 mt-2"> {errors.description.message}
+              </p>
+            )}
             <div className="flex justify-center align-middle">
               {isListingLoading || isSuccess ? (
                 <Spinner />

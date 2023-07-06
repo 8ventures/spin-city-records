@@ -72,7 +72,7 @@ export default function MusicSection({
         <span className="bg-white px-4">{title}</span>
       </h2>
       {loading ? (
-        <div className="mb-8  h-36 w-5/6 animate-pulse rounded-xl bg-gray-200 sm:h-40 md:h-44 lg:h-48 xl:h-64"></div>
+        <div className="mb-8  h-36 w-5/6 animate-pulse rounded-xl bg-zinc-800 sm:h-40 md:h-44 lg:h-48 xl:h-64"></div>
       ) : (
         <div className="mx-auto  mb-2 flex w-5/6 max-w-full flex-row overflow-x-hidden overflow-y-hidden rounded-xl hover:overflow-x-visible ">
           {collection.albums.map((album) => (

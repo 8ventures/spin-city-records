@@ -6,13 +6,17 @@ import stripe from "../../../public/stripe-ar21.svg";
 import { Separator } from "@radix-ui/react-separator";
 import Spinner from "../spinner";
 import { z } from 'zod';
+import { zodResolver} from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm, Controller, useFormState, useFieldArray } from "react-hook-form";
 import SelectLocation from "../onBoardingForm/selectLocation";
+import { sans, serif} from '../../utils/fonts'
+
+const requiredError ={required_error: 'This field is required'}
 
 const validationSchema = z.object({
-    name: z.string(),
-    bio: z.string(),
-    location: z.string()
+    name: z.string().min(5, { message: "Must be at least 5 character long" }),
+    bio: z.string().min(5, { message: "Must be at least 5 character long" }),
+    location: z.string(requiredError)
 })
 type ValidationSchema = z.infer<typeof validationSchema>;
 
@@ -21,7 +25,7 @@ export default function OnboardingForm() {
   const router = useRouter()
 
   const { mutate: createSeller, data: url, isSuccess, isLoading } = api.sellers.create.useMutation();
-  const {register, handleSubmit, control,} = useForm<ValidationSchema>({});
+  const {register, handleSubmit, control, formState: {errors}} = useForm<ValidationSchema>({resolver: zodResolver(validationSchema)});
 
 
   if (isSuccess && url) {
@@ -33,52 +37,57 @@ export default function OnboardingForm() {
   }
 
   return (
-    <div className="flex justify-center items-center rounded-xl">
-      <form className="flex flex-col items-center p-4 rounded-xl" onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-full">
-          <div className="flex space-x-5">
-            <div className="flex flex-col">
-              <label className="my-2 text-xl text-custom-orange">Enter Name</label>
-              <input
-                type="text"
-                placeholder="e.g. Vince's Vinyl"
-                className="rounded-xl border border-gray-600 bg-inherit text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
-                {...register("name")}
-              />
+    <div className={`flex justify-center items-center rounded-xl text-white ${sans.className}`}>
+      <form className="flex flex-col w-5/6 md:w-1/2 xl:w-2/5 items-center p-4 rounded-xl" onSubmit={handleSubmit(onSubmit)}>
+          <label className="my-2 text-xl ">Enter Name</label>
+          <div className="flex space-x-5 flex-wrap items-center">
+            <input
+              type="text"
+              placeholder="e.g. Vince's Vinyl"
+              className="rounded-xl border border-gray-600 bg-inherit text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
+              {...register("name")}
+            />
+            {errors.name && (
+                <p className="text-md text-red-500 mt-2"> {errors.name.message}
+                </p>
+            )}
+          <Controller
+            name="location"
+            control={control}
+            render={({ field }) => {
+              return <SelectLocation ref={field.ref} field={field} />;
+            }}
+            />
+            {errors.location && (
+                <p className="text-md text-red-500 mt-2"> {errors.location.message}
+                </p>
+            )}
             </div>
-            <div className="flex flex-col">
-              <label className="my-2 text-xl text-custom-orange">Choose Location</label>
-              <Controller
-                name="location"
-                control={control}
-                render={({ field }) => {
-                  return <SelectLocation ref={field.ref} field={field} />;
-                }}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <label className="my-2 text-xl text-custom-orange">Enter Bio</label>
+          <div className="flex flex-col items-center w-full">
+            <label className="my-2 text-xl ">Enter Bio</label>
             <input
               type="text"
               placeholder="e.g. UK seller, Fast delivery, PM me for any questions!"
-              className="rounded-xl border border-gray-600 bg-inherit text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
+              className="rounded-xl border w-full border-gray-600 bg-inherit text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
               {...register("bio")}
               />
+              {errors.bio && (
+                <p className="text-md text-red-500 mt-2"> {errors.bio.message}
+                </p>
+            )}
           </div>
-        </div>
-        <div className=' text-white h-fit text-xl text-center my-2 mt-6 mb-5'>
+        <div className=' text-white h-fit text-lg text-center my-2 mt-6 mb-5'>
           We use Stripe to make sure you get paid on time and to keep your personal bank and details secure.
           <br/>Click <strong className="font-black">Accept and Continue</strong> to set up your payments on Stripe.
         </div>
-        <div className="flex space-between h-32 items-center my-2">
+        <div className="md:flex flex-wrap space-between h-32 items-center mt-2 hidden">
           <Image
           src={circle as StaticImageData}
           alt="circle"
-          className=" h-24 w-24 mr-5"
+          className=" h-24 w-24 md:mr-5"
           />
           <Separator
-            className=" bg-slate-400 data-[orientation=vertical]:h-5/6 data-[orientation=vertical]:w-px mx-[15px]"
+            className=" bg-slate-400 data-[orientation=vertical]:h-5/6 data-[orientation=vertical]:w-px mx-[15px] "
             orientation="vertical"
           />
           <Image
@@ -87,13 +96,13 @@ export default function OnboardingForm() {
           className=" h-24 w-48"
           />
         </div>
-        <div className="mt-5">
+        <div className="mb-2">
           {isLoading || isSuccess? (
             <Spinner/>
             ) : (
-              <button className="text-custom-orange text-3xl mt-0" type='submit'>
-                Accept and Continue
-              </button>
+              <button className={` ${serif.className} bg-[#FF5500] text-white hover:bg-white hover:text-black text-xl py-2 px-4 mt-8`} type="submit">
+                  Accept and Continue
+                </button>
             )
           }
         </div>
