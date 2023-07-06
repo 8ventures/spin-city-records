@@ -100,7 +100,7 @@ export default function OnboardingForm() {
           {isLoading || isSuccess? (
             <Spinner/>
             ) : (
-              <button className={` ${serif.className} bg-[#FF5500] text-white hover:bg-white hover:text-black text-xl py-2 px-4 mt-8`} type="submit">
+              <button className={` bg-black border-4 border-gray-900 font-black rounded-full text-custom-orange hover:bg-custom-orange hover:text-black text-xl py-2 px-4 mt-8`} type="submit">
                   Accept and Continue
                 </button>
             )

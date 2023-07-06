@@ -74,13 +74,10 @@ const SearchAlbumsForm = React.forwardRef<
   HTMLButtonElement,
   SearchAlbumsFormProps
 >(({ field }, forwardedRef) => {
-  //const [inputAlbum, setInputAlbum] = useState<string | null>(null);
 
   const { data: albums } = api.albums.getAll.useQuery();
-  console.log(albums);
 
   const albumsData = albums;
-  // const defaultListBox = albumsData;
   const [selectedItem, setSelectedItem] = useState<Album | null>(null);
 
   useEffect(() => {
@@ -93,14 +90,7 @@ const SearchAlbumsForm = React.forwardRef<
     setSelectedItem(item);
   };
 
-  // const handleSelect = (item: Album, name: string, index: number) => {
-  //   if (item && item.id) {
-  //     console.log('handleSelect called', item, name, index);
-  //     //console.log({item})
-  //     setForm(prevForm => ({ ...prevForm, albumId: item.id }));
-  //     //setInputAlbum(item.id);
-  //   }
-  // };
+
 
   const ItemContents: React.FC<{
     index: number;

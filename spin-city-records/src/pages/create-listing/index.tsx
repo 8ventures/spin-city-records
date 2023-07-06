@@ -1,3 +1,5 @@
+// @ts-nocheck
+// old code
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -73,7 +75,7 @@ const CreateListingPage = () => {
   return (
     <Layout>
       <form
-        className="flex flex-col gap-3 rounded-lg bg-gray-800 p-4"
+        className="mx-auto flex w-2/3 flex-col gap-3 rounded-lg bg-gray-800"
         onSubmit={handleSubmit}
       >
         <SearchAlbumsForm setForm={setForm} />

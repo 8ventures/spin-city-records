@@ -119,7 +119,7 @@ export default function ListingInfoCard({
           <button
             onClick={handleClickSelectListing}
             className={
-              "mx-2 flex w-6 items-center justify-center rounded-xl text-base font-semibold text-white lg:w-6"
+              "mx-2 flex w-6 items-center justify-center rounded-xl text-base font-semibold text-custom-orange lg:w-6"
             }
           >
             {isCurrentListing ? <MinusIcon /> : <PlusIcon />}

@@ -31,10 +31,11 @@ interface Artist {
 }
 
 const styles = {
+  container: "min-w-max w-full",
   input:
-    "h-12 w-full bg-transparent pl-12 text-lg text-white outline-none rounded-xl border border-gray-500",
+    "h-12 w-full min-w-max bg-transparent pl-12 text-lg text-white outline-none rounded-xl border border-gray-500",
   inputFocus:
-    "h-12 w-full bg-transparent pl-12 text-lg text-white outline-none rounded-xl border shadow-lg shadow-gray-500/10",
+    "h-12 w-full bg-transparent min-w-max pl-12 text-lg text-white outline-none rounded-xl border shadow-lg shadow-gray-500/10",
   query: "text-oldsilver-800 placeholder-oldsilver-400",
   typeahead: "text-slate-500",
   cancelButton: `absolute w-10 h-12 inset-y-0 left-0 items-center justify-center z-10 text-crystal-600 inline-flex sm:hidden`,
@@ -45,9 +46,9 @@ const styles = {
   groupHeading:
     "cursor-default mt-2 mb-0.5 px-1.5 uppercase text-sm text-center text-custom-orange",
   match: "font-bold",
-  item: "cursor-pointer p-0 text-md whitespace-nowrap text-ellipsis overflow-hidden text-white",
+  item: "cursor-pointer p-0 text-md whitespace-nowrap text-ellipsis overflow-hidden text-white min-w-fit",
   highlightedItem:
-    "cursor-pointer p-0 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-oldsilver-900 rounded-md bg-gradient-to-t from-crystal-100 to-white",
+    "cursor-pointer min-w-fit p-0 text-lg whitespace-nowrap sm:text-ellipsis overflow-hidden text-oldsilver-900 rounded-md bg-gradient-to-t from-crystal-100 to-white",
   noItems: "cursor-default text-center my-20",
 };
 
@@ -61,30 +62,32 @@ const SearchAlbumsHome = () => {
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
-
-
   useEffect(() => {
     if (selectedAlbum && selectedAlbum.id && artistsData) {
       // Get artist details from all artists using artistId of selectedAlbum
-      const artist = artistsData.find(a => a.id === selectedAlbum.artistId);
+      const artist = artistsData.find((a) => a.id === selectedAlbum.artistId);
       if (artist) {
         const normalizedArtist = artist.name.replace(/\s+/g, "-");
         const normalizedAlbum = selectedAlbum.name.replace(/\s+/g, "-");
-        router.push({
-          pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
-          query: { id: selectedAlbum.id },
-        }).catch((e) => console.error(e));
+        router
+          .push({
+            pathname: `/artist/${normalizedArtist}/${normalizedAlbum}`,
+            query: { id: selectedAlbum.id },
+          })
+          .catch((e) => console.error(e));
       }
     }
-}, [selectedAlbum]);
+  }, [selectedAlbum]);
 
   useEffect(() => {
     if (selectedArtist && selectedArtist.id) {
       const normalizedArtist = selectedArtist.name.replace(/\s+/g, "-");
-      router.push({
-        pathname: `/artist/${normalizedArtist}/`,
-        query: { id: selectedArtist.id },
-      }).catch((e) => console.log(e));
+      router
+        .push({
+          pathname: `/artist/${normalizedArtist}/`,
+          query: { id: selectedArtist.id },
+        })
+        .catch((e) => console.log(e));
     }
   }, [selectedArtist]);
 
