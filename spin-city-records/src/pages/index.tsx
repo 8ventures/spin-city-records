@@ -20,6 +20,30 @@ export default function Home() {
 
   const recentlyAdded: Collection = recentlyAddedQueryData as Collection;
 
+  const bestSellersID = "cljr3oies0000uaactjnx1j65";
+
+  const {
+    data: bestSellersQueryData,
+    error: bestSellersQueryError,
+    isLoading: bestSellersQueryIsLoading,
+    isError: bestSellersQueryIsError,
+    isSuccess: bestSellersQueryIsSuccess,
+  } = api.collections.getById.useQuery({ id: bestSellersID });
+
+  const bestSellers: Collection = bestSellersQueryData as Collection;
+
+  const beatlesID = "cljr0q69c0000uam80vj6a3iy";
+
+  const {
+    data: beatlesQueryData,
+    error: beatlesQueryError,
+    isLoading: beatlesQueryIsLoading,
+    isError: beatlesQueryIsError,
+    isSuccess: beatlesQueryIsSuccess,
+  } = api.collections.getById.useQuery({ id: beatlesID });
+
+  const beatles: Collection = beatlesQueryData as Collection;
+
   // Error Handling
   if (recentlyAddedQueryIsError) {
     return (
@@ -32,7 +56,6 @@ export default function Home() {
 
   return (
     <>
-
       <Layout>
         <SplideCarousel />
         <section className="mx-auto flex w-full flex-col items-center justify-center overflow-hidden">
@@ -49,14 +72,14 @@ export default function Home() {
           />
           <div className="my-8 w-5/6 border-b border-gray-600" />
           <MusicSection
-            title={"NEW RELEASES"}
-            collection={recentlyAdded}
+            title={"BEST SELLERS"}
+            collection={bestSellers}
             loading={recentlyAddedQueryIsLoading}
           />
           <div className="my-8 w-5/6 border-b border-gray-600" />
           <MusicSection
-            title={"BEST SELLERS"}
-            collection={recentlyAdded}
+            title={"THE BEATLES"}
+            collection={beatles}
             loading={recentlyAddedQueryIsLoading}
           />
           <div className="my-4" />
