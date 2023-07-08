@@ -23,9 +23,9 @@ export const sellersRouter = createTRPCRouter({
         const { url } = await ctx.stripe.accountLinks.create({
           account: account?.id,
           refresh_url:
-            "http://localhost:3000/profile/startSelling" + ctx.user.id,
+            "https://spin-city-records-gamma.vercel.app/provile/" + ctx.user.id,
           return_url:
-            "http://localhost:3000/profile/createListing" + ctx.user.id,
+            "https://spin-city-records-gamma.vercel.app/profile/" + ctx.user.id,
           type: "account_onboarding",
         });
         // Add account to DB
