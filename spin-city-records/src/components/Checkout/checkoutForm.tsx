@@ -51,6 +51,7 @@ export default function CheckoutForm({ listing }: CheckoutFormProps) {
   };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    console.log('From on submit')
     event.preventDefault();
 
     if (!elements) return;
